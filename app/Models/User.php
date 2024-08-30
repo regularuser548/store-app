@@ -51,6 +51,12 @@ namespace App\Models;
 // No need to use Laravel default traits and properties as
 // they're already present in the base class exactly as
 // they're defined in a default Laravel installation
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class User extends \Konekt\User\Models\User
 {
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class, 'seller_id');
+    }
 }
