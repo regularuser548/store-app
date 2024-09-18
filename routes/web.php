@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Product;
 use Illuminate\Foundation\Application;
@@ -29,5 +30,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/test', function () {
     echo \Illuminate\Support\Facades\Auth::user()->products;
 });
+
+
 
 require __DIR__.'/auth.php';
