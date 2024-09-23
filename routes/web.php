@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Crm\ProductCrudController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Product;
@@ -27,8 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/test', function () {
-    echo \Illuminate\Support\Facades\Auth::user()->products;
+Route::prefix('crm')->group(function () {
+    Route::resource('product', ProductCrudController::class);
+    Route::get('product/create', [ProductCrudController::class, 'create'])->name('crm.product.create');
 });
 
 
