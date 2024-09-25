@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Crm;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ProductCrudController extends Controller
 {
@@ -21,19 +23,17 @@ class ProductCrudController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         //todo: add pagination
         $products = $this->repository->all();
 
-        //dd(gettype($products[0]));
-        $imageUrls = $products->flatMap(function ($model) {
-            // Retrieve all media in the 'images' collection
-            return $model->getMedia('*')->map(function ($mediaItem) {
-                // Return the URL of each media item
-                return $mediaItem->getUrl();
-            });
-        })->toArray();
+        $imageUrls = $products->mapWithKeys(function ($model) {
+            // Return an associative array with the product id as key and image URLs as value
+            return [
+                $model->id => $model->getMedia('*')->first()->getUrl()
+            ];
+        });
 
         return Inertia::render('Crm/Product/Index', ['products' => $products, 'images' => $imageUrls]);
     }
@@ -41,7 +41,7 @@ class ProductCrudController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
 
         return Inertia::render('Crm/Product/Create');
@@ -50,7 +50,7 @@ class ProductCrudController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         //todo: validate request
 
@@ -63,36 +63,41 @@ class ProductCrudController extends Controller
                 Log::debug('Images processed!');
             });
         }
-        else
-            Log::debug('Images not found!');
+
+        return to_route('product.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Response
     {
 
-        $prod = $this->repository->find($id);
-        return Inertia::render('Crm/product/show', compact('prod'));
+        $product = $this->repository->find($id);
+        return Inertia::render('Crm/Product/Show', ['product' => $product]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product): Response
     {
-        $prod = $this->repository->find($id);
-        return Inertia::render('Crm/product/edit', compact('prod'));
+        $imageUrls = $product->getMedia('*')->map(function ($mediaItem) {
+                    return $mediaItem->getUrl();
+                    });
+
+        return Inertia::render('Crm/Product/Edit', ['product' => $product, 'images' => $imageUrls]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         //todo: validate request
         $product = $this->repository->update($request->except('images'), $id);
+
+        $product->clearMediaCollection();
 
         //todo: move this to repository
         if (!empty($request->files->filter('images'))) {
@@ -101,15 +106,17 @@ class ProductCrudController extends Controller
                 Log::debug('Images processed');
             });
         }
-        else
-            Log::debug('Images not found!');
+
+        return to_route('product.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $this->repository->delete($id);
+
+        return to_route('product.index');
     }
 }

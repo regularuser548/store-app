@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\Crm\ProductCrudController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,9 +28,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('crm')->group(function () {
     Route::resource('product', ProductCrudController::class);
-    Route::get('product/create', [ProductCrudController::class, 'create'])->name('crm.product.create');
 });
-
 
 
 require __DIR__.'/auth.php';

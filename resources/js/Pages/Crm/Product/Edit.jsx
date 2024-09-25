@@ -1,16 +1,14 @@
 import {Head, router, useForm} from "@inertiajs/react";
-import GuestLayout from "@/Layouts/GuestLayout.jsx";
-import {useState} from "react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 
-export default function Create(props) {
+export default function Edit(props) {
 
     //https://vanilo.io/docs/4.x/products#all-product-fields
     const {data, setData, post, progress} = useForm({
-        name: "",
-        sku: "",
-        price: "",
-        images: ""
+        name: props.product.name,
+        sku: props.product.sku,
+        price: props.product.price,
+        images: props.product.images,
     })
 
     function handleChange(e) {
@@ -24,13 +22,23 @@ export default function Create(props) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        post('/crm/product')
+        //put('/crm/product')
+
+        router.post(`/crm/product/${props.product.id}`, {
+            _method: 'put',
+
+            name: data.name,
+            sku: data.sku,
+            price: data.price,
+            images: data.images,
+        })
     }
 
     return (
         <CrmMenuLayout>
             <Head title="ShopHub CRM" />
             <div className="">
+
                 <form onSubmit={handleSubmit}>
 
                     <input id="name" value={data.name} onChange={handleChange} placeholder="Name" className='block' />
@@ -39,8 +47,16 @@ export default function Create(props) {
 
                     <input id="price" value={data.price} onChange={handleChange} placeholder="Price" type='number' className='block'/>
                     <input id="images" onChange={e => setData('images', e.target.files)} type='file' multiple accept="image/*" className='block'/>
-                    <button type="submit" >Create</button>
+                    <button type="submit">Save</button>
+                    <button onClick={e => router.visit('/product')}>Cancel</button>
                 </form>
+
+                <div>
+                    {props.images.map( (item, index) => (
+                        <img key={index} src={props.images[index]} alt='' className='w-1/6' />
+                    )) }
+                </div>
+
             </div>
         </CrmMenuLayout>
     );

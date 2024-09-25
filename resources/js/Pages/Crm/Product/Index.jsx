@@ -1,18 +1,26 @@
-import {Head} from "@inertiajs/react";
-import GuestLayout from "@/Layouts/GuestLayout.jsx";
+import {Head, Link, router} from "@inertiajs/react";
+import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 
 export default function Index(props) {
+
     return (
-        <div>
+        <CrmMenuLayout>
             <Head title="ShopHub CRM" />
                 {props.products.map( (item) => (
                     <div key={item.id} id={item.id} className="border-2 m-2">
-                        <h3>{item.name}</h3>
-                        <p>{item.sku}</p>
-                        <p>{item.price}</p>
-                        <img src={props.images[0]} alt='' />
+                        <div>
+                            <h3 className='font-bold'>Name: {item.name}</h3>
+                            <p>ID: {item.id}</p>
+                            <p>SKU: {item.sku}</p>
+                            <p>Price: {item.price}</p>
+                        </div>
+                        <div>
+                            <img src={props.images[item.id]} alt='' className='w-1/6' />
+                        </div>
+
+                        <button onClick={e => router.visit(`product/${item.id}/edit`)}>Edit</button>
                     </div>
                 )) }
-        </div>
+        </CrmMenuLayout>
     );
 }
