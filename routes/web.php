@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Crm\ProductCrudController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,10 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/test', function () {
-    echo \Illuminate\Support\Facades\Auth::user()->products;
+Route::prefix('crm')->group(function () {
+    Route::resource('product', ProductCrudController::class);
 });
-
 
 
 require __DIR__.'/auth.php';
