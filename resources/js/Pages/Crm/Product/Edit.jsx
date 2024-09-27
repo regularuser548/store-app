@@ -40,22 +40,28 @@ export default function Edit(props) {
             <div className="">
 
                 <form onSubmit={handleSubmit}>
-
-                    <input id="name" value={data.name} onChange={handleChange} placeholder="Name" className='block' />
+                    <input id="name" value={data.name} onChange={handleChange} placeholder="Name" className='block'/>
 
                     <input id="sku" value={data.sku} onChange={handleChange} placeholder="SKU" className='block'/>
 
-                    <input id="price" value={data.price} onChange={handleChange} placeholder="Price" type='number' className='block'/>
-                    <input id="images" onChange={e => setData('images', e.target.files)} type='file' multiple accept="image/*" className='block'/>
-                    <button type="submit">Save</button>
-                    <button onClick={e => router.visit('/product')}>Cancel</button>
+                    <input id="price" value={data.price} onChange={handleChange} placeholder="Price" type='number'
+                           className='block'/>
+                    <input id="images" onChange={e => setData('images', e.target.files)} type='file' multiple
+                           accept="image/*" className='block'/>
+                    <button className='border m-2 p-1 bg-green-500' type="submit">Save</button>
                 </form>
 
+                <button className='border m-2 p-1' onClick={e => router.visit('/crm/product')}>Cancel</button>
+
                 <div>
-                    {props.images.map( (item, index) => (
-                        <img key={index} src={props.images[index]} alt='' className='w-1/6' />
-                    )) }
+                    {props.images.map((item, index) => (
+                        <img key={index} src={props.images[index]} alt='' className='w-1/6 inline'/>
+                    ))}
                 </div>
+
+                <button className='border m-2 p-1 bg-red-500'
+                        onClick={e => router.delete(`/crm/product/${props.product.id}`)}>Delete
+                </button>
 
             </div>
         </CrmMenuLayout>

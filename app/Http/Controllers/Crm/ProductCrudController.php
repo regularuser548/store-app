@@ -31,7 +31,7 @@ class ProductCrudController extends Controller
         $imageUrls = $products->mapWithKeys(function ($model) {
             // Return an associative array with the product id as key and image URLs as value
             return [
-                $model->id => $model->getMedia('*')->first()->getUrl()
+                $model->id => $model->getMedia('*')?->first()?->getUrl()
             ];
         });
 
@@ -70,10 +70,8 @@ class ProductCrudController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): Response
+    public function show(Product $product): Response
     {
-
-        $product = $this->repository->find($id);
         return Inertia::render('Crm/Product/Show', ['product' => $product]);
     }
 
@@ -92,10 +90,10 @@ class ProductCrudController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(Request $request, Product $product): RedirectResponse
     {
         //todo: validate request
-        $product = $this->repository->update($request->except('images'), $id);
+        $product = $this->repository->update($request->except('images'), $product->id);
 
         $product->clearMediaCollection();
 
@@ -113,9 +111,9 @@ class ProductCrudController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Product $product): RedirectResponse
     {
-        $this->repository->delete($id);
+        $this->repository->delete($product->id);
 
         return to_route('product.index');
     }
