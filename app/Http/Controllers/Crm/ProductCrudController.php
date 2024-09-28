@@ -28,12 +28,7 @@ class ProductCrudController extends Controller
         //todo: add pagination
         $products = $this->repository->all();
 
-        $imageUrls = $products->mapWithKeys(function ($model) {
-            // Return an associative array with the product id as key and image URLs as value
-            return [
-                $model->id => $model->getMedia('*')?->first()?->getUrl()
-            ];
-        });
+        $imageUrls = $this->repository->firstMediaForEach($products);
 
         return Inertia::render('Crm/Product/Index', ['products' => $products, 'images' => $imageUrls]);
     }
@@ -56,13 +51,7 @@ class ProductCrudController extends Controller
 
         $product = $this->repository->create($request->except('images'));
 
-        //todo: move this to repository
-        if (!empty($request->files->filter('images'))) {
-            $product->addMultipleMediaFromRequest(['images'])->each(function ($fileAdder) {
-                $fileAdder->toMediaCollection();
-                Log::debug('Images processed!');
-            });
-        }
+        $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
 
         return to_route('product.index');
     }
@@ -80,9 +69,7 @@ class ProductCrudController extends Controller
      */
     public function edit(Product $product): Response
     {
-        $imageUrls = $product->getMedia('*')->map(function ($mediaItem) {
-                    return $mediaItem->getUrl();
-                    });
+        $imageUrls = $this->repository->allMediaForModel($product);
 
         return Inertia::render('Crm/Product/Edit', ['product' => $product, 'images' => $imageUrls]);
     }
@@ -97,13 +84,7 @@ class ProductCrudController extends Controller
 
         $product->clearMediaCollection();
 
-        //todo: move this to repository
-        if (!empty($request->files->filter('images'))) {
-            $product->addMultipleMediaFromRequest(['images'])->each(function ($fileAdder) {
-                $fileAdder->toMediaCollection();
-                Log::debug('Images processed');
-            });
-        }
+        $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
 
         return to_route('product.index');
     }

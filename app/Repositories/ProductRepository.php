@@ -14,32 +14,31 @@ class ProductRepository extends BaseRepository
     }
 
 
-    public function firstMediaFromCollection(Collection $collection, string $mediaCollection = "default", string $urlType=""): Collection
+    public function firstMediaForEach(Collection $collection, string $mediaCollection = "default", string $urlType=""): array
     {
         return $collection->mapWithKeys(function ($model) use ($urlType, $mediaCollection) {
             // Return an associative array with the product id as key and image URLs as value
             return [
                 $model->id => $model->getMedia($mediaCollection)?->first()?->getUrl($urlType)
             ];
-        });
+        })?->toArray();
     }
 
-    public function allMedia(Model $model, string $mediaCollection = "default", string $urlType="")
+    public function allMediaForModel(Model $model, string $mediaCollection = "default", string $urlType=""): array
     {
-        return $imageUrls = $model->getMedia($mediaCollection)->map(function ($mediaItem) use ($urlType) {
+        return $model->getMedia($mediaCollection)->map(function ($mediaItem) use ($urlType) {
             return $mediaItem->getUrl($urlType);
-        });
+        })->toArray();
     }
 
-//    public function firstMedia(Model $model, string $mediaCollection = "default", string $urlType=""): Collection
-//    {
-//
-//    }
-//
-//
-//    public function addMultipleMedia(Model $model, string $mediaCollection = "default"): bool
-//    {
-//
-//    }
+    public function addMultipleMediaFromArray(Model $model, array $files, string $mediaCollection = "default"): bool
+    {
+        foreach ($files as $file) {
+            // Add each file to the media library
+            $model->addMedia($file)
+                ->toMediaCollection($mediaCollection);
+        }
+        return true;
+    }
 }
 
