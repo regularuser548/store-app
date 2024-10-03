@@ -1,7 +1,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
 import GuestLayout from "@/Layouts/GuestLayout.jsx";
-
+import {Button, DatePicker, Space, version} from "antd";
+import React from 'react';
 export default function Index(props) {
     return (
         <GuestLayout
@@ -13,12 +14,19 @@ export default function Index(props) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 
-                        {props.products.map( (item) => (
-                            <div key={item.id} id={item.id}>
-                                {item.name}
-                            </div>
-                        )) }
+                        {/*{props.products.map( (item) => (*/}
+                        {/*    <div key={item.id} id={item.id}>*/}
+                        {/*        {item.name}*/}
+                        {/*    </div>*/}
+                        {/*)) }*/}
 
+                        <div className="TestDiv">
+                            <h1>antd version: {version}</h1>
+                            <Space>
+                                <DatePicker/>
+                                <Button type="primary">Primary Button</Button>
+                            </Space>
+                        </div>
                     </div>
                 </div>
             </div>
