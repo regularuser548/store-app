@@ -9,7 +9,8 @@ return [
          *
          */
 
-        Vanilo\Foundation\Providers\ModuleServiceProvider::class
+        Vanilo\Foundation\Providers\ModuleServiceProvider::class,
+        Konekt\Acl\Providers\ModuleServiceProvider::class,
     ],
     'register_route_models' => true
 ];

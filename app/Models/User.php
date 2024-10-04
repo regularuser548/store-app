@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+//namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+//use Illuminate\Contracts\Auth\MustVerifyEmail;
+//use Illuminate\Database\Eloquent\Factories\HasFactory;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
+//use Illuminate\Notifications\Notifiable;
 
 //class User extends Authenticatable
 //{
@@ -52,9 +52,9 @@ namespace App\Models;
 // they're already present in the base class exactly as
 // they're defined in a default Laravel installation
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Konekt\Acl\Traits\HasRoles;
 
-class User extends \Konekt\User\Models\User implements MustVerifyEmail
+class User extends \Konekt\User\Models\User //implements MustVerifyEmail
 {
-
+    use HasRoles;
 }

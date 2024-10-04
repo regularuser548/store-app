@@ -4,9 +4,20 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import {useState} from "react";
 
 export default function Register() {
+    const [selectedRole, setSelectedRole] = useState('customer');
+
+    const handleRoleChange = (e) => {
+        setSelectedRole(e.target.value);
+        setData('role', e.target.value);
+
+
+    };
+
     const { data, setData, post, processing, errors, reset } = useForm({
+        role: '',
         name: '',
         email: '',
         password: '',
@@ -26,6 +37,22 @@ export default function Register() {
             <Head title="Register" />
 
             <form onSubmit={submit}>
+
+                <div className='mb-2 text-white'>
+                    <legend>Account type:</legend>
+                    <div>
+                        <input type="radio" id="roleChoice1" name="role" value="customer" className='me-1'
+                               checked={selectedRole === "customer"}
+                               onChange={handleRoleChange}/>
+                        <label htmlFor="roleChoice1">Customer</label>
+
+                        <input type="radio" id="roleChoice2" name="role" value="seller" className='m-1'
+                               checked={selectedRole === "seller"}
+                               onChange={handleRoleChange}/>
+                        <label htmlFor="roleChoice2">Seller</label>
+                    </div>
+                </div>
+
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
