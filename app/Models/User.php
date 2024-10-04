@@ -54,7 +54,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends \Konekt\User\Models\User implements MustVerifyEmail
+class User extends \Konekt\User\Models\User //implements MustVerifyEmail
 {
 
 }
