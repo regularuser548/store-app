@@ -27,8 +27,8 @@ class StorefrontController extends Controller
 
     public function show(Product $product): Response
     {
-        $image = $this->repository->allMediaForModel($product);
-        return Inertia::render('Storefront/Show', compact('product', 'image'));
+        $images = $this->repository->allMediaForModel($product);
+        return Inertia::render('Storefront/Show', compact('product', 'images'));
 
     }
 

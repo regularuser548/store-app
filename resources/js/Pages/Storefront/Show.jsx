@@ -1,12 +1,15 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
 
-export default function Show({ product,image }) {
+export default function Show({ product, images }) {
     return (
         <div className="flex flex-col items-center p-4">
             <div className="flex">
                 <div className="w-1/3">
-                    <img src={image} alt={product.name} className="w-full" />
+                    {/*<img src={image} alt={product.name} className="w-full" />*/}
+                    {images.map((item, index) => (
+                        <img key={index} src={images[index]} alt='' className='w-1/4 inline'/>
+                    ))}
                 </div>
 
                 <div className="w-1/3 ml-8">
