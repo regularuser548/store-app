@@ -1,12 +1,12 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
 
-export default function ProductDetails({ product }) {
+export default function ProductDetails({ product,image }) {
     return (
         <div className="flex flex-col items-center p-4">
             <div className="flex">
                 <div className="w-1/3">
-                    <img src={product.image} alt={product.name} className="w-full" />
+                    <img src={image} alt={product.name} className="w-full" />
                 </div>
 
                 <div className="w-1/3 ml-8">

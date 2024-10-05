@@ -3,7 +3,7 @@ import { Inertia } from '@inertiajs/inertia';
 //import Product from './Product';
 import Product from '../Crm/Product/Components/Product';
 
-export default function Storefront({ products }) {
+export default function Storefront({ products,images }) {
     const [query, setQuery] = useState('');
 
     const handleSearch = (e) => {
@@ -29,7 +29,10 @@ export default function Storefront({ products }) {
             <div className="flex flex-wrap">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <Product key={product.id} item={product} image={product.image} />
+                        <Product key={product.id} item={product} image={images[product.id]}></Product>
+
+                        // <Product key={item.id} item={item} image={props.images[item.id]}
+
                     ))
                 ) : (
                     <p>No products found</p>

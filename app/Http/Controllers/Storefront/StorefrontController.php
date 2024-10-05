@@ -33,13 +33,18 @@ class StorefrontController extends Controller
     public function index()
     {
         $products = $this->repository->all();
-        return Inertia::render('Storefront/Index', compact('products'));
+        $images = $this->repository->firstMediaForEach($products);
+        return Inertia::render('Storefront/Index', compact('products', 'images'));
     }
 
     public function show(Product $product)
     {
-        return Inertia::render('Storefront/Show', compact('product'));
+        $image = $this->repository->allMediaForModel($product);
+        return Inertia::render('Storefront/Show', compact('product', 'image'));
+
     }
+
+
 
     public function search(Request $request)
     {
