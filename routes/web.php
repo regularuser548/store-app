@@ -2,19 +2,23 @@
 
 use App\Http\Controllers\Crm\ProductCrudController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Storefront\StorefrontController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-Route::get('/', function () {
-    return Inertia::render('Index', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+//Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
+
+//Route::get('/product/{id}/show', [StorefrontController::class, 'show'])->name('storefront.show');
+
+Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
+
+Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
+
+
+Route::get('/search', [StorefrontController::class, 'search'])->name('storefront.search');
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

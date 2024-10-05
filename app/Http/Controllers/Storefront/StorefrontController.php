@@ -17,17 +17,38 @@ class StorefrontController extends Controller
         $this->repository = $productRepository;
     }
 
+//    public function index()
+//    {
+//        $products = $this->repository->all();
+//       return Inertia::Render('products.index', compact('products'));
+//
+//    }
+//
+//
+//    public function show(Product $product)
+//    {
+//        return Inertia::Render('products.show', compact('product'));
+//
+//    }
     public function index()
     {
         $products = $this->repository->all();
-        return Inertia::Render('products.index', compact('products'));
+        return Inertia::render('Storefront/Index', compact('products'));
     }
-
-
 
     public function show(Product $product)
     {
-        return Inertia::Render('products.show', compact('product'));
+        return Inertia::render('Storefront/Show', compact('product'));
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $products = Product::where('name', 'like', '%' . $query . '%')->get();
+
+        return Inertia::render('Storefront/Index', ['products' => $products]);
+    }
+
 
 }
