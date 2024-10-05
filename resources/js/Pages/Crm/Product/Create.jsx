@@ -24,7 +24,7 @@ export default function Create(props) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        post('/crm/product')
+        post(route('product.store'))
     }
 
     return (

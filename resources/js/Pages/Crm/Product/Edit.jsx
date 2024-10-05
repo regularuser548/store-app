@@ -22,9 +22,8 @@ export default function Edit(props) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        //put('/crm/product')
 
-        router.post(`/crm/product/${props.product.id}`, {
+        router.post(route('product.update', {product:props.product.id }), {
             _method: 'put',
 
             name: data.name,
@@ -51,7 +50,7 @@ export default function Edit(props) {
                     <button className='border m-2 p-1 bg-green-500' type="submit">Save</button>
                 </form>
 
-                <button className='border m-2 p-1' onClick={e => router.visit('/crm/product')}>Cancel</button>
+                <button className='border m-2 p-1' onClick={e => router.visit(route('product.index'))}>Cancel</button>
 
                 <div>
                     {props.images.map((item, index) => (
@@ -60,7 +59,7 @@ export default function Edit(props) {
                 </div>
 
                 <button className='border m-2 p-1 bg-red-500'
-                        onClick={e => router.delete(`/crm/product/${props.product.id}`)}>Delete
+                        onClick={e => router.delete(route('product.destroy', {product:props.product.id }))}>Delete
                 </button>
 
             </div>
