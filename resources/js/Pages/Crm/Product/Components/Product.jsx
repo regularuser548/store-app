@@ -16,6 +16,11 @@ export default function Product({item, image}) {
             </div>
 
             <button className='font-bold' onClick={e => router.visit(`product/${item.id}/edit`)}>Edit</button>
+
+            {/*<button className="font-bold" onClick={() => router.visit(`product/${item.id}/show`)}>Details</button>*/}
+
+            <button className="font-bold" onClick={() => router.visit(route('storefront.show', {product: item.id}))}>Details</button>
+
         </div>
     );
 }
