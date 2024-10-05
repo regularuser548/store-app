@@ -15,7 +15,8 @@ export default function Product({item, image}) {
                 <p>Price: {item.price}</p>
             </div>
 
-            <button className='font-bold' onClick={e => router.visit(`product/${item.id}/edit`)}>Edit</button>
+            {/*<button className='font-bold' onClick={e => router.visit(`product/${item.id}/edit`)}>Edit</button>*/}
+            <button className='font-bold' onClick={e => router.visit(route('product.edit', {product: item.id}))}>Edit</button>
 
             {/*<button className="font-bold" onClick={() => router.visit(`product/${item.id}/show`)}>Details</button>*/}
 

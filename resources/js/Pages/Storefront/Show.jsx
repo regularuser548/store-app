@@ -1,7 +1,7 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
 
-export default function ProductDetails({ product,image }) {
+export default function Show({ product,image }) {
     return (
         <div className="flex flex-col items-center p-4">
             <div className="flex">
@@ -18,7 +18,7 @@ export default function ProductDetails({ product,image }) {
             </div>
 
             <div className="mt-4">
-                <button className="font-bold" onClick={() => router.visit('/')}>
+                <button className="font-bold" onClick={() => router.visit(route('storefront.index'))}>
                     Back to Products
                 </button>
             </div>

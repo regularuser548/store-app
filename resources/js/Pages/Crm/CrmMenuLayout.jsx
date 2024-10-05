@@ -7,9 +7,9 @@ export default function CrmMenuLayout({props, children}) {
             <Head title="ShopHub CRM"/>
 
             <div className=''>
-                <Link href="/" className="block border">Home</Link>
-                <Link href="/crm/product" className="block border">Product Listing</Link>
-                <Link href="/crm/product/create" className="block border">Create Product</Link>
+                <Link href={route('storefront.index')} className="block border">Home</Link>
+                <Link href={route('product.index')} className="block border">Product Listing</Link>
+                <Link href={route('product.create')} className="block border">Create Product</Link>
             </div>
 
             <div className='max-h-screen overflow-y-scroll'>{children}</div>
