@@ -29,11 +29,11 @@ class StorefrontController extends Controller
     {
         $images = $this->repository->allMediaForModel($product);
         return Inertia::render('Storefront/Show', compact('product', 'images'));
-
     }
 
     public function search(Request $request): Response
     {
+        //todo: переделать с использованием https://vanilo.io/docs/4.x/product-search
         $query = $request->input('query');
 
         $products = Product::where('name', 'like', '%' . $query . '%')->get();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Crm\ProductStoreRequest;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\RedirectResponse;
@@ -45,11 +46,9 @@ class ProductCrudController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(ProductStoreRequest $request): RedirectResponse
     {
-        //todo: validate request
-
-        $product = $this->repository->create($request->except('images'));
+        $product = $this->repository->create($request->safe()->except('images'));
 
         $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
 
