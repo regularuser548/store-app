@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('crm')->group(function () {
     Route::resource('product', ProductCrudController::class);
-});
+})->middleware(['auth', 'verified']);
 
 
 require __DIR__.'/auth.php';

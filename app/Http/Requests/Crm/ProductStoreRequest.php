@@ -2,16 +2,26 @@
 
 namespace App\Http\Requests\Crm;
 
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class ProductStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(Product $product): bool
     {
-        return true;
+        if ($this->routeIs('product.store')) {
+            return true;
+        }
+        elseif ($this->routeIs('product.update')) {
+            return $this->user()->id === $product->seller->id;
+        }
+        else
+            return false;
     }
 
     /**
@@ -33,7 +43,7 @@ class ProductStoreRequest extends FormRequest
             'description' => 'required|min:3|max:255',
             'meta_keywords' => 'nullable|min:3|max:255',
 
-            'images' => 'required|array|max:10',
+            'images' => 'nullable|array|max:10',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
             'videos' => 'nullable|array|max:3',

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Vanilo\Product\Contracts\Product as ProductContract;
+use App\Models\User;
 class Product extends \Vanilo\Product\Models\Product implements HasMedia
 {
     use HasFactory;
@@ -15,6 +16,6 @@ class Product extends \Vanilo\Product\Models\Product implements HasMedia
 
     public function seller(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'seller_id');
     }
 }

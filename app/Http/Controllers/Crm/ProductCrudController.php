@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Crm\ProductStoreRequest;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
+use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -48,9 +49,14 @@ class ProductCrudController extends Controller
      */
     public function store(ProductStoreRequest $request): RedirectResponse
     {
-        $product = $this->repository->create($request->safe()->except('images'));
+        $request->validate(['images' => 'required']);
 
-        $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
+        $data = $request->validated();
+        $data['seller_id'] = Auth::id();
+
+        $product = $this->repository->create($data);
+
+        $this->repository->addMultipleMediaFromArray($product, $data['images']);
 
         return to_route('product.index');
     }
@@ -76,14 +82,15 @@ class ProductCrudController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(ProductStoreRequest $request, Product $product): RedirectResponse
     {
-        //todo: validate request
-        $product = $this->repository->update($request->except('images'), $product->id);
+        $product = $this->repository->update($request->validated(), $product->id);
 
-        $product->clearMediaCollection();
-
-        $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
+        if ($request->hasFile('images'))
+        {
+            $product->clearMediaCollection(); //this is temporary
+            $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
+        }
 
         return to_route('product.index');
     }
@@ -93,6 +100,7 @@ class ProductCrudController extends Controller
      */
     public function destroy(Product $product): RedirectResponse
     {
+        //todo: check product ownership
         $this->repository->delete($product->id);
 
         return to_route('product.index');

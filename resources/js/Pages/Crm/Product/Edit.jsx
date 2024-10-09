@@ -1,58 +1,41 @@
 import {Head, router, useForm} from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
 
 export default function Edit(props) {
 
     //https://vanilo.io/docs/4.x/products#all-product-fields
     const {data, setData, post, progress} = useForm({
-        name: props.product.name,
-        sku: props.product.sku,
-        price: props.product.price,
-        images: props.product.images,
+        name: props.name,
+        sku: props.sku,
+        stock: props.stock,
+        price: props.price,
+        weight: props.weight,
+        width: props.width,
+        height: props.height,
+        length: props.length,
+        description: props.description,
+        meta_keywords: props.meta_keywords,
+
+        images: '',
+        videos: '',
+
+        //workaround
+        _method: 'put'
     })
 
-    function handleChange(e) {
-        const key = e.target.id;
-        const value = e.target.value
-        setData(values => ({
-            ...values,
-            [key]: value,
-        }))
-    }
-
     function handleSubmit(e) {
-        e.preventDefault()
-
-        router.post(route('product.update', {product:props.product.id }), {
-            _method: 'put',
-
-            name: data.name,
-            sku: data.sku,
-            price: data.price,
-            images: data.images,
-        })
+        e.preventDefault();
+        router.post(route('product.update', {product:props.product.id }), data);
     }
 
     return (
         <CrmMenuLayout>
-            <Head title="ShopHub CRM" />
-            <div className="">
-
-                <form onSubmit={handleSubmit}>
-                    <input id="name" value={data.name} onChange={handleChange} placeholder="Name" className='block'/>
-
-                    <input id="sku" value={data.sku} onChange={handleChange} placeholder="SKU" className='block'/>
-
-                    <input id="price" value={data.price} onChange={handleChange} placeholder="Price" type='number'
-                           className='block'/>
-                    <input id="images" onChange={e => setData('images', e.target.files)} type='file' multiple
-                           accept="image/*" className='block'/>
-                    <button className='border m-2 p-1 bg-green-500' type="submit">Save</button>
-                </form>
+                <ProductForm fields={data} changeHandler={setData} submit={handleSubmit}></ProductForm>
 
                 <button className='border m-2 p-1' onClick={e => router.visit(route('product.index'))}>Cancel</button>
 
-                <div>
+                <div id='ImageContainer'>
                     {props.images.map((item, index) => (
                         <img key={index} src={props.images[index]} alt='' className='w-1/6 inline'/>
                     ))}
@@ -62,7 +45,6 @@ export default function Edit(props) {
                         onClick={e => router.delete(route('product.destroy', {product:props.product.id }))}>Delete
                 </button>
 
-            </div>
         </CrmMenuLayout>
     );
 
