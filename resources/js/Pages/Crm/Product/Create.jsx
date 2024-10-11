@@ -21,6 +21,7 @@ export default function Create(props) {
         length: "",
         description: "",
         meta_keywords: "",
+        state: "",
 
         images: "",
         videos: ""

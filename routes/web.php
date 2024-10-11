@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 
 //CRM Product CRUD
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class.':seller|admin'])->group(function () {
-    Route::resource('product', ProductCrudController::class);
+    Route::resource('product', ProductCrudController::class)->except(['show']);
 });
 
 

@@ -4,15 +4,17 @@ namespace App\Http\Requests\Crm;
 
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Vanilo\Product\Models\ProductState;
 
-class ProductStoreRequest extends FormRequest
+class ProductStoreUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        if ($this->isMethod('POST')) {
+        if ($this->isMethod('POST') or $this->user()->hasRole('admin')) {
             return true;
         }
         elseif ($this->isMethod('PUT')) {
@@ -40,6 +42,7 @@ class ProductStoreRequest extends FormRequest
             'length' => 'nullable|numeric|min:0',
             'description' => 'required|min:3|max:255',
             'meta_keywords' => 'nullable|min:3|max:255',
+            'state' => 'required|in:draft,inactive,active,unavailable,retired',
 
             'images' => 'nullable|array|max:10',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',

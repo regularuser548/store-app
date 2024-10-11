@@ -16,6 +16,7 @@ export default function Edit({product, images, props}) {
         length: product.length,
         description:product.description,
         meta_keywords: product.meta_keywords,
+        state: product.state,
 
         images: '',
         videos: '',
@@ -23,6 +24,7 @@ export default function Edit({product, images, props}) {
         //workaround
         _method: 'put'
     })
+
 
     function handleSubmit(e) {
         e.preventDefault();

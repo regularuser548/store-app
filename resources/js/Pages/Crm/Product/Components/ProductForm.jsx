@@ -17,7 +17,10 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
             ...values,
             [key]: value,
         }))
+
+        console.log(key + ' ' + value);
     }
+
 
     return (
         <form onSubmit={submit}>
@@ -50,8 +53,17 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
                       placeholder="Description" className='block' required/>
             {errors.description && <div className="text-red-500">{errors.description}</div>}
 
-            <FormField id="meta_keywords" data={fields} onChange={handleChange} placeholder="Keywords"
+            <FormField id="meta_keywords" data={fields} onChange={handleChange} placeholder="Keywords (separate by ,)"
                        className='block'/>
+
+            <select id="state" value={fields.state} onChange={handleChange}>
+                <option value="draft">Draft</option>
+                <option value="inactive">Inactive</option>
+                <option value="active">Active</option>
+                <option value="unavailable">Unavailable</option>
+                <option value="retired">Retired</option>
+            </select>
+            {errors.state && <div className="text-red-500">{errors.state}</div>}
 
             <label htmlFor="videos" className='block'>Videos</label>
             <input id="videos" onChange={e => changeHandler('videos', e.target.files)} type='file' multiple
@@ -60,10 +72,10 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
 
             <label htmlFor="images" className='block'>Images</label>
             <input id="images" onChange={e => changeHandler('images', e.target.files)} type='file' multiple
-                       accept="image/*" className='' required/>
+                       accept="image/*" className=''/>
             {errors.images && <div className="text-red-500">{errors.images}</div>}
 
-            <button type="submit" className='block'>Submit</button>
+            <button type="submit" className='block border bg-green-500'>Submit</button>
         </form>
 
     );
