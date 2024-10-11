@@ -28,6 +28,7 @@ class ProductCrudController extends Controller
     public function index(): Response
     {
         //todo: add pagination
+        //todo: return only owned products
         $products = $this->repository->all();
 
         $imageUrls = $this->repository->firstMediaForEach($products);
@@ -40,7 +41,6 @@ class ProductCrudController extends Controller
      */
     public function create(): Response
     {
-
         return Inertia::render('Crm/Product/Create');
     }
 
@@ -49,7 +49,8 @@ class ProductCrudController extends Controller
      */
     public function store(ProductStoreRequest $request): RedirectResponse
     {
-        $request->validate(['images' => 'required']);
+        $request->validate(['images' => 'required',
+            'sku' => 'unique:products,sku']);
 
         $data = $request->validated();
         $data['seller_id'] = Auth::id();
@@ -74,6 +75,7 @@ class ProductCrudController extends Controller
      */
     public function edit(Product $product): Response
     {
+        //todo: check ownership
         $imageUrls = $this->repository->allMediaForModel($product);
 
         return Inertia::render('Crm/Product/Edit', ['product' => $product, 'images' => $imageUrls]);
@@ -84,6 +86,10 @@ class ProductCrudController extends Controller
      */
     public function update(ProductStoreRequest $request, Product $product): RedirectResponse
     {
+        if ($request->input('sku') != $product->sku) {
+            $request->validate(['sku' => 'unique:products,sku']);
+        }
+
         $product = $this->repository->update($request->validated(), $product->id);
 
         if ($request->hasFile('images'))
@@ -100,7 +106,9 @@ class ProductCrudController extends Controller
      */
     public function destroy(Product $product): RedirectResponse
     {
-        //todo: check product ownership
+        if ($product->seller->id != Auth::id())
+            return redirect()->back()->withErrors(['Error' => 'Unauthorized action']);
+
         $this->repository->delete($product->id);
 
         return to_route('product.index');

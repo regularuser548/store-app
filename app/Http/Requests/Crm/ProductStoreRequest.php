@@ -3,22 +3,20 @@
 namespace App\Http\Requests\Crm;
 
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class ProductStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(Product $product): bool
+    public function authorize(): bool
     {
-        if ($this->routeIs('product.store')) {
+        if ($this->isMethod('POST')) {
             return true;
         }
-        elseif ($this->routeIs('product.update')) {
-            return $this->user()->id === $product->seller->id;
+        elseif ($this->isMethod('PUT')) {
+            return $this->user()->id === $this->product->seller_id;
         }
         else
             return false;
@@ -33,7 +31,7 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:255',
-            'sku' => 'required|min:3|max:255|unique:products,sku',
+            'sku' => 'required|min:3|max:255',
             'stock' => 'required|integer|min:0',
             'price' => 'required|numeric|min:0',
             'weight' => 'nullable|numeric|min:0',

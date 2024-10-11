@@ -6,33 +6,30 @@ use App\Http\Controllers\Storefront\StorefrontController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Konekt\Acl\Http\Middleware\RoleMiddleware;
 
 
-//Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
-
-//Route::get('/product/{id}/show', [StorefrontController::class, 'show'])->name('storefront.show');
-
+//Storefront
 Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
-
 Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
-
-
 Route::get('/search', [StorefrontController::class, 'search'])->name('storefront.search');
 
-
+//Dashboard
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+//Profile
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('crm')->group(function () {
+//CRM Product CRUD
+Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class.':seller|admin'])->group(function () {
     Route::resource('product', ProductCrudController::class);
-})->middleware(['auth', 'verified']);
+});
 
 
 require __DIR__.'/auth.php';

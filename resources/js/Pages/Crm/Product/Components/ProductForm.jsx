@@ -54,12 +54,14 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
                        className='block'/>
 
             <label htmlFor="videos" className='block'>Videos</label>
-            <FormField id="videos"  onChange={e => changeHandler('videos', e.target.files)} type='file' multiple
+            <input id="videos" onChange={e => changeHandler('videos', e.target.files)} type='file' multiple
                        accept="video/*" className=''/>
+            {errors.videos && <div className="text-red-500">{errors.videos}</div>}
 
             <label htmlFor="images" className='block'>Images</label>
-            <FormField id="images" onChange={e => changeHandler('images', e.target.files)} type='file' multiple
+            <input id="images" onChange={e => changeHandler('images', e.target.files)} type='file' multiple
                        accept="image/*" className='' required/>
+            {errors.images && <div className="text-red-500">{errors.images}</div>}
 
             <button type="submit" className='block'>Submit</button>
         </form>
