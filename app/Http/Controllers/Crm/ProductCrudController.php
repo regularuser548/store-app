@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Crm\ProductShowDeleteRequest;
+use App\Http\Requests\Crm\ProductStoreUpdateRequest;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
+use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +29,12 @@ class ProductCrudController extends Controller
     public function index(): Response
     {
         //todo: add pagination
-        $products = $this->repository->all();
+        //todo: move to repository
+
+        if (Auth::user()->hasRole('admin'))
+            $products = $this->repository->all();
+        else
+            $products = $this->repository->all()->where('seller_id', '=', Auth::id())->flatten();
 
         $imageUrls = $this->repository->firstMediaForEach($products);
 
@@ -38,20 +46,23 @@ class ProductCrudController extends Controller
      */
     public function create(): Response
     {
-
         return Inertia::render('Crm/Product/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(ProductStoreUpdateRequest $request): RedirectResponse
     {
-        //todo: validate request
+        $request->validate(['images' => 'required',
+            'sku' => 'unique:products,sku']);
 
-        $product = $this->repository->create($request->except('images'));
+        $data = $request->validated();
+        $data['seller_id'] = Auth::id();
 
-        $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
+        $product = $this->repository->create($data);
+
+        $this->repository->addMultipleMediaFromArray($product, $data['images']);
 
         return to_route('product.index');
     }
@@ -59,15 +70,15 @@ class ProductCrudController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product): Response
-    {
-        return Inertia::render('Crm/Product/Show', ['product' => $product]);
-    }
+//    public function show(ProductShowDeleteRequest $request, Product $product): Response
+//    {
+//        return Inertia::render('Crm/Product/Show', ['product' => $product]);
+//    }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product): Response
+    public function edit(ProductShowDeleteRequest $request, Product $product): Response
     {
         $imageUrls = $this->repository->allMediaForModel($product);
 
@@ -77,14 +88,19 @@ class ProductCrudController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(ProductStoreUpdateRequest $request, Product $product): RedirectResponse
     {
-        //todo: validate request
-        $product = $this->repository->update($request->except('images'), $product->id);
+        if ($request->input('sku') != $product->sku) {
+            $request->validate(['sku' => 'unique:products,sku']);
+        }
 
-        $product->clearMediaCollection();
+        $product = $this->repository->update($request->validated(), $product->id);
 
-        $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
+        if ($request->hasFile('images'))
+        {
+            //$product->clearMediaCollection(); //this is temporary
+            $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
+        }
 
         return to_route('product.index');
     }
@@ -92,7 +108,7 @@ class ProductCrudController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product): RedirectResponse
+    public function destroy(ProductShowDeleteRequest $request, Product $product): RedirectResponse
     {
         $this->repository->delete($product->id);
 

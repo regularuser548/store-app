@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Product;
 use App\Repositories\Interfaces\BaseRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,4 +44,22 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->findOrFail($id);
     }
+
+    public function paginateAndFilter($perPage = 15, $filters = [], $sortBy = 'created_at', $sortDirection = 'desc'): LengthAwarePaginator
+    {
+        $query = $this->model->query();
+
+        // Apply filters if provided
+        if (!empty($filters)) {
+            foreach ($filters as $key => $value) {
+                $query->where($key, 'like', "%$value%");
+            }
+        }
+
+        // Apply sorting
+        $query->orderBy($sortBy, $sortDirection);
+
+        return $query->paginate($perPage);
+    }
+
 }
