@@ -13,4 +13,9 @@ class UserRepository extends BaseRepository
     {
         parent::__construct($user);
     }
+
+//    public function allWithRolesAndPermissions(): Collection
+//    {
+//        return $this->model->with(['roles', 'permissions'])->get();
+//    }
 }
