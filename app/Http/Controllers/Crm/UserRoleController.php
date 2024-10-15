@@ -19,10 +19,24 @@ class UserRoleController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index()
+    public function index() //Пробую сделать метод чтобы доставать только роли и разрешения
     {
-        $users = $this->userRepository->all();
-        return Inertia::render('Users/Index', ['users' => $users]);
+        //$users = $this->userRepository->all();
+        //return Inertia::render('Crm/UserRoles/Index', ['users' => $users]);
+
+//        $users = $this->userRepository->allWithRolesAndPermissions();
+
+        $users = $this->userRepository->all()->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'roles' => $user->roles()->pluck('name'),
+            ];
+        });
+
+
+        return Inertia::render('Crm/UserRoles/Index', ['users' => $users]);
     }
 
 
@@ -30,7 +44,7 @@ class UserRoleController extends Controller
     {
         $roles = $user->getRoleNames();
         $permissions = $user->getAllPermissions();
-        return Inertia::render('Users/Show', ['user' => $user, 'roles' => $roles, 'permissions' => $permissions]);
+        return Inertia::render('Crm/UserRoles/Show', ['user' => $user, 'roles' => $roles, 'permissions' => $permissions]);
     }
 
 
@@ -41,7 +55,7 @@ class UserRoleController extends Controller
         $userRoles = $user->getRoleNames();
         $permissions = Permission::all();
         $userPermissions = $user->getAllPermissions();
-        return Inertia::render('Users/Edit', ['user' => $user, 'roles' => $roles, 'userRoles' => $userRoles,
+        return Inertia::render('Crm/UserRoles/Edit', ['user' => $user, 'roles' => $roles, 'userRoles' => $userRoles,
             'permissions' => $permissions,
             'userPermissions' => $userPermissions
         ]);
@@ -61,7 +75,7 @@ class UserRoleController extends Controller
             $user->syncPermissions($request->input('permissions'));
         }
 
-        return redirect()->route('users.show', $user->id)
+        return redirect()->route('user.show', $user->id)
             ->with('success', 'Roles was changed');
     }
 
