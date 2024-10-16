@@ -13,11 +13,43 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            RolesSeeder::class,
+        ]);
 
-//        User::factory()->create([
-//            'name' => 'Test User',
-//            'email' => 'test@example.com',
-//        ]);
+        //Create admin
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@mail.com',
+            'password' => bcrypt('admin'),
+        ])->assignRole('admin');
+
+        //Create customer
+        User::factory()->create([
+            'name' => 'Customer',
+            'email' => 'customer@mail.com',
+            'password' => bcrypt('customer'),
+        ])->assignRole('customer');
+
+        //Create seller
+        User::factory()->create([
+            'name' => 'Seller',
+            'email' => 'seller@mail.com',
+            'password' => bcrypt('seller'),
+        ])->assignRole('seller');
+
+        //Create manager
+        User::factory()->create([
+            'name' => 'Manager',
+            'email' => 'manager@mail.com',
+            'password' => bcrypt('manager'),
+        ])->assignRole('manager');
+
+        //Create moderator
+        User::factory()->create([
+            'name' => 'Moderator',
+            'email' => 'moderator@mail.com',
+            'password' => bcrypt('moderator'),
+        ])->assignRole('moderator');
     }
 }

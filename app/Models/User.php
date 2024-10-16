@@ -53,8 +53,10 @@ namespace App\Models;
 // they're defined in a default Laravel installation
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Konekt\Acl\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends \Konekt\User\Models\User //implements MustVerifyEmail
 {
     use HasRoles;
+    use HasFactory;
 }
