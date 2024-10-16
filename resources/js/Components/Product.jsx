@@ -1,6 +1,6 @@
 import {router} from "@inertiajs/react";
 
-export default function Product({item, image}) {
+export default function Product({item, image,isCrm = false}) {
 
     return (
         <div id={item.id} className="border-2 m-2 w-72">
@@ -15,8 +15,16 @@ export default function Product({item, image}) {
                 <p>Price: {item.price}</p>
             </div>
 
-            {/*<button className='font-bold' onClick={e => router.visit(`product/${item.id}/edit`)}>Edit</button>*/}
-            <button className='font-bold' onClick={e => router.visit(route('product.edit', {product: item.id}))}>Edit</button>
+            {/*/!*<button className='font-bold' onClick={e => router.visit(`product/${item.id}/edit`)}>Edit</button>*!/*/}
+            {/*{if(isCrm == true)*/}
+            {/*    <button className='font-bold' onClick={e => router.visit(route('product.edit', {product: item.id}))}>Edit</button>*/}
+
+            {/*}*/}
+
+        {isCrm ? (
+         <button className='font-bold' onClick={e => router.visit(route('product.edit', {product: item.id}))}>Edit</button>
+          ) : null}
+
 
             {/*<button className="font-bold" onClick={() => router.visit(`product/${item.id}/show`)}>Details</button>*/}
 
