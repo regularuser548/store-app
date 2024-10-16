@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import Product from '../Crm/Product/Components/Product';
+import Product from '../../Components/Product.jsx';
 import {router} from "@inertiajs/react";
+import {Button, Card, Col, DatePicker, Row, Space, version} from "antd";
 
 export default function Index({ products,images }) {
     const [query, setQuery] = useState('');
@@ -26,11 +27,33 @@ export default function Index({ products,images }) {
                 </button>
             </form>
 
+            <div className="TestDiv">
+                <h1>antd version: {version}</h1>
+                <Space>
+                    <DatePicker/>
+                    <Button type="primary">Primary Button</Button>
+                </Space>
+            </div>
+
+            {/*test*/}
+            {/*<Row gutter={16}> */}
+            {/*    {products.map(product => (*/}
+            {/*        <Col span={8} key={product.id}>*/}
+            {/*            <Card*/}
+            {/*                hoverable*/}
+            {/*                cover={<img alt={product.name} src={images[product.id]} />}*/}
+            {/*            >*/}
+            {/*                <Card.Meta title={product.name} description={product.description} />*/}
+            {/*                <p>{product.price}</p>*/}
+            {/*            </Card>*/}
+            {/*        </Col>*/}
+            {/*    ))}*/}
+            {/*</Row>*/}
 
             <div className="flex flex-wrap">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <Product key={product.id} item={product} image={images[product.id]}></Product>
+                        <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>
                     ))
                 ) : (
                     <p>No products found</p>

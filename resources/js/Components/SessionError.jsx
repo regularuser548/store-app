@@ -1,5 +1,5 @@
 import {usePage} from "@inertiajs/react";
-import Product from "@/Pages/Crm/Product/Components/Product.jsx";
+import Product from "@/Components/Product.jsx";
 
 export default function SessionError({className = ''}) {
 

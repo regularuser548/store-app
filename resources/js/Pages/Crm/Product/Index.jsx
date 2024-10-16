@@ -1,6 +1,6 @@
 import {Head} from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
-import Product from "@/Pages/Crm/Product/Components/Product.jsx";
+import Product from "@/Components/Product.jsx";
 
 export default function Index(props) {
 
@@ -9,7 +9,7 @@ export default function Index(props) {
             <Head title="ShopHub CRM" />
             <div className='flex flex-wrap'>
                 {props.products.map( (item) => (
-                    <Product key={item.id} item={item} image={props.images[item.id]}></Product>
+                    <Product key={item.id} item={item} image={props.images[item.id]} isCrm={true}></Product>
                 ))}
             </div>
         </CrmMenuLayout>
