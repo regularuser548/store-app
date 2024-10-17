@@ -20,6 +20,7 @@
 //        'name',
 //        'email',
 //        'password',
+//        'isBlocked'
 //    ];
 //
 //    /**
@@ -42,6 +43,7 @@
 //        return [
 //            'email_verified_at' => 'datetime',
 //            'password' => 'hashed',
+//            'isBlocked' => 'boolean',
 //        ];
 //    }
 //}

@@ -24,7 +24,7 @@ class UserRoleController extends Controller
         //$users = $this->userRepository->all();
         //return Inertia::render('Crm/UserRoles/Index', ['users' => $users]);
 
-//        $users = $this->userRepository->allWithRolesAndPermissions();
+        //$users = $this->userRepository->allWithRolesAndPermissions();
 
         $users = $this->userRepository->all()->map(function ($user) {
             return [
@@ -82,10 +82,10 @@ class UserRoleController extends Controller
 
     public function block(User $user)
     {
-        $user->isBlocked = true; //Надо сделать миграцию для User(isBlocked)
+        $user->isBlocked = true;
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User blocked');
+        return redirect()->route('user.index')->with('success', 'User blocked');
     }
 
     public function unblock(User $user)
@@ -93,6 +93,6 @@ class UserRoleController extends Controller
         $user->isBlocked = false;
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User unblocked');
+        return redirect()->route('user.index')->with('success', 'User unblocked');
     }
 }

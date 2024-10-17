@@ -1,25 +1,31 @@
 import React from "react";
-import {Head, router, useForm} from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 
 export default function Edit({ user, roles, userRoles, permissions, userPermissions }) {
-
-    const {data, setData, post, progress} = useForm({
-
+    const { data, setData, post, progress } = useForm({
         role: '',
-
-        //workaround
         _method: 'put'
-    })
+    });
 
     function handleSubmit(e) {
-        e.preventDefault()
-        router.post(route('user.update', {user:user.id }), data);
+        e.preventDefault();
+        router.post(route('user.update', { user: user.id }), data);
     }
 
     function handleChange(e) {
-        data.role = e.target.value
+        setData('role', e.target.value);
         console.log(e.target.value);
+    }
+
+    function handleBlock(e) {
+        e.preventDefault();
+        router.post(route('user.block', { user: user.id }));
+    }
+
+    function handleUnblock(e) {
+        e.preventDefault();
+        router.post(route('user.unblock', { user: user.id }));
     }
 
     return (
@@ -30,10 +36,10 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
                 <h1>Edit User: {user.name}</h1>
 
                 <h2>Assign Roles</h2>
-                <form  onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="role">Roles</label>
-                        <select name="role[]" id="role" onChange={handleChange}>
+                        <select name="role" id="role" onChange={handleChange} value={data.role}>
                             {roles.map((role) => (
                                 <option
                                     key={role.id}
@@ -46,22 +52,17 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
                         </select>
                     </div>
 
-                    {/*<h2>Assign Permissions</h2>*/}
-                    {/*<div>*/}
-                    {/*    {permissions.map((permission) => (*/}
-                    {/*        <label key={permission.id}>*/}
-                    {/*            <input*/}
-                    {/*                type="checkbox"*/}
-                    {/*                name="permissions[]"*/}
-                    {/*                value={permission.name}*/}
-                    {/*                defaultChecked={userPermissions.some(*/}
-                    {/*                    (userPermission) => userPermission.name === permission.name*/}
-                    {/*                )}*/}
-                    {/*            />*/}
-                    {/*            {permission.name}*/}
-                    {/*        </label>*/}
-                    {/*    ))}*/}
-                    {/*</div>*/}
+                    <div>
+                        {user.isBlocked ? (
+                            <button onClick={handleUnblock}>
+                                Unblock User
+                            </button>
+                        ) : (
+                            <button onClick={handleBlock}>
+                                Block User
+                            </button>
+                        )}
+                    </div>
 
                     <button type="submit">Save Changes</button>
                 </form>
@@ -69,3 +70,22 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
         </CrmMenuLayout>
     );
 }
+
+
+
+{/*<h2>Assign Permissions</h2>*/}
+{/*<div>*/}
+{/*    {permissions.map((permission) => (*/}
+{/*        <label key={permission.id}>*/}
+{/*            <input*/}
+{/*                type="checkbox"*/}
+{/*                name="permissions[]"*/}
+{/*                value={permission.name}*/}
+{/*                defaultChecked={userPermissions.some(*/}
+{/*                    (userPermission) => userPermission.name === permission.name*/}
+{/*                )}*/}
+{/*            />*/}
+{/*            {permission.name}*/}
+{/*        </label>*/}
+{/*    ))}*/}
+{/*</div>*/}

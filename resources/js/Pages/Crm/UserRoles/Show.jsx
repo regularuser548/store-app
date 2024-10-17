@@ -22,17 +22,18 @@ export default function Show({ user, roles, permissions }) {
                 <p>No roles assigned.</p>
             )}
 
-            <h2>Permissions:</h2>
-            {permissions.length > 0 ? (
-                <ul>
-                    {permissions.map((permission, index) => (
-                        <li key={index}>{permission}</li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No permissions assigned.</p>
-            )}
         </CrmMenuLayout>
     );
 }
+
+{/*<h2>Permissions:</h2>*/}
+{/*{permissions.length > 0 ? (*/}
+{/*    <ul>*/}
+{/*        {permissions.map((permission, index) => (*/}
+{/*            <li key={index}>{permission}</li>*/}
+{/*        ))}*/}
+{/*    </ul>*/}
+{/*) : (*/}
+{/*    <p>No permissions assigned.</p>*/}
+{/*)}*/}
 
