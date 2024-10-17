@@ -41,5 +41,9 @@ Route::prefix('crm/user')->group(function () {
     Route::post('/{user}/block', [UserRoleController::class, 'block'])->name('user.block');
     Route::post('/{user}/unblock', [UserRoleController::class, 'unblock'])->name('user.unblock');
 });
+Route::post('/{user}/block', [UserRoleController::class, 'block'])->name('user.block');
+
+Route::post('/{user}/unblock', [UserRoleController::class, 'unblock'])->name('user.unblock');
+
 
 require __DIR__.'/auth.php';
