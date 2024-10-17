@@ -27,13 +27,13 @@ export default function Index({ products,images }) {
                 </button>
             </form>
 
-            <div className="TestDiv">
-                <h1>antd version: {version}</h1>
-                <Space>
-                    <DatePicker/>
-                    <Button type="primary">Primary Button</Button>
-                </Space>
-            </div>
+            {/*<div className="TestDiv">*/}
+            {/*    <h1>antd version: {version}</h1>*/}
+            {/*    <Space>*/}
+            {/*        <DatePicker/>*/}
+            {/*        <Button type="primary">Primary Button</Button>*/}
+            {/*    </Space>*/}
+            {/*</div>*/}
 
             {/*test*/}
             {/*<Row gutter={16}> */}
