@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Crm\ProductCrudController;
+use App\Http\Controllers\Crm\TaxonomyController;
 use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Storefront\StorefrontController;
@@ -30,9 +31,10 @@ Route::middleware('auth')->group(function () {
 //CRM Product CRUD
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class.':seller|admin'])->group(function () {
     Route::resource('product', ProductCrudController::class)->except(['show']);
+    Route::resource('taxonomy', TaxonomyController::class);
 });
 
-
+//todo: turn to resource routes
 Route::prefix('crm/user')->group(function () {
     Route::get('/', [UserRoleController::class, 'index'])->name('user.index');
     Route::get('/{user}/show', [UserRoleController::class, 'show'])->name('user.show');
