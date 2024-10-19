@@ -18,7 +18,6 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
             [key]: value,
         }))
 
-        console.log(key + ' ' + value);
     }
 
 
