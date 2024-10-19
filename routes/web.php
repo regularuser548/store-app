@@ -3,6 +3,7 @@
 use App\Http\Controllers\Crm\ProductCrudController;
 use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Storefront\CartController;
 use App\Http\Controllers\Storefront\StorefrontController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,13 @@ use Konekt\Acl\Http\Middleware\RoleMiddleware;
 Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
 Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
 Route::get('/search', [StorefrontController::class, 'search'])->name('storefront.search');
+
+Route::prefix('storefront/cart')->group(function () {
+    Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::get('/show', [CartController::class, 'showCart'])->name('cart.show');
+    Route::post('/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
+});
+
 
 //Dashboard
 Route::get('/dashboard', function () {
