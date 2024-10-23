@@ -16,11 +16,16 @@ Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index'
 Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
 Route::get('/search', [StorefrontController::class, 'search'])->name('storefront.search');
 
-Route::prefix('storefront/cart')->group(function () {
+
+Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/show', [CartController::class, 'showCart'])->name('cart.show');
-    Route::post('/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
+    Route::post('/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/cart/addQuantity', [CartController::class, 'addQuantity'])->name('cart.update.quantity.add');
+    Route::post('/cart/removeQuantity', [CartController::class, 'removeQuantity'])->name('cart.update.quantity.remove');
+
 });
+
 
 
 //Dashboard

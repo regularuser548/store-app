@@ -11,9 +11,10 @@ export default function Index({ products,images }) {
         router.visit(route('storefront.search'), { method: 'get', data: { query } });
     };
 
-    const handleAddToCart = (product) => {
-        router.post(route('cart.add'), { product });
+    const handleAddToCart = (productId) => {
+        router.post(route('cart.add'), { product: { id: productId } });
     };
+
 
     return (
         <div>
@@ -32,22 +33,12 @@ export default function Index({ products,images }) {
             </form>
 
 
-            {/*<div className="flex flex-wrap">*/}
-            {/*    {products.length > 0 ? (*/}
-            {/*        products.map((product) => (*/}
-            {/*            <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>*/}
-            {/*        ))*/}
-            {/*    ) : (*/}
-            {/*        <p>No products found</p>*/}
-            {/*    )}*/}
-            {/*</div>*/}
-
             <div className="flex flex-wrap">
                 {products.length > 0 ? (
                     products.map((product) => (
                         <div key={product.id} className="m-2 p-2 border">
                             <Product item={product} image={images[product.id]} isCrm={false}></Product>
-                            <Button className="mt-2" onClick={() => handleAddToCart(product)} type="primary">Add to Cart</Button>
+                            <Button className="mt-2" onClick={() => handleAddToCart(product.id)} type="primary">Add to Cart</Button>
                         </div>
                     ))
                 ) : (
@@ -57,6 +48,19 @@ export default function Index({ products,images }) {
         </div>
     );
 }
+
+
+
+{/*<div className="flex flex-wrap">*/}
+{/*    {products.length > 0 ? (*/}
+{/*        products.map((product) => (*/}
+{/*            <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>*/}
+{/*        ))*/}
+{/*    ) : (*/}
+{/*        <p>No products found</p>*/}
+{/*    )}*/}
+{/*</div>*/}
+
 {/*<div className="TestDiv">*/
 }
 {/*    <h1>antd version: {version}</h1>*/
