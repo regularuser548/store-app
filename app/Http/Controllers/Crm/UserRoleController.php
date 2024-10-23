@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Repositories\MediaRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,11 +13,13 @@ use Konekt\Acl\Models\Role;
 
 class UserRoleController extends Controller
 {
-    protected $userRepository;
+    protected UserRepository $userRepository;
+    protected MediaRepository $mediaRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, MediaRepository $mediaRepository)
     {
         $this->userRepository = $userRepository;
+        $this->mediaRepository = $mediaRepository;
     }
 
     public function index() //Пробую сделать метод чтобы доставать только роли и разрешения

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Storefront;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,22 +13,24 @@ use Inertia\Response;
 class StorefrontController extends Controller
 {
     protected ProductRepository $repository;
+    protected MediaRepository $mediaRepository;
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductRepository $productRepository, MediaRepository $mediaRepository)
     {
         $this->repository = $productRepository;
+        $this->mediaRepository = $mediaRepository;
     }
 
     public function index(): Response
     {
         $products = $this->repository->all();
-        $images = $this->repository->firstMediaForEach($products);
+        $images = $this->mediaRepository->primaryImageForEach($products);
         return Inertia::render('Storefront/Index', compact('products', 'images'));
     }
 
     public function show(Product $product): Response
     {
-        $images = $this->repository->allMediaForModel($product);
+        $images = $this->mediaRepository->allMediaForModel($product);
         return Inertia::render('Storefront/Show', compact('product', 'images'));
     }
 
@@ -38,7 +41,7 @@ class StorefrontController extends Controller
 
         $products = Product::where('name', 'like', '%' . $query . '%')->get();
 
-        $images = $this->repository->firstMediaForEach($products);
+        $images = $this->mediaRepository->primaryImageForEach($products);
 
         return Inertia::render('Storefront/Index', ['products' => $products, 'images' => $images]);
     }
