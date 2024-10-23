@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Crm\ProductShowDeleteRequest;
 use App\Http\Requests\Crm\ProductStoreUpdateRequest;
 use App\Models\Product;
+use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
 use Auth;
 use Illuminate\Http\RedirectResponse;
@@ -17,10 +18,12 @@ use Inertia\Response;
 class ProductCrudController extends Controller
 {
     protected ProductRepository $repository;
+    protected MediaRepository $mediaRepository;
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductRepository $productRepository, MediaRepository $mediaRepository)
     {
         $this->repository = $productRepository;
+        $this->mediaRepository = $mediaRepository;
     }
 
     /**
@@ -36,7 +39,7 @@ class ProductCrudController extends Controller
         else
             $products = $this->repository->all()->where('seller_id', '=', Auth::id())->flatten();
 
-        $imageUrls = $this->repository->firstMediaForEach($products);
+        $imageUrls = $this->mediaRepository->primaryImageForEach($products);
 
         return Inertia::render('Crm/Product/Index', ['products' => $products, 'images' => $imageUrls]);
     }
@@ -62,7 +65,7 @@ class ProductCrudController extends Controller
 
         $product = $this->repository->create($data);
 
-        $this->repository->addMultipleMediaFromArray($product, $data['images']);
+        $this->mediaRepository->addMultipleMediaFromArray($product, $data['images']);
 
         return to_route('product.index');
     }
@@ -80,7 +83,7 @@ class ProductCrudController extends Controller
      */
     public function edit(ProductShowDeleteRequest $request, Product $product): Response
     {
-        $imageUrls = $this->repository->allMediaForModel($product);
+        $imageUrls = $this->mediaRepository->allMediaForModel($product);
 
         return Inertia::render('Crm/Product/Edit', ['product' => $product, 'images' => $imageUrls]);
     }
@@ -99,7 +102,7 @@ class ProductCrudController extends Controller
         if ($request->hasFile('images'))
         {
             //$product->clearMediaCollection(); //this is temporary
-            $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
+            $this->mediaRepository->addMultipleMediaFromArray($product, $request->file('images'));
         }
 
         return to_route('product.index');

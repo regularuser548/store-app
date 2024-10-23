@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Crm\CreateTaxonomy;
 use App\Http\Requests\Crm\SyncModelTaxons;
 use App\Http\Requests\Crm\UpdateTaxonomy;
+use App\Repositories\MediaRepository;
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -21,15 +22,18 @@ use Vanilo\Category\Models\TaxonomyProxy;
 class TaxonomyController extends Controller
 {
     protected TaxonomyRepository $repository;
+    protected MediaRepository $mediaRepository;
 
-    public function __construct(TaxonomyRepository $taxonomyRepository)
+    public function __construct(TaxonomyRepository $taxonomyRepository, MediaRepository $mediaRepository)
     {
         $this->repository = $taxonomyRepository;
+        $this->mediaRepository = $mediaRepository;
     }
     public function index(): Response
     {
         $taxonomies = $this->repository->all();
-        return Inertia::render('Crm/Taxonomy/Index', ['taxonomies' => $taxonomies, 'images' => $this->repository->firstMediaForEach($taxonomies)]);
+        $images = $this->mediaRepository->primaryImageForEach($taxonomies);
+        return Inertia::render('Crm/Taxonomy/Index', ['taxonomies' => $taxonomies, 'images' => $images]);
     }
 
     public function create(): Response
@@ -48,10 +52,10 @@ class TaxonomyController extends Controller
 //                $this->repository->addMultipleMediaFromArray($taxonomy, $request->file('image'));
 
             if ($request->hasFile('image')) {
-                $taxonomy->addMultipleMediaFromRequest(['image'])->each(function ($fileAdder) {
-                    $fileAdder->toMediaCollection();
-                });
-            }
+                $taxonomy->addMediaFromRequest('image')
+                    ->withCustomProperties(['isPrimary' => true])
+                    ->toMediaCollection();
+                }
 
         }
         catch (\Exception $e) {
@@ -82,9 +86,9 @@ class TaxonomyController extends Controller
 
             if ($request->hasFile('image')) {
                 $taxonomy->clearMediaCollection();
-                $taxonomy->addMultipleMediaFromRequest(['image'])->each(function ($fileAdder) {
-                    $fileAdder->toMediaCollection();
-                });
+                $taxonomy->addMediaFromRequest('image')
+                    ->withCustomProperties(['isPrimary' => true])
+                    ->toMediaCollection();
             }
             Session::flash('success', __(':name has been updated', ['name' => $taxonomy->name]));
         }
