@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Product from '../../Components/Product.jsx';
-import {router} from "@inertiajs/react";
+import {Link, router} from "@inertiajs/react";
 import {Button, Card, Col, DatePicker, Row, Space, version} from "antd";
 
 export default function Index({ products,images }) {
@@ -10,6 +10,7 @@ export default function Index({ products,images }) {
         e.preventDefault();
         router.visit(route('storefront.search'), { method: 'get', data: { query } });
     };
+
 
     return (
         <div>
@@ -22,38 +23,18 @@ export default function Index({ products,images }) {
                     className="border-2 p-2"
                 />
 
-                <button type="submit" className="ml-2 p-2 bg-blue-500 text-white font-bold">
-                    Search
-                </button>
+                <button type="submit" className="ml-2 p-2 bg-blue-500 text-white font-bold">Search</button>
+
+                <Link href={route('cart.show')} className="ml-2 p-2.5 bg-green-500 text-white font-bold">View Cart</Link>
             </form>
 
-            {/*<div className="TestDiv">*/}
-            {/*    <h1>antd version: {version}</h1>*/}
-            {/*    <Space>*/}
-            {/*        <DatePicker/>*/}
-            {/*        <Button type="primary">Primary Button</Button>*/}
-            {/*    </Space>*/}
-            {/*</div>*/}
-
-            {/*test*/}
-            {/*<Row gutter={16}> */}
-            {/*    {products.map(product => (*/}
-            {/*        <Col span={8} key={product.id}>*/}
-            {/*            <Card*/}
-            {/*                hoverable*/}
-            {/*                cover={<img alt={product.name} src={images[product.id]} />}*/}
-            {/*            >*/}
-            {/*                <Card.Meta title={product.name} description={product.description} />*/}
-            {/*                <p>{product.price}</p>*/}
-            {/*            </Card>*/}
-            {/*        </Col>*/}
-            {/*    ))}*/}
-            {/*</Row>*/}
 
             <div className="flex flex-wrap">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>
+                        <div key={product.id} className="m-2 p-2 border">
+                            <Product item={product} image={images[product.id]} isCrm={false}></Product>
+                        </div>
                     ))
                 ) : (
                     <p>No products found</p>
@@ -61,4 +42,60 @@ export default function Index({ products,images }) {
             </div>
         </div>
     );
+}
+
+
+
+{/*<div className="flex flex-wrap">*/}
+{/*    {products.length > 0 ? (*/}
+{/*        products.map((product) => (*/}
+{/*            <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>*/}
+{/*        ))*/}
+{/*    ) : (*/}
+{/*        <p>No products found</p>*/}
+{/*    )}*/}
+{/*</div>*/}
+
+{/*<div className="TestDiv">*/
+}
+{/*    <h1>antd version: {version}</h1>*/
+}
+{/*    <Space>*/
+}
+{/*        <DatePicker/>*/
+}
+{/*        <Button type="primary">Primary Button</Button>*/
+}
+{/*    </Space>*/
+}
+{/*</div>*/
+}
+
+{/*test*/
+}
+{/*<Row gutter={16}> */
+}
+{/*    {products.map(product => (*/
+}
+{/*        <Col span={8} key={product.id}>*/
+}
+{/*            <Card*/
+}
+{/*                hoverable*/
+}
+{/*                cover={<img alt={product.name} src={images[product.id]} />}*/
+}
+{/*            >*/
+}
+{/*                <Card.Meta title={product.name} description={product.description} />*/
+}
+{/*                <p>{product.price}</p>*/
+}
+{/*            </Card>*/
+}
+{/*        </Col>*/
+}
+{/*    ))}*/
+}
+{/*</Row>*/
 }
