@@ -20,11 +20,11 @@ class CartController extends Controller
         return back()->with('success', "Product added to cart");
     }
 
-    public function removeFromCart(Request $request)
+    public function removeFromCart(Request $request,Product $product)
     {
-        $product = Product::findOrFail($request->input('product.id'));
+       //$product = Product::find($request->input('product.id'));
 
-        Cart::removeItem($product);
+        Cart::removeProduct($product);
 
         return back()->with('success', "Product removed from cart");
     }
@@ -40,8 +40,14 @@ class CartController extends Controller
 
         $newQuantity = $cartItem->quantity + 1;
 
-        Cart::removeItem($cartItem);
-        Cart::addItem($cartItem->product, $newQuantity);
+//        Cart::removeItem($cartItem);
+//        Cart::addItem($cartItem->product, $newQuantity);
+
+        if($cartItem->product->stock < $newQuantity) {
+            return response()->json(['error' => 'Quantity more then product stock'], 400);
+        }
+        $cartItem->quantity = $newQuantity;
+        $cartItem->save();
 
         return response()->json(['success' => 'Quantity increased', 'quantity' => $newQuantity], 200);
     }
@@ -50,19 +56,18 @@ class CartController extends Controller
     {
         $productId = $request->input('product_id');
         $cartItem = Cart::getItems()->firstWhere('product.id', $productId);
+        $newQuantity = $cartItem->quantity - 1;
 
         if (!$cartItem) {
             return response()->json(['error' => 'Product not found in cart'], 400);
         }
 
-        $newQuantity = max($cartItem->quantity - 1, 0);
-
-        Cart::removeItem($cartItem);
-
-        if ($newQuantity > 0) {
-            Cart::addItem($cartItem->product, $newQuantity);
+        if($newQuantity < 1) {
+            return response()->json(['error' => 'Quantity cant be less than 1'], 400);
         }
 
+        $cartItem->quantity = $newQuantity;
+        $cartItem->save();
         return response()->json(['success' => 'Quantity decreased', 'quantity' => $newQuantity], 200);
     }
 

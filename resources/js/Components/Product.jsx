@@ -1,6 +1,12 @@
 import {router} from "@inertiajs/react";
+import {Button} from "antd";
+import React from "react";
 
 export default function Product({item, image,isCrm = false}) {
+
+    const handleAddToCart = (productId) => {
+        axios.post(route('cart.add'), { product: { id: productId } });
+    };
 
     return (
         <div id={item.id} className="border-2 m-2 w-72">
@@ -30,6 +36,7 @@ export default function Product({item, image,isCrm = false}) {
 
             <button className="font-bold" onClick={() => router.visit(route('storefront.show', {product: item.id}))}>Details</button>
 
+            <Button className="mt-2" onClick={() => handleAddToCart(item.id)} type="primary">Add to Cart</Button>
         </div>
     );
 }

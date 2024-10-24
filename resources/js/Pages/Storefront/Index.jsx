@@ -11,10 +11,6 @@ export default function Index({ products,images }) {
         router.visit(route('storefront.search'), { method: 'get', data: { query } });
     };
 
-    const handleAddToCart = (productId) => {
-        router.post(route('cart.add'), { product: { id: productId } });
-    };
-
 
     return (
         <div>
@@ -38,7 +34,6 @@ export default function Index({ products,images }) {
                     products.map((product) => (
                         <div key={product.id} className="m-2 p-2 border">
                             <Product item={product} image={images[product.id]} isCrm={false}></Product>
-                            <Button className="mt-2" onClick={() => handleAddToCart(product.id)} type="primary">Add to Cart</Button>
                         </div>
                     ))
                 ) : (

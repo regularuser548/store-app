@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Crm\ProductCrudController;
+use App\Http\Controllers\Crm\TaxonomyController;
 use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Storefront\CartController;
@@ -16,17 +17,14 @@ Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index'
 Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
 Route::get('/search', [StorefrontController::class, 'search'])->name('storefront.search');
 
-
 Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/show', [CartController::class, 'showCart'])->name('cart.show');
-    Route::post('/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    Route::post('/cart/addQuantity', [CartController::class, 'addQuantity'])->name('cart.update.quantity.add');
-    Route::post('/cart/removeQuantity', [CartController::class, 'removeQuantity'])->name('cart.update.quantity.remove');
+    Route::post('/remove/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/addQuantity', [CartController::class, 'addQuantity'])->name('cart.update.quantity.add');
+    Route::post('/removeQuantity', [CartController::class, 'removeQuantity'])->name('cart.update.quantity.remove');
 
 });
-
-
 
 //Dashboard
 Route::get('/dashboard', function () {
@@ -43,9 +41,10 @@ Route::middleware('auth')->group(function () {
 //CRM Product CRUD
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class.':seller|admin'])->group(function () {
     Route::resource('product', ProductCrudController::class)->except(['show']);
+    Route::resource('taxonomy', TaxonomyController::class);
 });
 
-
+//todo: turn to resource routes
 Route::prefix('crm/user')->group(function () {
     Route::get('/', [UserRoleController::class, 'index'])->name('user.index');
     Route::get('/{user}/show', [UserRoleController::class, 'show'])->name('user.show');
@@ -54,9 +53,7 @@ Route::prefix('crm/user')->group(function () {
     Route::post('/{user}/block', [UserRoleController::class, 'block'])->name('user.block');
     Route::post('/{user}/unblock', [UserRoleController::class, 'unblock'])->name('user.unblock');
 });
-Route::post('/{user}/block', [UserRoleController::class, 'block'])->name('user.block');
 
-Route::post('/{user}/unblock', [UserRoleController::class, 'unblock'])->name('user.unblock');
 
 
 require __DIR__.'/auth.php';

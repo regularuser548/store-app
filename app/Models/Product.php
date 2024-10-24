@@ -22,6 +22,7 @@ class Product extends \Vanilo\Product\Models\Product implements HasMedia, Buyabl
 
     public function getId(): int
     {
+
         return $this->id;
     }
 

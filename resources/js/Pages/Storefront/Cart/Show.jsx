@@ -42,7 +42,7 @@ export default function Show({ cart: initialCart, total: initialTotal }) {
 
     const handleRemoveItem = (id) => {
         console.log("Removing item with ID:", id);
-        router.post(route("cart.remove", { id }))
+        axios.post(route("cart.remove", { id }))
             .then(() => {
                 const updatedCart = cart.filter(item => item.product.id !== id);
                 setCart(updatedCart);
