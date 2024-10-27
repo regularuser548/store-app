@@ -27,16 +27,21 @@ export default function Product({item, image,isCrm = false}) {
 
             {/*}*/}
 
-        {isCrm ? (
-         <button className='font-bold' onClick={e => router.visit(route('product.edit', {product: item.id}))}>Edit</button>
-          ) : null}
+            {isCrm ? (
+                <button className='font-bold' onClick={e => router.visit(route('product.edit', {product: item.id}))}>Edit</button>
+            ) :
+                <div>
+                    <button className="font-bold" onClick={() => router.visit(route('storefront.show', {product: item.id}))}>Details</button>
+                    <Button className="mt-2" onClick={() => handleAddToCart(item.id)} type="primary">Add to Cart</Button>
+                </div>
+            }
 
 
             {/*<button className="font-bold" onClick={() => router.visit(`product/${item.id}/show`)}>Details</button>*/}
 
-            <button className="font-bold" onClick={() => router.visit(route('storefront.show', {product: item.id}))}>Details</button>
 
-            <Button className="mt-2" onClick={() => handleAddToCart(item.id)} type="primary">Add to Cart</Button>
+
+
         </div>
     );
 }

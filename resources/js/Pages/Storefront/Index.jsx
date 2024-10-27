@@ -85,10 +85,14 @@ export default function Index({ products,images }) {
                                     <span className="text-sm">Довподоби</span>
                                 </div>
                                 <div className="flex items-center">
-                                    <span className="text-sm">Кошик</span>
+                                    <Link href={route('cart.show')}>Кошик</Link>
                                 </div>
                                 <div className="flex items-center">
-                                    <span className="text-sm">Вхід</span>
+                                    <Link href={route('login')}>Вхiд</Link>
+                                </div>
+
+                                <div className="flex items-center">
+                                    <Link href={route('register')}>Регiстрацiя</Link>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +103,7 @@ export default function Index({ products,images }) {
             </div>
             <div>
                 <div className="bg-black">
-                    <Carousel arrows autoplay centerMode centerSlidePercentage={100}>
+                <Carousel arrows autoplay centerMode centerSlidePercentage={100}>
                         {
                             images2.map((src, index) => (
                                 <div key={index} style={containerStyle}>
