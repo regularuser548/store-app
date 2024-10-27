@@ -25,7 +25,7 @@ class StorefrontController extends Controller
     {
         $products = $this->repository->all();
         $images = $this->mediaRepository->primaryImageForEach($products);
-        return Inertia::render('Storefront/Index', compact('products', 'images'));
+        return Inertia::render('Storefront/Index', compact('products', 'images'));//map for checking products inCard
     }
 
     public function show(Product $product): Response
