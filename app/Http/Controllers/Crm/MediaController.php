@@ -20,7 +20,7 @@ class MediaController extends Controller
     public function syncMediaOrder(Request $request, Product $product)
     {
         $request->validate([
-            'media_order' => 'required|array',
+            'media_order' => 'required|list',
             'media_order.*' => 'exists:media,id|distinct',
             'collection_name' => 'required|string|in:default,videos',
             ]);

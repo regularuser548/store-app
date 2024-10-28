@@ -57,6 +57,7 @@ class ProductCrudController extends Controller
      */
     public function store(ProductStoreUpdateRequest $request): RedirectResponse
     {
+        //dd($request->allFiles());
         $request->validate(['images' => 'required',
             'sku' => 'unique:products,sku']);
 

@@ -1,6 +1,7 @@
 import {Head, router, useForm} from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
+import {Image} from "antd";
 
 export default function Edit({product, images, props}) {
 
@@ -38,9 +39,15 @@ export default function Edit({product, images, props}) {
                 <button className='border m-2 p-1' onClick={e => router.visit(route('product.index'))}>Cancel</button>
 
                 <div id='ImageContainer'>
-                    {images.map((item, index) => (
-                        <img key={index} src={images[index]} alt='' className='w-1/6 inline'/>
-                    ))}
+                    <Image.PreviewGroup
+                        preview={{
+                            onChange: (current, prev) => console.log(`current index: ${current}, prev index: ${prev}`),
+                        }}
+                    >
+                        {images.map((item, index) => (
+                            <Image key={index} src={images[index]} alt='' className='w-1/6 inline' width={150}></Image>
+                        ))}
+                    </Image.PreviewGroup>
                 </div>
 
                 <button className='border m-2 p-1 bg-red-500'

@@ -44,10 +44,10 @@ class ProductStoreUpdateRequest extends FormRequest
             'meta_keywords' => 'nullable|min:3|max:255',
             'state' => 'required|in:draft,inactive,active,unavailable,retired',
 
-            'images' => 'nullable|array|max:10',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'nullable|list|max:10',
+            'images.*' => 'image|max:2048',
 
-            'videos' => 'nullable|array|max:3',
+            'videos' => 'nullable|list|max:3',
             'videos.*' => 'mimes:mp4,avi,mov|max:10000'
         ];
     }
