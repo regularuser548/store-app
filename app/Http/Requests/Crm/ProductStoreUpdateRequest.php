@@ -48,7 +48,7 @@ class ProductStoreUpdateRequest extends FormRequest
             'images.*' => 'image|max:2048',
 
             'videos' => 'nullable|list|max:3',
-            'videos.*' => 'mimes:mp4,avi,mov|max:10000'
+            'videos.*' => 'mimes:mp4,avi,mov|max:50000'
         ];
     }
 }

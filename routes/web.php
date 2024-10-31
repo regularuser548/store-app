@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Crm\MediaController;
 use App\Http\Controllers\Crm\ProductCrudController;
 use App\Http\Controllers\Crm\TaxonomyController;
 use App\Http\Controllers\Crm\UserRoleController;
@@ -39,14 +40,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//CRM Product CRUD
+//CRM CRUD
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class.':seller|admin'])->group(function () {
     Route::resource('product', ProductCrudController::class)->except(['show']);
     Route::resource('taxonomy', TaxonomyController::class);
+    Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])->name('product.sync.mediaOrder');
 });
 
 //todo: turn to resource routes
-Route::prefix('crm/user')->group(function () {
+Route::prefix('crm/user')->middleware(['auth', 'verified', RoleMiddleware::class.':admin'])->group(function () {
     Route::get('/', [UserRoleController::class, 'index'])->name('user.index');
     Route::get('/{user}/show', [UserRoleController::class, 'show'])->name('user.show');
     Route::get('/{user}/edit', [UserRoleController::class, 'edit'])->name('user.edit');
@@ -54,7 +56,5 @@ Route::prefix('crm/user')->group(function () {
     Route::post('/{user}/block', [UserRoleController::class, 'block'])->name('user.block');
     Route::post('/{user}/unblock', [UserRoleController::class, 'unblock'])->name('user.unblock');
 });
-
-
 
 require __DIR__.'/auth.php';

@@ -15,6 +15,11 @@ class Product extends \Vanilo\Product\Models\Product implements HasMedia, Buyabl
     use HasFactory;
     use InteractsWithMedia;
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('videos');
+    }
+
     public function seller(): BelongsTo
     {
         return $this->belongsTo(User::class, 'seller_id');

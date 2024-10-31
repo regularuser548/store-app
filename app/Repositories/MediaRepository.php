@@ -34,6 +34,13 @@ class MediaRepository extends BaseRepository
         })->toArray();
     }
 
+    public function allMediaForModelWithIds(Model $model, string $mediaCollection = "default", string $urlType=""): array
+    {
+        return $model->getMedia($mediaCollection)->map(function ($mediaItem) use ($urlType) {
+            return ['id' => $mediaItem->id, 'url' => $mediaItem->getUrl($urlType)];
+        })->toArray();
+    }
+
     public function addMultipleMediaFromArray(Model $model, array $files, string $mediaCollection = "default"): bool
     {
         foreach ($files as $file) {

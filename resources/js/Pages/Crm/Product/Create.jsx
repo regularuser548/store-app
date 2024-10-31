@@ -9,43 +9,45 @@ import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx"
 
 export default function Create(props) {
 
-    //https://vanilo.io/docs/4.x/products#all-product-fields
-    const {data, setData, post, progress} = useForm({
-        name: "",
-        sku: "",
-        stock: "",
-        price: "",
-        weight: "",
-        width: "",
-        height: "",
-        length: "",
-        description: "",
-        meta_keywords: "",
-        state: "",
+  //https://vanilo.io/docs/4.x/products#all-product-fields
+  const {data, setData, post, progress} = useForm({
+    name: "",
+    sku: "",
+    stock: "",
+    price: "",
+    weight: "",
+    width: "",
+    height: "",
+    length: "",
+    description: "",
+    meta_keywords: "",
+    state: "",
 
-        images: "",
-        videos: ""
-    });
+    images: "",
+    videos: ""
+  });
 
-    const [fileList, setFileList] = useState([]);
+  const [imageList, setImageList] = useState([]);
+  const [videoList, setVideoList] = useState([]);
 
-    function handleSubmit(e) {
-        e.preventDefault();
+  function handleSubmit(e) {
+    e.preventDefault();
 
-        let arr = [];
-        fileList.forEach((file) => {
-            arr.push(file.originFileObj);
-        });
+    data.images = imageList.map(obj => obj.originFileObj);
+    data.videos = videoList.map(obj => obj.originFileObj);
 
-        data.images = arr;
-        post(route('product.store'));
-    }
+    post(route('product.store'));
+  }
 
-    return (
-        <CrmMenuLayout>
-            <ProductForm fields={data} changeHandler={setData} submit={handleSubmit}></ProductForm>
-            <MediaUploadForm fileList={fileList} changeHandler={setFileList}></MediaUploadForm>
-        </CrmMenuLayout>
-    );
+  return (
+    <CrmMenuLayout>
+      <ProductForm fields={data} changeHandler={setData} submit={handleSubmit}></ProductForm>
+      <MediaUploadForm fileList={imageList} changeHandler={setImageList} max={10} text='Add Image'
+                       accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp'
+                       listType='picture-card'></MediaUploadForm>
+      <MediaUploadForm fileList={videoList} changeHandler={setVideoList} max={5} text='Add Video'
+                       accept='video/mp4, video/avi, video/mov'></MediaUploadForm>
+    </CrmMenuLayout>
+  );
 
 }
