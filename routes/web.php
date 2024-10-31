@@ -10,7 +10,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Konekt\Acl\Http\Middleware\RoleMiddleware;
-
+use App\Http\Controllers\OrderController;
 
 //Storefront
 Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
@@ -26,6 +26,17 @@ Route::prefix('/cart')->group(function () {
     Route::post('/changeQuantity', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
 
 });
+
+
+Route::middleware(['web'])->group(function () {
+    Route::get('/checkout', [OrderController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
+    Route::get('/order/confirmation/{orderId}', [OrderController::class, 'showConfirmation'])->name('order.confirmation');
+
+});
+
+
+
 
 //Dashboard
 Route::get('/dashboard', function () {
