@@ -37,7 +37,8 @@ class MediaRepository extends BaseRepository
     public function allMediaForModelWithIds(Model $model, string $mediaCollection = "default", string $urlType=""): array
     {
         return $model->getMedia($mediaCollection)->map(function ($mediaItem) use ($urlType) {
-            return ['id' => $mediaItem->id, 'url' => $mediaItem->getUrl($urlType)];
+            return ['id' => $mediaItem->id, 'url' => $mediaItem->getUrl($urlType),
+                'isPrimary' => $mediaItem->hasCustomProperty('isPrimary')];
         })->toArray();
     }
 

@@ -45,7 +45,7 @@ class ProductStoreUpdateRequest extends FormRequest
             'state' => 'required|in:draft,inactive,active,unavailable,retired',
 
             'images' => 'nullable|list|max:10',
-            'images.*' => 'image|max:2048',
+            'images.*' => 'mimes:jpg,jpeg,png,bmp,gif,svg,webp,avif|max:2048',
 
             'videos' => 'nullable|list|max:3',
             'videos.*' => 'mimes:mp4,avi,mov|max:50000'

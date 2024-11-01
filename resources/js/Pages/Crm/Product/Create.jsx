@@ -43,7 +43,7 @@ export default function Create(props) {
     <CrmMenuLayout>
       <ProductForm fields={data} changeHandler={setData} submit={handleSubmit}></ProductForm>
       <MediaUploadForm fileList={imageList} changeHandler={setImageList} max={10} text='Add Image'
-                       accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp'
+                       accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
                        listType='picture-card'></MediaUploadForm>
       <MediaUploadForm fileList={videoList} changeHandler={setVideoList} max={5} text='Add Video'
                        accept='video/mp4, video/avi, video/mov'></MediaUploadForm>

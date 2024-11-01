@@ -90,13 +90,13 @@ class ProductCrudController extends Controller
      */
     public function edit(ProductShowDeleteRequest $request, Product $product): Response
     {
-        $imageUrls = $this->mediaRepository->allMediaForModelWithIds($product);
-        $videoUrls = $this->mediaRepository->allMediaForModelWithIds($product, 'videos');
+        $images = $this->mediaRepository->allMediaForModelWithIds($product);
+        $videos = $this->mediaRepository->allMediaForModelWithIds($product, 'videos');
 
 
         return Inertia::render('Crm/Product/Edit', ['product' => $product,
-            'images' => $imageUrls,
-            'videos' => $videoUrls]);
+            'images' => $images,
+            'videos' => $videos]);
     }
 
     /**
@@ -110,8 +110,7 @@ class ProductCrudController extends Controller
 
         $product = $this->repository->update($request->validated(), $product->id);
 
-        if ($request->hasFile('images'))
-        {
+        if ($request->hasFile('images')) {
             //$product->clearMediaCollection(); //this is temporary
             $this->mediaRepository->addMultipleMediaFromArray($product, $request->file('images'));
         }

@@ -14,25 +14,34 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import {Card} from "antd";
+import {Button, Card, Tooltip} from "antd";
+import {CheckOutlined, DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 
-const cardActions = [<button>Set Primary</button>, <button>Delete</button>];
 
-function SortableImage({ id, url }) {
+function SortableImage({ id, url, primary = false }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    width: '150px',
-    height: '150px',
-    borderRadius: '8px',
-    overflow: 'hidden',
+
     cursor: 'move',
   };
 
+  const [isPrimary, setIsPrimary] = useState(primary);
+
   return (
-    <Card ref={setNodeRef} style={style} {...attributes} {...listeners} actions={cardActions}>
-      <img src={url} alt={`img-${id}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+    <Card ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <Tooltip title='Set Primary'>
+        {/*Set Primary Button*/}
+        <Button onClick={() => setIsPrimary(true)}>{isPrimary ? <CheckOutlined /> : <PlusOutlined/>}</Button>
+      </Tooltip>
+
+      <Tooltip title='Delete'>
+        {/*Delete Button*/}
+        <Button color="danger"><DeleteOutlined /></Button>
+      </Tooltip>
+
+      <img src={url} alt={`img-${id}`} className='max-w-48 max-h-48' />
     </Card>
   );
 }
@@ -61,9 +70,9 @@ function ImageList({images, setImages}) {
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={images} strategy={verticalListSortingStrategy}>
-        <div className="image-list" style={{ display: 'flex', gap: '10px' }}>
+        <div className="flex gap-2">
           {images.map((image) => (
-            <SortableImage key={image.id} id={image.id} url={image.url} />
+            <SortableImage key={image.id} id={image.id} url={image.url} primary={image.isPrimary} />
           ))}
         </div>
       </SortableContext>
