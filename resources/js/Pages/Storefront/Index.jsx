@@ -63,7 +63,7 @@ export default function Index({ products,images }) {
     ];
 
     return (
-        <div className="bg-[#161616">
+        <div className="bg-[#161616]">
             <div className="bg-[#161616] relative w-full" >
                 <header className="flex flex-col items-center-2 p-4 bg-[#161616]">
 
