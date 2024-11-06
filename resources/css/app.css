@@ -6,3 +6,36 @@
     padding: 24px;
     color: red;
 }
+.carousel-container .slick-dots {
+    position: absolute;
+    bottom: 10px; /* Adjust position from the bottom */
+    left: 0;
+    right: 0;
+    text-align: center;
+
+}
+
+/* Style the individual dots */
+.carousel-container .slick-dots li button {
+    background-color: #ccc; /* Light color for inactive dots */
+    padding: 0; /* Remove padding */
+    margin: 0 5px; /* Adjust space between dots */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+/* Hover effect for dots */
+.carousel-container .slick-dots li button:hover {
+    background-color: darkorange; /* Change to active color on hover */
+
+}
+
+
+/* Optional: Change dot color for dark mode or other themes */
+@media (prefers-color-scheme: dark) {
+    .carousel-container .slick-dots li button {
+        background-color: white;
+    }
+
+    .carousel-container .slick-dots li.slick-active button {
+        background-color: darkorange;
+    }
+}
