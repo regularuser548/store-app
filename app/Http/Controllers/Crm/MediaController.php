@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Crm\SetPrimaryRequest;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
 use Illuminate\Http\Request;
@@ -33,10 +34,9 @@ class MediaController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function setPrimaryImage(Media $image)
+    public function setPrimaryImage(SetPrimaryRequest $request, Media $media)
     {
-        //todo check ownership
-        $this->repository->setPrimaryImage($image);
+        $this->repository->setPrimaryImage($media);
     }
 
 }

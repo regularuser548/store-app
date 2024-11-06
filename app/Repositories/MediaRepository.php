@@ -65,18 +65,19 @@ class MediaRepository extends BaseRepository
     public function setPrimaryImage(Media $image): bool
     {
         $model = $image->model;
-        $sortOrder = [];
+
+        //$sortOrder = [];
         foreach ($model->getMedia(self::IMAGE_COLLECTION_NAME) as $mediaItem) {
             if ($image->id !== $mediaItem->id) {
                 $mediaItem->forgetCustomProperty('isPrimary');
                 $mediaItem->save();
-                $sortOrder[] = $mediaItem->id;
+                //$sortOrder[] = $mediaItem->id;
             }
         }
 
         $image->setCustomProperty('isPrimary', true);
         $image->save();
-        Media::setNewOrder([$image->id, ...$sortOrder]);
+        //Media::setNewOrder([$image->id, ...$sortOrder]);
 
         return true;
     }

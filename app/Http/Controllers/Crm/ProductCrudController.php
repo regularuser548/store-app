@@ -57,8 +57,6 @@ class ProductCrudController extends Controller
      */
     public function store(ProductStoreUpdateRequest $request): RedirectResponse
     {
-
-
         //dd($request->allFiles());
         $request->validate(['images' => 'required',
             'sku' => 'unique:products,sku']);
@@ -70,6 +68,11 @@ class ProductCrudController extends Controller
         $product = $this->repository->create($data);
 
         $this->mediaRepository->addMultipleMediaFromArray($product, $data['images']);
+
+        //we will set first image as primary, by default
+        $primary = $product->getMedia()->first();
+        $primary->setCustomProperty('isPrimary', true);
+        $primary->save();
 
         if ($request->hasFile('videos'))
             $this->mediaRepository->addMultipleMediaFromArray($product, $data['videos'], 'videos');

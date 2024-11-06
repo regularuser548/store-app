@@ -28,16 +28,12 @@ Route::prefix('/cart')->group(function () {
 
 });
 
-
 Route::middleware(['web'])->group(function () {
     Route::get('/checkout', [OrderController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
-    Route::get('/order/confirmation/{orderId}', [OrderController::class, 'showConfirmation'])->name('order.confirmation');
-
+    Route::get('/order/confirmation/{orderId}', [OrderController::class, 'showConfirmation'])
+        ->name('order.confirmation');
 });
-
-
-
 
 //Dashboard
 Route::get('/dashboard', function () {
@@ -52,14 +48,17 @@ Route::middleware('auth')->group(function () {
 });
 
 //CRM CRUD
-Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class.':seller|admin'])->group(function () {
+Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
     Route::resource('product', ProductCrudController::class)->except(['show']);
     Route::resource('taxonomy', TaxonomyController::class);
-    Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])->name('product.sync.mediaOrder');
+    Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])
+        ->name('product.sync.mediaOrder');
+    Route::post('setPrimary/{media}', [MediaController::class, 'setPrimaryImage'])
+        ->name('product.setPrimary');
 });
 
 //todo: turn to resource routes
-Route::prefix('crm/user')->middleware(['auth', 'verified', RoleMiddleware::class.':admin'])->group(function () {
+Route::prefix('crm/user')->middleware(['auth', 'verified', RoleMiddleware::class . ':admin'])->group(function () {
     Route::get('/', [UserRoleController::class, 'index'])->name('user.index');
     Route::get('/{user}/show', [UserRoleController::class, 'show'])->name('user.show');
     Route::get('/{user}/edit', [UserRoleController::class, 'edit'])->name('user.edit');
@@ -68,4 +67,4 @@ Route::prefix('crm/user')->middleware(['auth', 'verified', RoleMiddleware::class
     Route::post('/{user}/unblock', [UserRoleController::class, 'unblock'])->name('user.unblock');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
