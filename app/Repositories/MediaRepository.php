@@ -34,6 +34,14 @@ class MediaRepository extends BaseRepository
         })->toArray();
     }
 
+    public function allMediaForModelWithIds(Model $model, string $mediaCollection = "default", string $urlType=""): array
+    {
+        return $model->getMedia($mediaCollection)->map(function ($mediaItem) use ($urlType) {
+            return ['id' => $mediaItem->id, 'url' => $mediaItem->getUrl($urlType),
+                'isPrimary' => $mediaItem->hasCustomProperty('isPrimary')];
+        })->toArray();
+    }
+
     public function addMultipleMediaFromArray(Model $model, array $files, string $mediaCollection = "default"): bool
     {
         foreach ($files as $file) {
@@ -57,18 +65,19 @@ class MediaRepository extends BaseRepository
     public function setPrimaryImage(Media $image): bool
     {
         $model = $image->model;
-        $sortOrder = [];
+
+        //$sortOrder = [];
         foreach ($model->getMedia(self::IMAGE_COLLECTION_NAME) as $mediaItem) {
             if ($image->id !== $mediaItem->id) {
                 $mediaItem->forgetCustomProperty('isPrimary');
                 $mediaItem->save();
-                $sortOrder[] = $mediaItem->id;
+                //$sortOrder[] = $mediaItem->id;
             }
         }
 
         $image->setCustomProperty('isPrimary', true);
         $image->save();
-        Media::setNewOrder([$image->id, ...$sortOrder]);
+        //Media::setNewOrder([$image->id, ...$sortOrder]);
 
         return true;
     }

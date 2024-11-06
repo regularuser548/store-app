@@ -57,15 +57,25 @@ class ProductCrudController extends Controller
      */
     public function store(ProductStoreUpdateRequest $request): RedirectResponse
     {
+        //dd($request->allFiles());
         $request->validate(['images' => 'required',
             'sku' => 'unique:products,sku']);
 
         $data = $request->validated();
         $data['seller_id'] = Auth::id();
 
+
         $product = $this->repository->create($data);
 
         $this->mediaRepository->addMultipleMediaFromArray($product, $data['images']);
+
+        //we will set first image as primary, by default
+        $primary = $product->getMedia()->first();
+        $primary->setCustomProperty('isPrimary', true);
+        $primary->save();
+
+        if ($request->hasFile('videos'))
+            $this->mediaRepository->addMultipleMediaFromArray($product, $data['videos'], 'videos');
 
         return to_route('product.index');
     }
@@ -83,9 +93,13 @@ class ProductCrudController extends Controller
      */
     public function edit(ProductShowDeleteRequest $request, Product $product): Response
     {
-        $imageUrls = $this->mediaRepository->allMediaForModel($product);
+        $images = $this->mediaRepository->allMediaForModelWithIds($product);
+        $videos = $this->mediaRepository->allMediaForModelWithIds($product, 'videos');
 
-        return Inertia::render('Crm/Product/Edit', ['product' => $product, 'images' => $imageUrls]);
+
+        return Inertia::render('Crm/Product/Edit', ['product' => $product,
+            'images' => $images,
+            'videos' => $videos]);
     }
 
     /**
@@ -99,8 +113,7 @@ class ProductCrudController extends Controller
 
         $product = $this->repository->update($request->validated(), $product->id);
 
-        if ($request->hasFile('images'))
-        {
+        if ($request->hasFile('images')) {
             //$product->clearMediaCollection(); //this is temporary
             $this->mediaRepository->addMultipleMediaFromArray($product, $request->file('images'));
         }
