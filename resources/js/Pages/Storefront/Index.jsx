@@ -92,7 +92,7 @@ export default function Index({products, images}) {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search for a product"
+                placeholder="Search for a products"
                 className="w-full p-2 rounded-l-md bg-white text-black border-none focus:outline-none"
               />
               <button type="submit" className="bg-orange-500 p-2 rounded-r-md hover:bg-orange-600 transition-colors">
