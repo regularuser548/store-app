@@ -39,4 +39,15 @@ class MediaController extends Controller
         $this->repository->setPrimaryImage($media);
     }
 
+    public function destroy(Media $media)
+    {
+        $this->repository->delete($media->id);
+    }
+
+    public function store(Request $request, Product $product)
+    {
+        //todo validate request
+        $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
+    }
+
 }

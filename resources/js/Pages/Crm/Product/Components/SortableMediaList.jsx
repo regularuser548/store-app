@@ -6,10 +6,10 @@ import {
   arrayMove, SortableContext, verticalListSortingStrategy, useSortable,
 } from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import {Button, Card, Tooltip} from "antd";
+import {Button, Card, message, Tooltip} from "antd";
 import {CheckOutlined, DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 
-function SortableImage({image, setPrimaryHandler}) {
+function SortableImage({image, setPrimaryHandler, deleteHandler}) {
   const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id: image.id});
   const style = {
     transform: CSS.Transform.toString(transform), transition,
@@ -28,7 +28,7 @@ function SortableImage({image, setPrimaryHandler}) {
 
       <Tooltip title='Delete'>
         {/*Delete Button*/}
-        <Button color="danger"><DeleteOutlined/></Button>
+        <Button color="danger" onClick={() => deleteHandler(image.id)}><DeleteOutlined/></Button>
       </Tooltip>
       <img src={image.url} alt=''
            className='max-w-48 max-h-48'/>
@@ -39,6 +39,20 @@ function SortableImage({image, setPrimaryHandler}) {
 function ImageList({images, setImages}) {
 
   const [isInProgress, setIsInProgress] = useState(false);
+
+  const [messageApi, contextHolder] = message.useMessage();
+  const successMsg = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'Changes Saved',
+    });
+  };
+  const errorMsg = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Error while saving changes, rollback...',
+    });
+  };
 
   const sensors = useSensors(useSensor(PointerSensor, {
     activationConstraint: {
@@ -70,28 +84,59 @@ function ImageList({images, setImages}) {
     }));
 
     axios.post(route('product.setPrimary', {media: id}))
-      .catch(function (error) {
-        console.error("Failed to update:", error);
+      .then(function () {
+        successMsg();
+      })
+      .catch(function () {
+        errorMsg();
+        setImages(oldImages);
+      })
+      .finally(function () {
+        setIsInProgress(false);
+      });
+  }
+
+  function handleDelete(id) {
+    if (isInProgress) return;
+
+    setIsInProgress(true);
+
+    const oldImages = [...images];
+
+    setImages((images) => images.filter((image) => image.id !== id));
+
+    axios.delete(route('product.deleteMedia', {media: id}))
+      .then(
+        function () {
+          successMsg();
+        }
+      )
+      .catch(function () {
+        errorMsg();
         setImages(oldImages);
       }).finally(function () {
       setIsInProgress(false);
     });
   }
 
-  return (<DndContext
-    sensors={sensors}
-    collisionDetection={closestCenter}
-    onDragEnd={handleDragEnd}
-  >
-    <SortableContext items={images} strategy={verticalListSortingStrategy}>
-      <div className="flex gap-2">
-        {images.map((image) => (
-          <SortableImage key={image.id} image={image} setPrimaryHandler={handleSetPrimary} />
-        ))}
-      </div>
-    </SortableContext>
-  </DndContext>)
-}
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={images} strategy={verticalListSortingStrategy}>
+        {contextHolder}
+        <div className="flex gap-2">
+          {images.map((image) => (
+            <SortableImage key={image.id} image={image} setPrimaryHandler={handleSetPrimary}
+                           deleteHandler={handleDelete}/>
+          ))}
+        </div>
+      </SortableContext>
+    </DndContext>)
 
+
+}
 
 export default ImageList;

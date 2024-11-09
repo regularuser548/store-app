@@ -8,6 +8,7 @@ import {DndContext, PointerSensor, useSensor} from "@dnd-kit/core";
 import React, {useState} from "react";
 import {CSS} from "@dnd-kit/utilities";
 import SortableMediaList from "@/Pages/Crm/Product/Components/SortableMediaList.jsx";
+import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
 
 export default function Edit({product, images, videos = null, props}) {
   //https://vanilo.io/docs/4.x/products#all-product-fields
@@ -34,31 +35,54 @@ export default function Edit({product, images, videos = null, props}) {
   const [imageList, setImageList] = useState(images);
   const [videoList, setVideoList] = useState(videos);
 
+  const [uploadingImages, setUploadingImages] = useState([]);
 
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    let formData = new FormData();
+    let mediaOrder = new FormData();
 
     imageList.forEach((item, index) => {
-      formData.append(`media_order[${index}]`, item.id);
+      mediaOrder.append(`media_order[${index}]`, item.id);
     });
 
-    formData.append("collection_name", 'default');
+    mediaOrder.append("collection_name", 'default');
 
-    axios.post(route('product.sync.mediaOrder', {product: product.id}), formData)
+    axios.post(route('product.sync.mediaOrder', {product: product.id}), mediaOrder)
       .then(r => router.post(route('product.update', {product: product.id}), data));
 
+  }
+
+  function handleImageUpload() {
+    if (uploadingImages.length > 0) {
+      let newImages = new FormData();
+
+      uploadingImages.forEach((item, index) => {
+        newImages.append(`images[${index}]`, item.originFileObj);
+      });
+
+      router.post(route('product.addMedia', {product: product.id}), newImages, {preserveState: false});
+    }
   }
 
   return (
     <CrmMenuLayout>
       <ProductForm fields={data} changeHandler={setData} submit={handleSubmit}></ProductForm>
 
-      <button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>
+      {/*<button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>*/}
+
 
       <SortableMediaList images={imageList} setImages={setImageList}></SortableMediaList>
+      <div>
+        <MediaUploadForm fileList={uploadingImages} changeHandler={setUploadingImages} max={10} text='Add Image'
+                         accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
+                         listType='picture-card'>
+
+        </MediaUploadForm>
+        <Button onClick={handleImageUpload} disabled={uploadingImages.length === 0}>Upload</Button>
+      </div>
+
 
       <div id='videoContainer'>
         {videoList ? videoList.map((item, index) => (

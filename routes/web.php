@@ -51,10 +51,10 @@ Route::middleware('auth')->group(function () {
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
     Route::resource('product', ProductCrudController::class)->except(['show']);
     Route::resource('taxonomy', TaxonomyController::class);
-    Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])
-        ->name('product.sync.mediaOrder');
-    Route::post('setPrimary/{media}', [MediaController::class, 'setPrimaryImage'])
-        ->name('product.setPrimary');
+    Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])->name('product.sync.mediaOrder');
+    Route::post('setPrimary/{media}', [MediaController::class, 'setPrimaryImage'])->name('product.setPrimary');
+    Route::delete('deleteMedia/{media}', [MediaController::class, 'destroy'])->name('product.deleteMedia');
+    Route::post('product.addMedia/{product}', [MediaController::class, 'store'])->name('product.addMedia');
 });
 
 //todo: turn to resource routes
