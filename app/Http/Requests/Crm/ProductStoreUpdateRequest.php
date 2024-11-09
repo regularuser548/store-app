@@ -3,12 +3,14 @@
 namespace App\Http\Requests\Crm;
 
 use App\Models\Product;
+use App\Traits\ValidatesMedia;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Vanilo\Product\Models\ProductState;
 
 class ProductStoreUpdateRequest extends FormRequest
 {
+    use ValidatesMedia;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -45,10 +47,10 @@ class ProductStoreUpdateRequest extends FormRequest
             'state' => 'required|in:draft,inactive,active,unavailable,retired',
 
             'images' => 'nullable|list|max:10',
-            'images.*' => 'mimes:jpg,jpeg,png,bmp,gif,svg,webp,avif|max:2048',
+            'images.*' => $this->getImageRules(),
 
             'videos' => 'nullable|list|max:3',
-            'videos.*' => 'mimes:mp4,avi,mov|max:50000'
+            'videos.*' => $this->getVideoRules(),
         ];
     }
 }
