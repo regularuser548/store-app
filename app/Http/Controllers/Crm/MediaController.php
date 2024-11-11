@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Crm\SetPrimaryRequest;
+use App\Http\Requests\Crm\Product\Media\DeleteProductImageRequest;
+use App\Http\Requests\Crm\Product\Media\SetPrimaryRequest;
+use App\Http\Requests\Crm\Product\Media\StoreProductImagesRequest;
+use App\Http\Requests\Crm\Product\Media\SyncMediaOrderRequest;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaController extends Controller
@@ -18,14 +21,8 @@ class MediaController extends Controller
         $this->repository = $mediaRepository;
     }
 
-    public function syncMediaOrder(Request $request, Product $product)
+    public function syncMediaOrder(SyncMediaOrderRequest $request, Product $product): JsonResponse
     {
-        $request->validate([
-            'media_order' => 'required|list',
-            'media_order.*' => 'exists:media,id|distinct',
-            'collection_name' => 'required|string|in:default,videos',
-            ]);
-
         $orderedMediaIds = $request->input('media_order'); // This will be an array of media IDs in the new order
         $collectionName = $request->input('collection_name');
 
@@ -34,9 +31,19 @@ class MediaController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function setPrimaryImage(SetPrimaryRequest $request, Media $media)
+    public function setPrimaryImage(SetPrimaryRequest $request, Media $media): void
     {
         $this->repository->setPrimaryImage($media);
+    }
+
+    public function destroy(DeleteProductImageRequest $request, Media $media): void
+    {
+        $this->repository->delete($media->id);
+    }
+
+    public function store(StoreProductImagesRequest $request, Product $product): void
+    {
+        $this->repository->addMultipleMediaFromArray($product, $request->file('images'));
     }
 
 }

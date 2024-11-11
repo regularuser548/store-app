@@ -1,22 +1,21 @@
 <?php
 
+namespace App\Http\Requests\Crm\Product\Media;
 
-namespace App\Http\Requests\Crm;
-
-use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductShowDeleteRequest extends FormRequest
+class DeleteProductImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        if ($this->user()->hasRole('admin'))
+        if ($this->user()->hasRole('admin')) {
             return true;
+        }
 
-        return $this->user()->id === $this->product->seller_id;
+        return $this->user()->id === $this->model->product->seller_id;
     }
 
     /**
@@ -27,7 +26,7 @@ class ProductShowDeleteRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            //
         ];
     }
 }

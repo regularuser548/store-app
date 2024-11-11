@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Crm;
+namespace App\Http\Requests\Crm\Taxonomy;
 
+use App\Traits\ValidatesMedia;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTaxonomy extends FormRequest
 {
+    use ValidatesMedia;
     public function rules(): array
     {
         return [
             'name' => 'required|min:2|max:191',
             'slug' => 'nullable|max:191',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'nullable|'.$this->getImageRules()
         ];
     }
 

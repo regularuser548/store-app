@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Crm;
+namespace App\Http\Requests\Crm\Product;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Traits\HasFor;
+use Illuminate\Foundation\Http\FormRequest;
 
 class SyncModelTaxons extends FormRequest
 {

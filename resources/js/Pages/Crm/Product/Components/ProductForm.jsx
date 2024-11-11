@@ -5,6 +5,7 @@ import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import SessionError from "@/Components/SessionError.jsx";
 import FormField from "@/Components/FormField.jsx";
+import {Input} from "antd";
 
 export default function ProductForm({fields, changeHandler, submit, props}) {
 
@@ -55,6 +56,9 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
       <FormField id="meta_keywords" data={fields} onChange={handleChange} placeholder="Keywords (separate by ,)"
                  className='block'/>
 
+      <FormField addonBefore="youtube.com/watch?v=" id="video_id" data={fields} onChange={handleChange} placeholder="Youtube Video Id"
+                 className='block'/>
+
       <select id="state" value={fields.state} onChange={handleChange}>
         <option value="draft">Draft</option>
         <option value="inactive">Inactive</option>
@@ -64,15 +68,6 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
       </select>
       {errors.state && <div className="text-red-500">{errors.state}</div>}
 
-      {/*<label htmlFor="videos" className='block'>Videos</label>*/}
-      {/*<input id="videos" onChange={e => changeHandler('videos', e.target.files)} type='file' multiple*/}
-      {/*           accept="video/*" className=''/>*/}
-      {/*{errors.videos && <div className="text-red-500">{errors.videos}</div>}*/}
-
-      {/*<label htmlFor="images" className='block'>Images</label>*/}
-      {/*<input id="images" onChange={e => changeHandler('images', e.target.files)} type='file' multiple*/}
-      {/*           accept="image/*" className=''/>*/}
-      {/*{errors.images && <div className="text-red-500">{errors.images}</div>}*/}
 
       <button type="submit" className='block border bg-green-500'>Submit</button>
     </form>
