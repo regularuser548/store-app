@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Requests\Crm;
+namespace App\Http\Requests\Crm\Product\Media;
 
+use App\Traits\ValidatesMedia;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SetPrimaryRequest extends FormRequest
+class StoreProductImagesRequest extends FormRequest
 {
+    use ValidatesMedia;
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        if ($this->user()->hasRole('admin'))
+        if ($this->user()->hasRole('admin')) {
             return true;
+        }
 
-        return $this->media->model->seller_id == $this->user()->id;
+        return $this->user()->id === $this->product->seller_id;
     }
 
     /**
@@ -25,7 +29,9 @@ class SetPrimaryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'images' => 'nullable|list|max:10',
+            'images.*' => $this->getImageRules(),
+
         ];
     }
 }

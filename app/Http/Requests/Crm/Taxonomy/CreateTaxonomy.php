@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Crm;
+namespace App\Http\Requests\Crm\Taxonomy;
 
 use App\Traits\ValidatesMedia;
 use Illuminate\Foundation\Http\FormRequest;

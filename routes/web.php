@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Crm\MediaController;
-use App\Http\Controllers\Crm\ProductCrudController;
+use App\Http\Controllers\Crm\ProductController;
 use App\Http\Controllers\Crm\TaxonomyController;
 use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
 
 //CRM CRUD
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
-    Route::resource('product', ProductCrudController::class)->except(['show']);
+    Route::resource('product', ProductController::class)->except(['show']);
     Route::resource('taxonomy', TaxonomyController::class);
     Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])->name('product.sync.mediaOrder');
     Route::post('setPrimary/{media}', [MediaController::class, 'setPrimaryImage'])->name('product.setPrimary');

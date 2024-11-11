@@ -1,22 +1,17 @@
 <?php
 
+namespace App\Http\Requests\Crm\Product;
 
-namespace App\Http\Requests\Crm;
-
-use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductShowDeleteRequest extends FormRequest
+class ProductStoreRequest extends BaseProductRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        if ($this->user()->hasRole('admin'))
-            return true;
-
-        return $this->user()->id === $this->product->seller_id;
+        return true;
     }
 
     /**
@@ -26,8 +21,11 @@ class ProductShowDeleteRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = parent::rules();
 
-        ];
+        //$rules['SKU'] = $rules['SKU'] . '';
+        $rules['images'] = 'required|list|max:10';
+
+        return $rules;
     }
 }

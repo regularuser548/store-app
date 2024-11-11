@@ -1,31 +1,21 @@
 <?php
 
-namespace App\Http\Requests\Crm;
+namespace App\Http\Requests\Crm\Product;
 
-use App\Models\Product;
 use App\Traits\ValidatesMedia;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Vanilo\Product\Models\ProductState;
 
-class ProductStoreUpdateRequest extends FormRequest
+abstract class BaseProductRequest extends FormRequest
 {
     use ValidatesMedia;
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+
     public function authorize(): bool
     {
-        if ($this->isMethod('POST') or $this->user()->hasRole('admin')) {
+        if ($this->user()->hasRole('admin'))
             return true;
-        }
-        elseif ($this->isMethod('PUT')) {
-            return $this->user()->id === $this->product->seller_id;
-        }
-        else
-            return false;
-    }
 
+        return $this->user()->id === $this->product->seller_id;
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -35,7 +25,7 @@ class ProductStoreUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:255',
-            'sku' => 'required|min:3|max:255',
+            'sku' => 'required|min:3|max:255|unique:products,sku',
             'stock' => 'required|integer|min:0',
             'price' => 'required|numeric|min:0',
             'weight' => 'nullable|numeric|min:0',
@@ -49,9 +39,6 @@ class ProductStoreUpdateRequest extends FormRequest
 
             'images' => 'nullable|list|max:10',
             'images.*' => $this->getImageRules(),
-
-            'videos' => 'nullable|list|max:3',
-            'videos.*' => $this->getVideoRules(),
         ];
     }
 }

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Crm\DeleteProductImageRequest;
-use App\Http\Requests\Crm\SetPrimaryRequest;
-use App\Http\Requests\Crm\StoreProductImagesRequest;
-use App\Http\Requests\Crm\SyncMediaOrderRequest;
+use App\Http\Requests\Crm\Product\Media\DeleteProductImageRequest;
+use App\Http\Requests\Crm\Product\Media\SetPrimaryRequest;
+use App\Http\Requests\Crm\Product\Media\StoreProductImagesRequest;
+use App\Http\Requests\Crm\Product\Media\SyncMediaOrderRequest;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
 use Illuminate\Http\JsonResponse;

@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Crm\ProductShowDeleteRequest;
-use App\Http\Requests\Crm\ProductStoreUpdateRequest;
+use App\Http\Requests\Crm\Product\ProductDeleteRequest;
+use App\Http\Requests\Crm\Product\ProductShowRequest;
+use App\Http\Requests\Crm\Product\ProductStoreRequest;
+use App\Http\Requests\Crm\Product\ProductUpdateRequest;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
 use Auth;
 use Http;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProductCrudController extends Controller
+class ProductController extends Controller
 {
     protected ProductRepository $repository;
     protected MediaRepository $mediaRepository;
@@ -70,11 +70,8 @@ class ProductCrudController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductStoreUpdateRequest $request): RedirectResponse
+    public function store(ProductStoreRequest $request): RedirectResponse
     {
-        $request->validate(['images' => 'required',
-            'sku' => 'unique:products,sku']);
-
         if (!$this->isVideoIdValid($request->input('video_id')))
             return redirect()->back()->withErrors(['video_id' => 'Invalid video id']);
 
@@ -94,7 +91,7 @@ class ProductCrudController extends Controller
     /**
      * Display the specified resource.
      */
-//    public function show(ProductShowDeleteRequest $request, Product $product): Response
+//    public function show(ProductCheckOwnershipRequest $request, Product $product): Response
 //    {
 //        return Inertia::render('Crm/Product/Show', ['product' => $product]);
 //    }
@@ -102,35 +99,25 @@ class ProductCrudController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProductShowDeleteRequest $request, Product $product): Response
+    public function edit(ProductShowRequest $request, Product $product): Response
     {
         $images = $this->mediaRepository->allMediaForModelWithIds($product);
-        $videos = $this->mediaRepository->allMediaForModelWithIds($product, 'videos');
 
-
-        return Inertia::render('Crm/Product/Edit', ['product' => $product,
-            'images' => $images,
-            'videos' => $videos]);
+        return Inertia::render('Crm/Product/Edit', ['product' => $product, 'images' => $images]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductStoreUpdateRequest $request, Product $product): RedirectResponse
+    public function update(ProductUpdateRequest $request, Product $product): RedirectResponse
     {
-        if ($request->input('sku') != $product->sku) {
-            $request->validate(['sku' => 'unique:products,sku']);
-        }
-
         if (!$this->isVideoIdValid($request->get('video_id')))
             return redirect()->back()->withErrors(['video_id' => 'Invalid video id']);
 
         $product = $this->repository->update($request->validated(), $product->id);
 
-        if ($request->hasFile('images')) {
-            //$product->clearMediaCollection(); //this is temporary
+        if ($request->hasFile('images'))
             $this->mediaRepository->addMultipleMediaFromArray($product, $request->file('images'));
-        }
 
         return to_route('product.index');
     }
@@ -138,7 +125,7 @@ class ProductCrudController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductShowDeleteRequest $request, Product $product): RedirectResponse
+    public function destroy(ProductDeleteRequest $request, Product $product): RedirectResponse
     {
         $this->repository->delete($product->id);
 

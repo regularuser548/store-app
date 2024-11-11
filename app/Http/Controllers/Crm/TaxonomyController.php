@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Crm\CreateTaxonomy;
-use App\Http\Requests\Crm\SyncModelTaxons;
-use App\Http\Requests\Crm\UpdateTaxonomy;
+use App\Http\Requests\Crm\Product\SyncModelTaxons;
+use App\Http\Requests\Crm\Taxonomy\CreateTaxonomy;
+use App\Http\Requests\Crm\Taxonomy\UpdateTaxonomy;
 use App\Repositories\MediaRepository;
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Foundation\Application;

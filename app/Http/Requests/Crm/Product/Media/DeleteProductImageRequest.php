@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Crm;
+namespace App\Http\Requests\Crm\Product\Media;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SyncMediaOrderRequest extends FormRequest
+class DeleteProductImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +15,7 @@ class SyncMediaOrderRequest extends FormRequest
             return true;
         }
 
-        return $this->user()->id === $this->product->seller_id;
+        return $this->user()->id === $this->model->product->seller_id;
     }
 
     /**
@@ -26,9 +26,7 @@ class SyncMediaOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'media_order' => 'required|list',
-            'media_order.*' => 'exists:media,id|distinct',
-            'collection_name' => 'required|string|in:default,videos',
+            //
         ];
     }
 }
