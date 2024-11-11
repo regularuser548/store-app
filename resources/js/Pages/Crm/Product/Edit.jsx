@@ -1,7 +1,7 @@
 import {Head, router, useForm} from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
-import {Button, Card, Image, Upload} from "antd";
+import {Button, Card, Empty, Image, Upload} from "antd";
 import {arrayMove, horizontalListSortingStrategy, SortableContext, useSortable} from "@dnd-kit/sortable";
 import {UploadOutlined} from "@ant-design/icons";
 import {DndContext, PointerSensor, useSensor} from "@dnd-kit/core";
@@ -24,16 +24,16 @@ export default function Edit({product, images, videos = null, props}) {
     description: product.description,
     meta_keywords: product.meta_keywords,
     state: product.state,
+    video_id: product.video_id,
 
     images: '',
-    videos: '',
 
     //workaround
     _method: 'put'
   })
 
   const [imageList, setImageList] = useState(images);
-  const [videoList, setVideoList] = useState(videos);
+  //const [videoList, setVideoList] = useState(videos);
 
   const [uploadingImages, setUploadingImages] = useState([]);
 
@@ -67,7 +67,7 @@ export default function Edit({product, images, videos = null, props}) {
   }
 
   return (
-    <CrmMenuLayout>
+    <CrmMenuLayout className="">
       <ProductForm fields={data} changeHandler={setData} submit={handleSubmit}></ProductForm>
 
       {/*<button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>*/}
@@ -83,14 +83,14 @@ export default function Edit({product, images, videos = null, props}) {
         <Button onClick={handleImageUpload} disabled={uploadingImages.length === 0}>Upload</Button>
       </div>
 
-
-      <div id='videoContainer'>
-        {videoList ? videoList.map((item, index) => (
-          <video controls id={item.id} key={item.id} className='w-1/2 inline'>
-            <source src={videoList[index].url} type='video/mp4'/>
-          </video>
-        )) : <p>No videos</p>}
-      </div>
+      {product.video_id ?
+        <iframe
+          id="ytplayer" type="text/html" width="640" height="360"
+          src={`https://www.youtube.com/embed/${product.video_id}?rel=0&iv_load_policy=3`}>
+        </iframe> :
+        <Empty description={
+          <span>No video provided</span>
+      }/>}
 
       <button className='border m-2 p-1 bg-red-500'
               onClick={() => router.delete(route('product.destroy', {product: product.id}))}>Delete

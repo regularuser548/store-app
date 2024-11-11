@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
 use Auth;
+use Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -24,6 +25,20 @@ class ProductCrudController extends Controller
     {
         $this->repository = $productRepository;
         $this->mediaRepository = $mediaRepository;
+    }
+
+    private function isVideoIdValid(?String $videoId): bool
+    {
+        //Video id can be null
+        if ($videoId === null)
+            return true;
+
+        $response = Http::head("https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={$videoId}&format=json");
+
+        if ($response->successful())
+            return true;
+
+        return false;
     }
 
     /**
@@ -57,25 +72,21 @@ class ProductCrudController extends Controller
      */
     public function store(ProductStoreUpdateRequest $request): RedirectResponse
     {
-        //dd($request->allFiles());
         $request->validate(['images' => 'required',
             'sku' => 'unique:products,sku']);
 
+        if (!$this->isVideoIdValid($request->input('video_id')))
+            return redirect()->back()->withErrors(['video_id' => 'Invalid video id']);
+
         $data = $request->validated();
         $data['seller_id'] = Auth::id();
-
 
         $product = $this->repository->create($data);
 
         $this->mediaRepository->addMultipleMediaFromArray($product, $data['images']);
 
         //we will set first image as primary, by default
-        $primary = $product->getMedia()->first();
-        $primary->setCustomProperty('isPrimary', true);
-        $primary->save();
-
-        if ($request->hasFile('videos'))
-            $this->mediaRepository->addMultipleMediaFromArray($product, $data['videos'], 'videos');
+        $product->getMedia()->first()->setCustomProperty('isPrimary', true)->save();
 
         return to_route('product.index');
     }
@@ -110,6 +121,9 @@ class ProductCrudController extends Controller
         if ($request->input('sku') != $product->sku) {
             $request->validate(['sku' => 'unique:products,sku']);
         }
+
+        if (!$this->isVideoIdValid($request->get('video_id')))
+            return redirect()->back()->withErrors(['video_id' => 'Invalid video id']);
 
         $product = $this->repository->update($request->validated(), $product->id);
 

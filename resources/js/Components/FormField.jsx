@@ -1,4 +1,5 @@
 import {usePage} from "@inertiajs/react";
+import {Input} from "antd";
 
 export default function FormField({id, data, changeHandler, className = '', ...props}) {
 
@@ -6,7 +7,7 @@ export default function FormField({id, data, changeHandler, className = '', ...p
 
     return (
         <div>
-            <input id={id} value={data[id]} onChange={changeHandler} className={className} {...props}/>
+            <Input id={id} value={data[id]} onChange={changeHandler} className={className} {...props}/>
             {errors[id] && <div className="text-red-500">{errors[id]}</div>}
         </div>
     )

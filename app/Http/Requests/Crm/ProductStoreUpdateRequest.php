@@ -45,6 +45,7 @@ class ProductStoreUpdateRequest extends FormRequest
             'description' => 'required|min:3|max:255',
             'meta_keywords' => 'nullable|min:3|max:255',
             'state' => 'required|in:draft,inactive,active,unavailable,retired',
+            'video_id' =>'nullable|max:255',
 
             'images' => 'nullable|list|max:10',
             'images.*' => $this->getImageRules(),
