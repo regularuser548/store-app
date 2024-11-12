@@ -6,12 +6,11 @@ use App\Http\Controllers\Crm\TaxonomyController;
 use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Storefront\CartController;
+use App\Http\Controllers\Storefront\OrderController;
 use App\Http\Controllers\Storefront\StorefrontController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Konekt\Acl\Http\Middleware\RoleMiddleware;
-use App\Http\Controllers\OrderController;
 
 //Storefront
 Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
