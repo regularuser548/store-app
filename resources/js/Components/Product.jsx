@@ -58,7 +58,7 @@ export default function Product({item, image, isCrm = false}) {
             className="font-semibold text-center text-sm sm:text-base lg:text-lg mb-1 text-[#ffffff] hover:text-orange-500">{item.name || 'назва товару'}</h3>
 
         <div className="flex flex-row justify-between items-start w-full mt-4 space-x-4">
-          {/* Первый столбец с ценами */}
+          {/* Первый столбец с цdенами */}
 
           <div className="w-1/3 grid grid-rows-2 text-left my-2 justify-start">
             <div></div>
