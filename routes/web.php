@@ -17,6 +17,10 @@ Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index'
 Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
 Route::get('/search', [StorefrontController::class, 'search'])->name('storefront.search');
 
+
+//footerlinks
+Route::get('/privacyPolicy', [StorefrontController::class, 'PrivacyPolicy'])->name('storefront.PrivacyPolicy');
+
 Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/show', [CartController::class, 'showCart'])->name('cart.show');
