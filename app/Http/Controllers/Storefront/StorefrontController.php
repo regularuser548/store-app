@@ -46,5 +46,9 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/Index', ['products' => $products, 'images' => $images]);
     }
 
+    public function PrivacyPolicy(): Response
+    {
+        return Inertia::render('Storefront/FooterLinks/PrivacyPolicy');
+    }
 
 }
