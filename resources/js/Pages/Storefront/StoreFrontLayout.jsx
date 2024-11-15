@@ -81,8 +81,8 @@ export default function StoreFrontLayout({props, children}) {
 
         <div className=''>{children}</div>
 
-        <div className="bg-[#272525] text-center py-4 text-sm">
-          <p className="text-[#ff8000]">Оформивши підписку отримуєш <span className="font-bold ">10% знижки</span> на замовлення
+        <div className="bg-[#272525] text-center py-4  ">
+          <p className="text-[#ff8000] text-4xl pb-5">Оформивши підписку отримуєш <span className="font-bold ">10% знижки</span> на замовлення
           </p>
           <button className="bg-orange-500 text-[#1e1e1e] px-6 py-2 rounded-md mt-2 hover:bg-orange-600">
             Підписатися на розсилку
@@ -91,17 +91,77 @@ export default function StoreFrontLayout({props, children}) {
         <footer className="bg-[#1e1e1e] text-gray-200 py-10">
 
           <div
-            className="container mx-auto px-6 md:px-10 mt-8 flex flex-col md:flex-row items-start md:items-center justify-between">
+            className="container mx-auto px-6 md:px-10 mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
 
             <div className="flex flex-col gap-2 mb-6 md:mb-0">
               <a href="#" className="text-[#ffffff] hover:text-orange-500 flex items-center space-x-2">
+                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_35_416)">
+                    <path
+                      d="M19.1406 0H5.85938C2.62333 0 0 2.62333 0 5.85938V19.1406C0 22.3767 2.62333 25 5.85938 25H19.1406C22.3767 25 25 22.3767 25 19.1406V5.85938C25 2.62333 22.3767 0 19.1406 0Z"
+                      fill="url(#paint0_radial_35_416)"/>
+                    <path
+                      d="M19.1406 0H5.85938C2.62333 0 0 2.62333 0 5.85938V19.1406C0 22.3767 2.62333 25 5.85938 25H19.1406C22.3767 25 25 22.3767 25 19.1406V5.85938C25 2.62333 22.3767 0 19.1406 0Z"
+                      fill="url(#paint1_radial_35_416)"/>
+                    <path
+                      d="M12.5009 2.73438C9.84873 2.73438 9.51582 2.746 8.47422 2.79336C7.43457 2.84102 6.7249 3.00557 6.104 3.24707C5.46162 3.49648 4.9168 3.83018 4.37402 4.37314C3.83076 4.91602 3.49707 5.46084 3.24688 6.10293C3.00469 6.72402 2.83994 7.43398 2.79316 8.47314C2.74658 9.51484 2.73438 9.84785 2.73438 12.5001C2.73438 15.1523 2.74609 15.4842 2.79336 16.5258C2.84121 17.5654 3.00576 18.2751 3.24707 18.896C3.49668 19.5384 3.83037 20.0832 4.37334 20.626C4.91602 21.1692 5.46084 21.5037 6.10273 21.7531C6.72412 21.9946 7.43389 22.1592 8.47334 22.2068C9.51504 22.2542 9.84766 22.2658 12.4997 22.2658C15.1521 22.2658 15.484 22.2542 16.5256 22.2068C17.5652 22.1592 18.2757 21.9946 18.8971 21.7531C19.5392 21.5037 20.0832 21.1692 20.6258 20.626C21.169 20.0832 21.5026 19.5384 21.7529 18.8963C21.993 18.2751 22.1578 17.5652 22.2066 16.526C22.2534 15.4844 22.2656 15.1523 22.2656 12.5001C22.2656 9.84785 22.2534 9.51504 22.2066 8.47334C22.1578 7.43369 21.993 6.72412 21.7529 6.10322C21.5026 5.46084 21.169 4.91602 20.6258 4.37314C20.0826 3.82998 19.5394 3.49629 18.8965 3.24717C18.2739 3.00557 17.5639 2.84092 16.5242 2.79336C15.4825 2.746 15.1509 2.73438 12.4979 2.73438H12.5009ZM11.6248 4.49424C11.8849 4.49385 12.175 4.49424 12.5009 4.49424C15.1084 4.49424 15.4174 4.50361 16.4471 4.55039C17.3992 4.59395 17.916 4.75303 18.2603 4.88672C18.716 5.06367 19.0409 5.27529 19.3825 5.61719C19.7243 5.95898 19.9358 6.28447 20.1133 6.74023C20.247 7.08398 20.4062 7.60078 20.4496 8.55293C20.4964 9.58242 20.5065 9.8916 20.5065 12.4979C20.5065 15.1041 20.4964 15.4134 20.4496 16.4428C20.4061 17.3949 20.247 17.9117 20.1133 18.2556C19.9363 18.7113 19.7243 19.0358 19.3825 19.3774C19.0407 19.7192 18.7162 19.9308 18.2603 20.1078C17.9164 20.2421 17.3992 20.4008 16.4471 20.4443C15.4176 20.4911 15.1084 20.5013 12.5009 20.5013C9.89326 20.5013 9.58418 20.4911 8.55478 20.4443C7.60264 20.4004 7.08584 20.2413 6.74131 20.1076C6.28564 19.9306 5.96006 19.719 5.61826 19.3772C5.27646 19.0354 5.06494 18.7107 4.8875 18.2548C4.75381 17.9109 4.59453 17.3941 4.55117 16.442C4.50439 15.4125 4.49502 15.1033 4.49502 12.4954C4.49502 9.8875 4.50439 9.57998 4.55117 8.55049C4.59473 7.59834 4.75381 7.08154 4.8875 6.7373C5.06455 6.28154 5.27646 5.95605 5.61836 5.61426C5.96025 5.27246 6.28564 5.06084 6.74141 4.8835C7.08564 4.74922 7.60264 4.59053 8.55478 4.54678C9.45566 4.50605 9.80479 4.49385 11.6248 4.4918V4.49424ZM17.7138 6.11572C17.0668 6.11572 16.5419 6.64014 16.5419 7.28721C16.5419 7.93418 17.0668 8.45908 17.7138 8.45908C18.3607 8.45908 18.8856 7.93418 18.8856 7.28721C18.8856 6.64023 18.3607 6.11533 17.7138 6.11533V6.11572ZM12.5009 7.48496C9.73135 7.48496 7.48584 9.73047 7.48584 12.5001C7.48584 15.2697 9.73135 17.5142 12.5009 17.5142C15.2705 17.5142 17.5152 15.2697 17.5152 12.5001C17.5152 9.73057 15.2703 7.48496 12.5007 7.48496H12.5009ZM12.5009 9.24482C14.2986 9.24482 15.7562 10.7021 15.7562 12.5001C15.7562 14.2979 14.2986 15.7554 12.5009 15.7554C10.7031 15.7554 9.2457 14.2979 9.2457 12.5001C9.2457 10.7021 10.703 9.24482 12.5009 9.24482Z"
+                      fill="white"/>
+                  </g>
+                  <defs>
+                    <radialGradient id="paint0_radial_35_416" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                                    gradientTransform="translate(6.64062 26.9255) rotate(-90) scale(24.7769 23.0444)">
+                      <stop stopColor="#FFDD55"/>
+                      <stop offset="0.1" stopColor="#FFDD55"/>
+                      <stop offset="0.5" stopColor="#FF543E"/>
+                      <stop offset="1" stopColor="#C837AB"/>
+                    </radialGradient>
+                    <radialGradient id="paint1_radial_35_416" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                                    gradientTransform="translate(-4.1876 1.80088) rotate(78.681) scale(11.0754 45.6531)">
+                      <stop stopColor="#3771C8"/>
+                      <stop offset="0.128" stopColor="#3771C8"/>
+                      <stop offset="1" stopColor="#6600FF" stopOpacity="0"/>
+                    </radialGradient>
+                    <clipPath id="clip0_35_416">
+                      <rect width="25" height="25" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
                 <i className="fab fa-instagram"></i> <span>@shophub</span>
               </a>
               <a href="#" className="text-[#ffffff] hover:text-orange-500 flex items-center space-x-2">
-                <i className="fab fa-facebook-f"></i> <span>@shophub</span>
+                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M25 12.5C25 5.59648 19.4035 0 12.5 0C5.59648 0 0 5.59648 0 12.5C0 18.7391 4.57109 23.9104 10.5469 24.8481V16.1133H7.37305V12.5H10.5469V9.74609C10.5469 6.61328 12.4131 4.88281 15.2684 4.88281C16.6359 4.88281 18.0664 5.12695 18.0664 5.12695V8.20312H16.4902C14.9374 8.20312 14.4531 9.1667 14.4531 10.1553V12.5H17.9199L17.3657 16.1133H14.4531V24.8481C20.4289 23.9104 25 18.7392 25 12.5Z"
+                    fill="#1877F2"/>
+                  <path
+                    d="M17.3657 16.1133L17.9199 12.5H14.4531V10.1553C14.4531 9.1666 14.9374 8.20312 16.4902 8.20312H18.0664V5.12695C18.0664 5.12695 16.6359 4.88281 15.2683 4.88281C12.4131 4.88281 10.5469 6.61328 10.5469 9.74609V12.5H7.37305V16.1133H10.5469V24.8481C11.193 24.9494 11.846 25.0002 12.5 25C13.154 25.0002 13.807 24.9494 14.4531 24.8481V16.1133H17.3657Z"
+                    fill="white"/>
+                </svg>
+
+                <i className="fab fa-facebook-f"></i> <span>/shophub./</span>
               </a>
               <a href="#" className="text-[#ffffff] hover:text-orange-500 flex items-center space-x-2">
-                <i className="fab fa-telegram-plane"></i> <span>@shophub.ua</span>
+                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clipPath="url(#clip0_35_424)">
+                    <path
+                      d="M12.5 0C9.18555 0 6.00391 1.31777 3.66211 3.66113C1.31791 6.00543 0.000670798 9.18473 0 12.5C0 15.8139 1.31836 18.9955 3.66211 21.3389C6.00391 23.6822 9.18555 25 12.5 25C15.8145 25 18.9961 23.6822 21.3379 21.3389C23.6816 18.9955 25 15.8139 25 12.5C25 9.18613 23.6816 6.00449 21.3379 3.66113C18.9961 1.31777 15.8145 0 12.5 0Z"
+                      fill="url(#paint0_linear_35_424)"/>
+                    <path
+                      d="M5.65813 12.368C9.30266 10.7805 11.7323 9.73393 12.9472 9.2282C16.4198 7.78425 17.1406 7.53347 17.6113 7.52498C17.7148 7.52332 17.9452 7.5489 18.0956 7.67048C18.2206 7.77302 18.2558 7.9117 18.2734 8.00906C18.289 8.10632 18.3105 8.328 18.2929 8.50105C18.1054 10.4776 17.2909 15.2741 16.8769 17.488C16.7031 18.4247 16.3573 18.7387 16.0234 18.7694C15.2968 18.8362 14.746 18.2897 14.0429 17.829C12.9433 17.1077 12.3222 16.6589 11.2538 15.9552C10.0195 15.1419 10.8202 14.6948 11.5234 13.9643C11.707 13.7731 14.9062 10.8639 14.9667 10.6001C14.9745 10.5671 14.9823 10.444 14.9081 10.3792C14.8359 10.3141 14.7284 10.3364 14.6503 10.354C14.539 10.379 12.7831 11.5407 9.37688 13.8389C8.87883 14.1815 8.42766 14.3485 8.02141 14.3397C7.5761 14.3302 6.71672 14.0874 6.07805 13.88C5.2968 13.6255 4.67375 13.4909 4.72844 13.0587C4.75579 12.8337 5.06633 12.6034 5.65813 12.368Z"
+                      fill="white"/>
+                  </g>
+                  <defs>
+                    <linearGradient id="paint0_linear_35_424" x1="1250" y1="0" x2="1250" y2="2500"
+                                    gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#2AABEE"/>
+                      <stop offset="1" stopColor="#229ED9"/>
+                    </linearGradient>
+                    <clipPath id="clip0_35_424">
+                      <rect width="25" height="25" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+                <i className="fab fa-telegram-plane"></i> <span>@shophub</span>
               </a>
             </div>
 
@@ -109,8 +169,8 @@ export default function StoreFrontLayout({props, children}) {
               <h2 className="text-[#ffffff] text-2xl font-semibold">ShopHub</h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-10 text-sm">
-              <div className="border-r ">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 text-sm">
+              <div className="border-r pr-4">
                 <h4 className="text-[#ff8000] text-lg font-semibold mb-3">Інформація про компанію</h4>
                 <ul className="space-y-2">
                   <li><a href="#" className="text-gray-300 hover:text-orange-500">Про нас</a></li>
@@ -122,25 +182,29 @@ export default function StoreFrontLayout({props, children}) {
                 </ul>
               </div>
 
-              <div className="border-r ">
-                <h4 className="text-[#ff8000] text-lg font-semibold mb-3 ">Допомога</h4>
+              <div className="border-r pr-4">
+                <h4 className="text-[#ff8000] text-lg font-semibold mb-3">Допомога</h4>
                 <ul className="space-y-2">
                   <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Доставка та оплата</a></li>
                   <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Кредит</a></li>
+                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Гарантія</a></li>
                   <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Повернення товару</a></li>
-                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Сервісний центр</a></li>
-                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Політика конфіденційності</a></li>
+                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Сервісні центри</a></li>
+                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Політика приватності</a></li>
                 </ul>
               </div>
 
-              <div className="border-r ">
+              <div className="border-r pr-4">
                 <h4 className="text-[#ff8000] text-lg font-semibold mb-3">Сервіси</h4>
                 <ul className="space-y-2">
-                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Віртуальний рахунок</a></li>
-                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Підписники</a></li>
-                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Спільноти</a></li>
-                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Торговий облік</a></li>
-                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Корпоративним клієнтам</a></li>
+                  <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Бонусний рахунок</a></li>
+                  <li>
+                    <a href="#" className="text-[#ffffff] hover:text-orange-500">Подарункові сертифікати</a>
+
+                  </li>
+                  <li>
+                    <a href="#" className="text-[#ffffff] hover:text-orange-500">ShopHub Обмін<br/>Корпоративним клієнтам</a>
+                  </li>
                 </ul>
               </div>
 
@@ -153,6 +217,7 @@ export default function StoreFrontLayout({props, children}) {
               </div>
             </div>
           </div>
+
         </footer>
       </div>
     );
