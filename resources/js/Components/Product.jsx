@@ -47,13 +47,13 @@ export default function Product({item, image, isCrm = false}) {
     <div id={item.id}
          className="
          rounded-lg shadow-lg overflow-hidden">
-      <div className="flex items-center justify-center h-96  bg-gray-200">
+      <div className="flex items-center justify-center h-80  bg-gray-200">
         <img onClick={() => router.visit(route('storefront.show', {product: item.id}))}
              src={image || 'path-to-placeholder-image'} alt=''
              className="h-full w-full object-cover"/>
       </div>
 
-      <div className="bg-[#1e1e1e] text-white p-4">
+      <div className="bg-[#1e1e1e] text-white p-2">
         <h3 onClick={() => router.visit(route('storefront.show', {product: item.id}))}
             className="font-semibold text-center text-sm sm:text-base lg:text-lg mb-1 text-[#ffffff] hover:text-orange-500">{item.name || 'назва товару'}</h3>
 
@@ -93,7 +93,7 @@ export default function Product({item, image, isCrm = false}) {
                   ) :
                   <div>
                     <button
-                      className="bg-[#ff8000] text-black rounded-md px-4 py-3 font-bold text-sm lg:text-base flex items-center"
+                      className="bg-[#ff8000] text-black rounded-md px-1 py-3 font-bold text-sm lg:text-base flex items-center"
                       onClick={() => handleAddToCart(item.id)} type="primary">
                       Придбати
                       <span className="ml-1">
