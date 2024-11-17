@@ -18,7 +18,7 @@ export default function Create(props) {
     length: "",
     description: "",
     meta_keywords: "",
-    state: "",
+    state: "draft",
     video_id: "",
 
     images: ""
@@ -37,7 +37,7 @@ export default function Create(props) {
   return (
     <CrmMenuLayout>
       <ProductForm fields={data} changeHandler={setData} submit={handleSubmit}></ProductForm>
-      <MediaUploadForm fileList={imageList} changeHandler={setImageList} max={10} text='Add Image'
+      <MediaUploadForm fileList={imageList} changeHandler={setImageList} max={10} text='Додати Фото'
                        accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
                        listType='picture-card'>
       </MediaUploadForm>

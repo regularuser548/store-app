@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Taxonomy;
+//use App\Models\Taxonomy;
 use Illuminate\Support\ServiceProvider;
 use Vanilo\Product\Contracts\Product as ProductContract;
 use Vanilo\Category\Contracts\Taxonomy as TaxonomyContract;
