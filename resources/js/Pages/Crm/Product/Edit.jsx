@@ -75,12 +75,12 @@ export default function Edit({product, images, videos = null, props}) {
 
       <SortableMediaList images={imageList} setImages={setImageList}></SortableMediaList>
       <div>
-        <MediaUploadForm fileList={uploadingImages} changeHandler={setUploadingImages} max={10} text='Add Image'
+        <MediaUploadForm fileList={uploadingImages} changeHandler={setUploadingImages} max={10} text='Додати Фото'
                          accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
                          listType='picture-card'>
 
         </MediaUploadForm>
-        <Button onClick={handleImageUpload} disabled={uploadingImages.length === 0}>Upload</Button>
+        <Button onClick={handleImageUpload} disabled={uploadingImages.length === 0}>Завантажити</Button>
       </div>
 
       {product.video_id ?
@@ -89,12 +89,10 @@ export default function Edit({product, images, videos = null, props}) {
           src={`https://www.youtube.com/embed/${product.video_id}?rel=0&iv_load_policy=3`}>
         </iframe> :
         <Empty description={
-          <span>No video provided</span>
+          <span>Відео відсутнє</span>
       }/>}
 
-      <button className='border m-2 p-1 bg-red-500'
-              onClick={() => router.delete(route('product.destroy', {product: product.id}))}>Delete
-      </button>
+      <Button onClick={() => router.delete(route('product.destroy', {product: product.id}))}>Видалити</Button>
 
     </CrmMenuLayout>
   );

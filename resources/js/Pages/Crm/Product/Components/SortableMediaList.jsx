@@ -19,14 +19,14 @@ function SortableImage({image, setPrimaryHandler, deleteHandler}) {
 
   return (
     <Card ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Tooltip title='Set Primary'>
+      <Tooltip title='Зробити основним'>
         {/*Set Primary Button*/}
         <Button onClick={() => setPrimaryHandler(image.id)}>
           {image.isPrimary ? <CheckOutlined/> : <PlusOutlined/>}
         </Button>
       </Tooltip>
 
-      <Tooltip title='Delete'>
+      <Tooltip title='Видалити'>
         {/*Delete Button*/}
         <Button color="danger" onClick={() => deleteHandler(image.id)}><DeleteOutlined/></Button>
       </Tooltip>
@@ -44,13 +44,13 @@ function ImageList({images, setImages}) {
   const successMsg = () => {
     messageApi.open({
       type: 'success',
-      content: 'Changes Saved',
+      content: 'Зміни збережено',
     });
   };
   const errorMsg = () => {
     messageApi.open({
       type: 'error',
-      content: 'Error while saving changes, rollback...',
+      content: 'Помилка при збереженні, відкат...',
     });
   };
 

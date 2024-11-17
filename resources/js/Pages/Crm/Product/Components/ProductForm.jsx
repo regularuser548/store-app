@@ -1,11 +1,8 @@
-import {Head, router, useForm, usePage} from "@inertiajs/react";
-import GuestLayout from "@/Layouts/GuestLayout.jsx";
-import {useState} from "react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
-import TextInput from "@/Components/TextInput.jsx";
-import SessionError from "@/Components/SessionError.jsx";
+import {usePage} from "@inertiajs/react";
 import FormField from "@/Components/FormField.jsx";
-import {Input} from "antd";
+import {Button, Input, Select} from "antd";
+
+const {TextArea} = Input;
 
 export default function ProductForm({fields, changeHandler, submit, props}) {
 
@@ -21,55 +18,89 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
 
   }
 
-
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} className='w-72'>
 
       <FormField id='name' data={fields} changeHandler={handleChange}
-                 placeholder='Name' className='block' required/>
+                 placeholder='Назва' className='block' required/>
 
       <FormField id="sku" data={fields} onChange={handleChange} placeholder="SKU" className='block'
                  required/>
 
-      <FormField id="stock" data={fields} onChange={handleChange} placeholder="Stock" type='number'
+      <FormField id="stock" data={fields} onChange={handleChange} placeholder="Кількість" type='number'
                  className='block' required min="0"/>
 
-      <FormField id="price" data={fields} onChange={handleChange} placeholder="Price" type='number'
+      <FormField id="price" data={fields} onChange={handleChange} placeholder="Ціна" type='number'
                  className='block' required min="0"/>
 
-      <FormField id="weight" data={fields} onChange={handleChange} placeholder="Weight" type='number'
+      <FormField id="weight" data={fields} onChange={handleChange} placeholder="Вага" type='number'
                  className='block' min="0"/>
 
-      <FormField id="width" data={fields} onChange={handleChange} placeholder="Width" type='number'
+      <FormField id="width" data={fields} onChange={handleChange} placeholder="Ширина" type='number'
                  className='block' min="0"/>
 
-      <FormField id="height" data={fields} onChange={handleChange} placeholder="Height" type='number'
+      <FormField id="height" data={fields} onChange={handleChange} placeholder="Висота" type='number'
                  className='block' min="0"/>
 
-      <FormField id="length" data={fields} onChange={handleChange} placeholder="Length" type='number'
+      <FormField id="length" data={fields} onChange={handleChange} placeholder="Довжина" type='number'
                  className='block' min="0"/>
 
-      <textarea id="description" value={fields.description} onChange={handleChange}
-                placeholder="Description" className='block' required/>
+      <TextArea id="description" value={fields.description} onChange={handleChange}
+                placeholder="Опис" className='block' required/>
       {errors.description && <div className="text-red-500">{errors.description}</div>}
 
-      <FormField id="meta_keywords" data={fields} onChange={handleChange} placeholder="Keywords (separate by ,)"
+      <FormField id="meta_keywords" data={fields} onChange={handleChange} placeholder="Ключові слова (розділяти ,)"
                  className='block'/>
 
-      <FormField addonBefore="youtube.com/watch?v=" id="video_id" data={fields} onChange={handleChange} placeholder="Youtube Video Id"
+      <FormField addonBefore="youtube.com/watch?v=" id="video_id" data={fields} onChange={handleChange}
+                 placeholder="Id Відео"
                  className='block'/>
 
-      <select id="state" value={fields.state} onChange={handleChange}>
-        <option value="draft">Draft</option>
-        <option value="inactive">Inactive</option>
-        <option value="active">Active</option>
-        <option value="unavailable">Unavailable</option>
-        <option value="retired">Retired</option>
-      </select>
+      {/*<select id="state" value={fields.state} onChange={handleChange}>*/}
+      {/*  <option value="draft">Draft</option>*/}
+      {/*  <option value="inactive">Inactive</option>*/}
+      {/*  <option value="active">Active</option>*/}
+      {/*  <option value="unavailable">Unavailable</option>*/}
+      {/*  <option value="retired">Retired</option>*/}
+      {/*</select>*/}
+
+      <Select
+        defaultValue={fields.state}
+        style={{
+          width: 120,
+        }}
+        onChange={(value) => changeHandler(values => ({
+          ...values,
+          ['state']: value,
+        }))}
+        options={[
+          {
+            value: 'draft',
+            label: 'Чорновий',
+          },
+          {
+            value: 'inactive',
+            label: 'Неактивний',
+          },
+          {
+            value: 'active',
+            label: 'Активний',
+          },
+          {
+            value: 'unavailable',
+            label: 'Недоступний',
+          },
+          {
+            value: 'retired',
+            label: 'У відставці',
+          },
+
+        ]}
+      ></Select>
       {errors.state && <div className="text-red-500">{errors.state}</div>}
 
 
-      <button type="submit" className='block border bg-green-500'>Submit</button>
+      <Button type="primary" onClick={submit}>Відправити</Button>
     </form>
 
   );
