@@ -16,8 +16,9 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
-use Vanilo\Category\Contracts\Taxonomy;
+use Vanilo\Category\Models\Taxonomy;
 use Vanilo\Category\Models\TaxonomyProxy;
+use Vanilo\Foundation\Models\Taxon;
 
 class TaxonomyController extends Controller
 {
@@ -29,6 +30,7 @@ class TaxonomyController extends Controller
         $this->repository = $taxonomyRepository;
         $this->mediaRepository = $mediaRepository;
     }
+
     public function index(): Response
     {
         $taxonomies = $this->repository->all();
@@ -43,8 +45,7 @@ class TaxonomyController extends Controller
 
     public function store(CreateTaxonomy $request): Application|Redirector|RedirectResponse
     {
-        try
-        {
+        try {
             $taxonomy = TaxonomyProxy::create($request->validated());
             Session::flash('success', __(':name has been created', ['name' => $taxonomy->name]));
 
@@ -55,10 +56,9 @@ class TaxonomyController extends Controller
                 $taxonomy->addMediaFromRequest('image')
                     ->withCustomProperties(['isPrimary' => true])
                     ->toMediaCollection();
-                }
+            }
 
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
 
             Session::flash('error', __('Error: :msg', ['msg' => $e->getMessage()]));
 
@@ -70,7 +70,24 @@ class TaxonomyController extends Controller
 
     public function show(Taxonomy $taxonomy): Response
     {
-        return Inertia::render('Crm/Taxonomy/Show', ['taxonomy' => $taxonomy]);
+
+        $taxons = Taxon::select([
+            'id as key',
+            'name as title',
+        ])
+            ->where('taxonomy_id', $taxonomy->id)
+            ->whereNull('parent_id') // Top-level taxons
+            ->with(['children' => function ($query) {
+                $query->select([
+                    'id as key',
+                    'name as title',
+                    'parent_id',
+                ]);
+            }])
+            ->get()->sortBy('key')->values();
+        $taxons = $taxonomy::with('taxons.children')->select('id as key', 'name as title')->get();
+        dd(json_encode($taxons, JSON_PRETTY_PRINT));
+        return Inertia::render('Crm/Taxonomy/Show', ['taxonomy' => $taxonomy, 'taxons' => $taxons]);
     }
 
     public function edit(Taxonomy $taxonomy): Response
@@ -80,8 +97,7 @@ class TaxonomyController extends Controller
 
     public function update(Taxonomy $taxonomy, UpdateTaxonomy $request): Application|Redirector|RedirectResponse
     {
-        try
-        {
+        try {
             $taxonomy->update($request->validated());
 
             if ($request->hasFile('image')) {
@@ -91,8 +107,7 @@ class TaxonomyController extends Controller
                     ->toMediaCollection();
             }
             Session::flash('success', __(':name has been updated', ['name' => $taxonomy->name]));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             Session::flash('error', __('Error: :msg', ['msg' => $e->getMessage()]));
 
             return redirect()->back()->withInput();
@@ -103,14 +118,12 @@ class TaxonomyController extends Controller
 
     public function destroy(Taxonomy $taxonomy): Application|Redirector|RedirectResponse
     {
-        try
-        {
+        try {
             $name = $taxonomy->name;
             $taxonomy->delete();
 
-           Session::flash('success', __(':name has been deleted', ['name' => $name]));
-        }
-        catch (\Exception $e) {
+            Session::flash('success', __(':name has been deleted', ['name' => $name]));
+        } catch (\Exception $e) {
             Session::flash('error', __('Error: :msg', ['msg' => $e->getMessage()]));
 
             return redirect()->back();
@@ -119,7 +132,7 @@ class TaxonomyController extends Controller
         return to_route('taxonomy.index');
     }
 
-    public function sync(Taxonomy $taxonomy, SyncModelTaxons $request)
+    public function sync(Taxonomy $taxonomy, SyncModelTaxons $request): RedirectResponse
     {
         $taxonIds = $request->getTaxonIds();
         $model = $request->getFor();

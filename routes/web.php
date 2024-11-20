@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Crm\MediaController;
 use App\Http\Controllers\Crm\ProductController;
+use App\Http\Controllers\Crm\TaxonController;
 use App\Http\Controllers\Crm\TaxonomyController;
 use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
@@ -50,14 +51,27 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//CRM CRUD
+//CRM Product
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
     Route::resource('product', ProductController::class)->except(['show']);
-    Route::resource('taxonomy', TaxonomyController::class);
     Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])->name('product.sync.mediaOrder');
     Route::post('setPrimary/{media}', [MediaController::class, 'setPrimaryImage'])->name('product.setPrimary');
     Route::delete('deleteMedia/{media}', [MediaController::class, 'destroy'])->name('product.deleteMedia');
     Route::post('product.addMedia/{product}', [MediaController::class, 'store'])->name('product.addMedia');
+});
+
+//CRM Categorization
+Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':admin'])->group(function () {
+    Route::resource('taxonomy', TaxonomyController::class);
+    //Route::post('syncTaxonomy/{taxonomy}', [TaxonomyController::class, 'sync'])->name('taxonomy.sync');
+    //Route::resource('taxon', TaxonController::class)->except(['index', 'show']);
+    Route::get('/taxonomy/{taxonomy}/taxon/create', [TaxonController::class, 'create'])->name('taxon.create');
+    Route::post('/taxonomy/{taxonomy}/taxon', [TaxonController::class, 'store'])->name('taxon.store');
+    Route::get('/taxonomy/{taxonomy}/taxon/{taxon}/edit', [TaxonController::class, 'edit'])->name('taxon.edit');
+    Route::put('/taxonomy/{taxonomy}/taxon/{taxon}', [TaxonController::class, 'update'])->name('taxon.update');
+    Route::delete('/taxonomy/{taxonomy}/taxon/{taxon}', [TaxonController::class, 'destroy'])->name('taxon.destroy');
+
+    Route::put('/taxonomy/{taxonomy}/sync', [TaxonController::class, 'sync'])->name('taxonomy.sync');
 });
 
 //todo: turn to resource routes

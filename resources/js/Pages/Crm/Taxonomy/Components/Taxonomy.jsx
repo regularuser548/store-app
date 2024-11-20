@@ -1,4 +1,4 @@
-import {Link} from "@inertiajs/react";
+import {Link, router} from "@inertiajs/react";
 
 export default function Taxonomy({item, image= null, props}) {
 
@@ -8,9 +8,11 @@ export default function Taxonomy({item, image= null, props}) {
                 <img className='w-14' src={image} alt='Image'/>
                 :
                 null}
-            <p className='me-2 font-bold block'>{item.name}</p>
+            <p className='me-2 font-bold block'
+               onClick={() => router.visit(route('taxonomy.show', {taxonomy: item.id}))}>{item.name}</p>
             <span className='me-2'>{item.slug}</span>
-            <Link href={route('taxonomy.edit', {taxonomy: item.id})} className='border bg-gray-200'>Edit</Link>
+            <Link href={route('taxonomy.edit', {taxonomy: item.id})} className='border bg-gray-200'>Редагувати</Link>
+
         </div>
     );
 }
