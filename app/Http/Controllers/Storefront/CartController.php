@@ -14,6 +14,7 @@ class CartController extends Controller
     {
         $productId = $request->input('product_id');
         $newQuantity = $request->input('quantity');
+        $product = Product::find($productId);
 
         $cartItem = Cart::getItems()->firstWhere('product.id', $productId);
 
@@ -26,8 +27,9 @@ class CartController extends Controller
         }
 
         if ($cartItem->product->stock < $newQuantity) {
-            return response()->json(['error' => 'Quantity exceeds available stock'], 400);
+            return response()->json(['error' => 'На складе доступно только '.$newQuantity -1  ." штук товара ".$product->name], 400);
         }
+
 
         $cartItem->quantity = $newQuantity;
         $cartItem->save();
@@ -38,11 +40,14 @@ class CartController extends Controller
     public function showCart()
     {
         $cartItems = Cart::getItems()->map(function ($item) {
+            $product = Product::find($item->product->id);
             return [
                 'id' => $item->product->id,
                 'name' => $item->product->name,
-                'image' => $item->product->getMedia()?->first()?->getUrl(),
+                //'image' => $item->product->getMedia()?->first()?->getUrl(),
+                'image' => $product->getMedia()?->first()?->getUrl(),
                 'price' => $item->price,
+                'seller' => $product->seller->name,
                 'quantity' => $item->quantity,
             ];
         });
