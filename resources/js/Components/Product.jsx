@@ -62,9 +62,9 @@ export default function Product({item, image, isCrm = false}) {
 
           <div className="w-1/3 grid grid-rows-2 text-left my-2 justify-start">
             <div></div>
-            <span
-              className="text-[#ff8000] opacity-75 line-through text-sm lg:text-base">{item.originalPrice || '999 грн'}
-            </span>
+            {/*<span*/}
+            {/*  className="text-[#ff8000] opacity-75 line-through text-sm lg:text-base">{item.originalPrice || '999 грн'}*/}
+            {/*</span>*/}
             <span
               className="text-lg font-bold text-[#FF6A00]">{item.price + " грн" || '666 грн'}
             </span>
@@ -106,7 +106,6 @@ export default function Product({item, image, isCrm = false}) {
                     </button>
                   </div>
                 }
-
               </div>
             </div>
           </div>
