@@ -10,6 +10,7 @@ use App\Http\Requests\Crm\Taxonomy\CreateTaxonomy;
 use App\Http\Requests\Crm\Taxonomy\UpdateTaxonomy;
 use App\Repositories\MediaRepository;
 use App\Repositories\TaxonomyRepository;
+use App\Repositories\TaxonRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
@@ -22,13 +23,17 @@ use Vanilo\Foundation\Models\Taxon;
 
 class TaxonomyController extends Controller
 {
+
     protected TaxonomyRepository $repository;
+    protected TaxonRepository $taxonRepository;
     protected MediaRepository $mediaRepository;
 
-    public function __construct(TaxonomyRepository $taxonomyRepository, MediaRepository $mediaRepository)
+
+    public function __construct(TaxonomyRepository $taxonomyRepository, MediaRepository $mediaRepository, TaxonRepository $taxonRepository)
     {
         $this->repository = $taxonomyRepository;
         $this->mediaRepository = $mediaRepository;
+        $this->taxonRepository = $taxonRepository;
     }
 
     public function index(): Response
@@ -70,24 +75,14 @@ class TaxonomyController extends Controller
 
     public function show(Taxonomy $taxonomy): Response
     {
+        $taxons = Taxon::roots()->byTaxonomy($taxonomy)->get();
 
-        $taxons = Taxon::select([
-            'id as key',
-            'name as title',
-        ])
-            ->where('taxonomy_id', $taxonomy->id)
-            ->whereNull('parent_id') // Top-level taxons
-            ->with(['children' => function ($query) {
-                $query->select([
-                    'id as key',
-                    'name as title',
-                    'parent_id',
-                ]);
-            }])
-            ->get()->sortBy('key')->values();
-        $taxons = $taxonomy::with('taxons.children')->select('id as key', 'name as title')->get();
-        dd(json_encode($taxons, JSON_PRETTY_PRINT));
-        return Inertia::render('Crm/Taxonomy/Show', ['taxonomy' => $taxonomy, 'taxons' => $taxons]);
+        $taxonTree = [];
+        foreach ($taxons as $taxon) {
+            $taxonTree[] = $this->taxonRepository->buildTaxonTree($taxon, 'key', 'title');
+        }
+        //dd(json_encode($taxonTree, JSON_PRETTY_PRINT));
+        return Inertia::render('Crm/Taxonomy/Show', ['taxonomy' => $taxonomy, 'taxons' => $taxonTree]);
     }
 
     public function edit(Taxonomy $taxonomy): Response

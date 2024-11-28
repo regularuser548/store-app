@@ -8,7 +8,7 @@ export default function Create({taxon, taxons, taxonomy, props}) {
   const {data, setData, post, progress} = useForm({
     name: "",
     slug: "",
-    parent: taxon.parent_id,
+    parent_id: taxon.parent_id,
     priority: taxon.priority,
     image: "",
   });
@@ -21,7 +21,6 @@ export default function Create({taxon, taxons, taxonomy, props}) {
 
   return (
     <CrmMenuLayout>
-      {console.log(taxon)}
       <TaxonForm fields={data} changeHandler={setData} taxons={taxons} submit={handleSubmit}></TaxonForm>
     </CrmMenuLayout>
   );

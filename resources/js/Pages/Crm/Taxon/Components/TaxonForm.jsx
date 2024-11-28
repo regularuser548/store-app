@@ -1,15 +1,10 @@
 import {usePage} from "@inertiajs/react";
 import FormField from "@/Components/FormField.jsx";
-import {Select} from "antd";
+import {Select, TreeSelect} from "antd";
 
 export default function TaxonForm({fields, taxons, changeHandler, submit, props}) {
 
   const {errors} = usePage().props;
-
-  const selectDefaultValue = {
-    value: '0',
-    label: 'Немає батька',
-  }
 
   function handleChange(e) {
     const key = e.target.id;
@@ -21,26 +16,54 @@ export default function TaxonForm({fields, taxons, changeHandler, submit, props}
 
   }
 
+  function handleSelect(value) {
+    changeHandler(values => ({
+      ...values,
+      ['parent_id']: value,
+    }))
+  }
+
   return (
     <form onSubmit={submit} className="border m-2 p-1">
-      {console.log(taxons)}
 
       <FormField id='name' data={fields} placeholder='Ім&apos;я' required className='block'
                  changeHandler={handleChange}></FormField>
       <FormField id='slug' data={fields} placeholder='Slug' className='block' changeHandler={handleChange}></FormField>
 
-      <Select id='parent'
-              defaultValue={fields.parent === null ? 'Немає батька' : fields.parent}
-              style={{
-                width: 150,
-              }}
-              onChange={(value) => changeHandler(values => ({
-                ...values,
-                ['parent']: value,
-              }))}
-              options={[
-                ...taxons
-              ]}
+      {/*<Select id='parent'*/}
+      {/*        defaultValue={fields.parent === null ? 'Немає батька' : fields.parent}*/}
+      {/*        style={{*/}
+      {/*          width: 150,*/}
+      {/*        }}*/}
+      {/*        onChange={(value) => changeHandler(values => ({*/}
+      {/*          ...values,*/}
+      {/*          ['parent']: value,*/}
+      {/*        }))}*/}
+      {/*        options={[*/}
+      {/*          {label: 'Немає батька', value: null},*/}
+      {/*          ...taxons*/}
+      {/*        ]}*/}
+      {/*/>*/}
+
+
+      <TreeSelect
+        id='parent_id'
+        //showSearch
+        style={{
+          width: '100%',
+        }}
+        value={fields.parent_id === null ? 'Немає батька' : fields.parent_id}
+        dropdownStyle={{
+          maxHeight: 400,
+          overflow: 'auto',
+        }}
+        placeholder="Оберіть батька"
+        //allowClear
+        onChange={handleSelect}
+        treeDefaultExpandAll
+        //onChange={onChange}
+        treeData={[{title: 'Немає батька', value: ''}, ...taxons]}
+        //onPopupScroll={onPopupScroll}
       />
 
       <FormField id='priority' data={fields} placeholder='Priority' required className='block'

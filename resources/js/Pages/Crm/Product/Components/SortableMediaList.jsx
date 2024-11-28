@@ -73,7 +73,6 @@ function ImageList({images, setImages}) {
   function handleSetPrimary(id) {
     if (isInProgress) return;
 
-    console.log(id);
     setIsInProgress(true);
 
     const oldImages = [...images];

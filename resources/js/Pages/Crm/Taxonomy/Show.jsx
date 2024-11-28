@@ -18,16 +18,42 @@ export default function Show({taxonomy, taxons, image = null, props}) {
   //   router.post(route('taxonomy.update', {taxonomy: taxonomy.id }), data);
   // }
 
-  console.log(taxons)
+  function buildTaxonTree(taxons) {
+    const tree = [];
+    for (const taxon in taxons) {
+
+      tree.push({
+        key: taxon.key,
+        label: taxon.label,
+        children: []
+      });
+
+      if (Array.isArray(taxon.children) && taxon.children.length > 0) {
+        tree.children = taxon.children.map(child => buildTaxonTree(child));
+      }
+
+    }
+    return tree;
+
+  }
+
+  function handleSelect(selectedKeys, info)
+  {
+    router.visit(route('taxon.edit', {taxon: selectedKeys[0], taxonomy: taxonomy.id}));
+  }
+
   return (
     <CrmMenuLayout>
       <Tree
-        // onSelect={onSelect}
+        showLine
+        onSelect={handleSelect}
         // onCheck={onCheck}
         treeData={taxons}
+        defaultExpandAll
       />
 
-      <Link href={route('taxon.create', {taxonomy: taxonomy.id})} className='border bg-gray-200'>Створити Підкатегорію</Link>
+      <Link href={route('taxon.create', {taxonomy: taxonomy.id})} className='border bg-gray-200'>Створити
+        Підкатегорію</Link>
     </CrmMenuLayout>
   );
 
