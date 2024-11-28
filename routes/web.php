@@ -20,6 +20,7 @@ Route::get('/search', [StorefrontController::class, 'search'])->name('storefront
 
 //footerlinks
 Route::get('/privacyPolicy', [StorefrontController::class, 'PrivacyPolicy'])->name('storefront.PrivacyPolicy');
+Route::get('/MessageToSeller', [StorefrontController::class, 'MessageToSeller'])->name('storefront.MessageToSeller');
 
 Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
