@@ -5,11 +5,6 @@ import {Button, Card, Carousel, Col, DatePicker, Image, Row, Space, version} fro
 import StoreFrontLayout from "./StoreFrontLayout.jsx"
 
 export default function Index({products, images}) {
-
-
-
-
-
   const contentStyle = {
     width: '100%',        // Ширина изображения занимает всю доступную ширину
     maxHeight: '70vh',   // Ограничение высоты (по желанию)
@@ -86,11 +81,11 @@ export default function Index({products, images}) {
 
         <div className="text-white text-4xl p-20 ps-5">Найбільш популярні товари</div>
         <div className="">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40  ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
             {products.length > 0 ? (
               products.map((product) => (
                 <div className="">
-                  <Product item={product} image={images[product.id]} isCrm={false}></Product>
+                  <Product  item={product} image={images[product.id]} isCrm={false}></Product>
                 </div>
               ))
             ) : (
