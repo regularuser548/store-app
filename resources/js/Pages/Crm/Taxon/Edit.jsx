@@ -2,6 +2,7 @@ import {router, useForm} from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import TaxonForm from "@/Pages/Crm/Taxon/Components/TaxonForm.jsx";
+import {Button} from "antd";
 
 export default function Edit({taxon, taxonomy, taxons, image = null, props}) {
 
@@ -25,9 +26,13 @@ export default function Edit({taxon, taxonomy, taxons, image = null, props}) {
       <TaxonForm fields={data} changeHandler={setData} taxons={taxons} submit={handleSubmit}></TaxonForm>
       {image ? <img src={image} className='w-1/4' alt='image'/> : null}
 
-      <button className='border m-2 p-1 bg-red-500'
-              onClick={e => router.delete(route('taxon.destroy', {taxon: taxon.id}))}>Delete
-      </button>
+      <Button className=''
+              onClick={e => router.visit(route('taxon.create', {taxonomy: taxonomy.id, parent: taxon.id}))}>Додати Підкатегорію
+      </Button>
+
+      <Button className='m-2 p-1 bg-red-500'
+              onClick={e => router.delete(route('taxon.destroy', {taxonomy: taxonomy.id, taxon: taxon.id}))}>Видалити
+      </Button>
     </CrmMenuLayout>
   );
 

@@ -66,14 +66,14 @@ export default function TaxonForm({fields, taxons, changeHandler, submit, props}
         //onPopupScroll={onPopupScroll}
       />
 
-      <FormField id='priority' data={fields} placeholder='Priority' required className='block'
+      <FormField id='priority' data={fields} placeholder='Пріорітет' required className='block'
                  changeHandler={handleChange}></FormField>
 
       <input id="image" onChange={e => changeHandler('image', e.target.files[0])} type='file'
              accept="image/*" className=''/>
       {errors.image && <div className="text-red-500">{errors.image}</div>}
 
-      <input type='submit' className='block' value='Submit'></input>
+      <input type='submit' className='block' value='Відправити'></input>
 
     </form>
 

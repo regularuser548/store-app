@@ -105,7 +105,7 @@ class TaxonController extends Controller
     {
         $newParent = app(Taxon::class)::find($request->input('parent_id'));
 
-        if ($taxon->id == $newParent->id)
+        if ($taxon->id == $newParent?->id)
             return redirect()->back()->withErrors('error', 'Impossible parent taxon');
 
         try {
@@ -113,11 +113,11 @@ class TaxonController extends Controller
             $oldParentId = $taxon->parent_id;
             $taxon->update($request->except('images'));
 
-            if ($newParent->level < $taxon->level)
-            {
-                $newParent->parent_id = $oldParentId;
-                $newParent->save();
-            }
+//            if ($newParent->parent_id == $taxon->parent_id and $newParent->level > $taxon->level)
+//            {
+//                $newParent->parent_id = $oldParentId;
+//                $newParent->save();
+//            }
 
             Session::flash('success', __(':name has been updated', ['name' => $taxon->name]));
         } catch (\Exception $e) {
@@ -127,7 +127,7 @@ class TaxonController extends Controller
             return redirect()->back()->withInput();
         }
 
-        return to_route('taxonomy.edit', $taxonomy);
+        return to_route('taxonomy.show', $taxonomy);
     }
 
     public function destroy(Taxonomy $taxonomy, Taxon $taxon): Application|Redirector|RedirectResponse
@@ -143,6 +143,6 @@ class TaxonController extends Controller
             return redirect()->back();
         }
 
-        return redirect('taxonomy.edit', $taxonomy);
+        return to_route('taxonomy.show', $taxonomy);
     }
 }

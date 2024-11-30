@@ -1,6 +1,7 @@
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import Taxonomy from "@/Pages/Crm/Taxonomy/Components/Taxonomy.jsx";
 import React from "react";
+import {Empty} from "antd";
 
 export default function Index({taxonomies, images, props}) {
 
@@ -12,7 +13,7 @@ export default function Index({taxonomies, images, props}) {
                         <Taxonomy key={item.id} item={item} image={images[item.id]}></Taxonomy>
                     ))
                 ) : (
-                    <p>No taxonomies found</p>
+                    <Empty description={'Немає категорій'}></Empty>
                 )}
             </div>
         </CrmMenuLayout>
