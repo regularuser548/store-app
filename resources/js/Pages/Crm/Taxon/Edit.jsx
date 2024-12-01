@@ -2,7 +2,8 @@ import {router, useForm} from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import TaxonForm from "@/Pages/Crm/Taxon/Components/TaxonForm.jsx";
-import {Button} from "antd";
+import {Button, Empty} from "antd";
+import {useState} from "react";
 
 export default function Edit({taxon, taxonomy, taxons, image = null, props}) {
 
@@ -16,15 +17,24 @@ export default function Edit({taxon, taxonomy, taxons, image = null, props}) {
     _method: "put",
   });
 
+  const [imageList, setImageList] = useState([]);
+
   function handleSubmit(e) {
     e.preventDefault();
+
+    data.image = imageList[0]?.originFileObj;
+
     router.post(route('taxon.update', {taxonomy: taxonomy.id, taxon: taxon.id}), data);
   }
 
   return (
     <CrmMenuLayout>
-      <TaxonForm fields={data} changeHandler={setData} taxons={taxons} submit={handleSubmit}></TaxonForm>
-      {image ? <img src={image} className='w-1/4' alt='image'/> : null}
+      <TaxonForm fields={data} imageList={imageList} setImageList={setImageList} changeHandler={setData} taxons={taxons} submit={handleSubmit}></TaxonForm>
+      {image ?
+        <img src={image} className='w-1/4' alt='image'/>
+        :
+        <Empty description={'Немає Фото'}></Empty>
+      }
 
       <Button className=''
               onClick={e => router.visit(route('taxon.create', {taxonomy: taxonomy.id, parent: taxon.id}))}>Додати Підкатегорію

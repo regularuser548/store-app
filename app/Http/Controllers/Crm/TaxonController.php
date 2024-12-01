@@ -72,8 +72,11 @@ class TaxonController extends Controller
             ]));
 
             //$this->createMedia($taxon, $request);
-            if ($request->has('images'))
-                $taxon->addMultipleMediaFromRequest('images');
+            if ($request->hasFile('image')) {
+                $taxonomy->addMediaFromRequest('image')
+                    ->withCustomProperties(['isPrimary' => true])
+                    ->toMediaCollection();
+            }
 
         } catch (\Exception $e) {
             Session::flash('error', __('Error: :msg', ['msg' => $e->getMessage()]));
@@ -112,6 +115,13 @@ class TaxonController extends Controller
 
             $oldParentId = $taxon->parent_id;
             $taxon->update($request->except('images'));
+
+            if ($request->hasFile('image')) {
+                $taxonomy->clearMediaCollection();
+                $taxonomy->addMediaFromRequest('image')
+                    ->withCustomProperties(['isPrimary' => true])
+                    ->toMediaCollection();
+            }
 
 //            if ($newParent->parent_id == $taxon->parent_id and $newParent->level > $taxon->level)
 //            {

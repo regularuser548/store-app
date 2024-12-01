@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 //import './index.css';
-import {UploadOutlined} from '@ant-design/icons';
+import {PlusOutlined, UploadOutlined} from '@ant-design/icons';
 import {DndContext, PointerSensor, useSensor} from '@dnd-kit/core';
 
 import {
@@ -38,7 +38,7 @@ const DraggableUploadListItem = ({originNode, file}) => {
   );
 };
 
-export default function MediaUploadForm({text, fileList, changeHandler, accept, listType = 'text', max = 1, props}) {
+export default function MediaUploadForm({text, fileList, changeHandler, accept, listType = 'text', max = 1, multiple = true, props}) {
 
   const {errors} = usePage().props;
 
@@ -65,6 +65,24 @@ export default function MediaUploadForm({text, fileList, changeHandler, accept, 
   const onChange = ({fileList: newFileList}) => {
     changeHandler(newFileList);
   };
+  const uploadButton = (
+    <button
+      style={{
+        border: 0,
+        background: 'none',
+      }}
+      type="button"
+    >
+      <PlusOutlined />
+      <div
+        style={{
+          marginTop: 8,
+        }}
+      >
+        {text}
+      </div>
+    </button>
+  );
   return (
     <DndContext sensors={[sensor]} onDragEnd={onDragEnd}>
       <SortableContext items={fileList.map((i) => i.uid)} strategy={horizontalListSortingStrategy}>
@@ -74,18 +92,17 @@ export default function MediaUploadForm({text, fileList, changeHandler, accept, 
           listType={listType}
           beforeUpload={beforeUpload}
           accept={accept}
-          multiple={true}
+          multiple={multiple}
           itemRender={(originNode, file) => (
             <DraggableUploadListItem originNode={originNode} file={file}/>
           )}
           {...props}
           maxCount={max}
         >
-          <Button icon={<UploadOutlined/>}>{text}</Button>
+          {fileList.length >= max ? null : uploadButton}
         </Upload>
       </SortableContext>
       {errors.images && <div className="text-red-500">{errors.images}</div>}
-      {errors.videos && <div className="text-red-500">{errors.videos}</div>}
     </DndContext>
   );
 

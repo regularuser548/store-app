@@ -2,6 +2,7 @@ import {useForm} from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import TaxonForm from "@/Pages/Crm/Taxon/Components/TaxonForm.jsx";
+import {useState} from "react";
 
 export default function Create({taxon, taxons, taxonomy, props}) {
 
@@ -13,15 +14,20 @@ export default function Create({taxon, taxons, taxonomy, props}) {
     image: "",
   });
 
+  const [imageList, setImageList] = useState([]);
+
   function handleSubmit(e) {
     e.preventDefault();
+
+    data.image = imageList[0]?.originFileObj;
+
     post(route('taxon.store', {taxonomy: taxonomy.id}));
   }
 
 
   return (
     <CrmMenuLayout>
-      <TaxonForm fields={data} changeHandler={setData} taxons={taxons} submit={handleSubmit}></TaxonForm>
+      <TaxonForm fields={data} imageList={imageList} setImageList={setImageList} changeHandler={setData} taxons={taxons} submit={handleSubmit}></TaxonForm>
     </CrmMenuLayout>
   );
 

@@ -1,8 +1,9 @@
 import {usePage} from "@inertiajs/react";
 import FormField from "@/Components/FormField.jsx";
 import {Select, TreeSelect} from "antd";
+import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
 
-export default function TaxonForm({fields, taxons, changeHandler, submit, props}) {
+export default function TaxonForm({fields, imageList, setImageList, taxons, changeHandler, submit, props}) {
 
   const {errors} = usePage().props;
 
@@ -30,22 +31,6 @@ export default function TaxonForm({fields, taxons, changeHandler, submit, props}
                  changeHandler={handleChange}></FormField>
       <FormField id='slug' data={fields} placeholder='Slug' className='block' changeHandler={handleChange}></FormField>
 
-      {/*<Select id='parent'*/}
-      {/*        defaultValue={fields.parent === null ? 'Немає батька' : fields.parent}*/}
-      {/*        style={{*/}
-      {/*          width: 150,*/}
-      {/*        }}*/}
-      {/*        onChange={(value) => changeHandler(values => ({*/}
-      {/*          ...values,*/}
-      {/*          ['parent']: value,*/}
-      {/*        }))}*/}
-      {/*        options={[*/}
-      {/*          {label: 'Немає батька', value: null},*/}
-      {/*          ...taxons*/}
-      {/*        ]}*/}
-      {/*/>*/}
-
-
       <TreeSelect
         id='parent_id'
         //showSearch
@@ -69,9 +54,10 @@ export default function TaxonForm({fields, taxons, changeHandler, submit, props}
       <FormField id='priority' data={fields} placeholder='Пріорітет' required className='block'
                  changeHandler={handleChange}></FormField>
 
-      <input id="image" onChange={e => changeHandler('image', e.target.files[0])} type='file'
-             accept="image/*" className=''/>
-      {errors.image && <div className="text-red-500">{errors.image}</div>}
+      <MediaUploadForm fileList={imageList} changeHandler={setImageList} max={1} multiple={false} text='Додати Іконку'
+                       accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
+                       listType='picture-card'>
+      </MediaUploadForm>
 
       <input type='submit' className='block' value='Відправити'></input>
 
