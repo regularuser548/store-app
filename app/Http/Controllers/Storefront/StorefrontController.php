@@ -56,4 +56,9 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/FooterLinks/PrivacyPolicy');
     }
 
+    public function MessageToSeller(): Response
+    {
+        return Inertia::render('Storefront/MessageToSeller');
+    }
+
 }
