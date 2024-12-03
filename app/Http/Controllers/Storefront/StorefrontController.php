@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Storefront;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
@@ -31,7 +32,11 @@ class StorefrontController extends Controller
     public function show(Product $product): Response
     {
         $images = $this->mediaRepository->allMediaForModel($product);
-        return Inertia::render('Storefront/Show', compact('product', 'images'));
+        $comments = Comment::where('product_id', $product->id)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return Inertia::render('Storefront/Show', compact('product', 'images','comments'));
     }
 
     public function search(Request $request): Response
