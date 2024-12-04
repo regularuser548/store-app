@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Crm\MediaController;
 use App\Http\Controllers\Crm\ProductController;
+use App\Http\Controllers\Crm\ReportController;
 use App\Http\Controllers\Crm\TaxonController;
 use App\Http\Controllers\Crm\TaxonomyController;
 use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Storefront\CartController;
+use App\Http\Controllers\Storefront\CommentController;
 use App\Http\Controllers\Storefront\OrderController;
 use App\Http\Controllers\Storefront\StorefrontController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +42,14 @@ Route::middleware(['web'])->group(function () {
         ->name('order.confirmation');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::get('products/{product}', [CommentController::class, 'show'])->name('comments.show');
+    Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
+
+
 //Dashboard
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -52,7 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//CRM Product
+//CRM CRUD
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
     Route::resource('product', ProductController::class)->except(['show']);
     Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])->name('product.sync.mediaOrder');
@@ -83,6 +93,17 @@ Route::prefix('crm/user')->middleware(['auth', 'verified', RoleMiddleware::class
     Route::put('/{user}/update', [UserRoleController::class, 'update'])->name('user.update');
     Route::post('/{user}/block', [UserRoleController::class, 'block'])->name('user.block');
     Route::post('/{user}/unblock', [UserRoleController::class, 'unblock'])->name('user.unblock');
+    Route::get('/{user}/orders', [UserRoleController::class, 'viewUserOrders'])->name('user.orders');
+});
+
+
+
+Route::prefix('crm')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
+    Route::get('reports/activity', [ReportController::class, 'userActivityReport'])->name('reports.activity');
+    Route::get('reports/statistics/{id}', [ReportController::class, 'orderStatistics'])->name('reports.statistics');
+    Route::put('reports/statistics/update', [ReportController::class, 'updateOrderStatistics'])->name('reports.statistics.update');
+
 });
 
 require __DIR__ . '/auth.php';

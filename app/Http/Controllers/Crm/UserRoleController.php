@@ -8,6 +8,7 @@ use App\Repositories\MediaRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 use Konekt\Acl\Models\Permission;
 use Konekt\Acl\Models\Role;
 
@@ -97,5 +98,29 @@ class UserRoleController extends Controller
         $user->save();
 
         return redirect()->route('user.index')->with('success', 'User unblocked');
+    }
+
+    public function viewUserOrders(User $user): Response
+    {
+        // Получаем все заказы пользователя и связанные продукты
+        $userOrders = \DB::table('order_items as items')
+            ->join('orders', 'items.order_id', '=', 'orders.id')
+            ->join('products', 'items.product_id', '=', 'products.id')
+            ->select(
+                'orders.id as order_id',
+                'orders.ordered_at as order_date',
+                'items.quantity as ordered_quantity',
+                'items.price as price_per_unit',
+                'products.id as product_id',
+                'products.name as product_name'
+            )
+            ->where('orders.user_id', $user->id)
+            ->orderBy('orders.ordered_at', 'desc')
+            ->get();
+
+        return Inertia::render('Crm/UserRoles/ViewUserOrders', [
+            'user' => $user,
+            'orders' => $userOrders,
+        ]);
     }
 }

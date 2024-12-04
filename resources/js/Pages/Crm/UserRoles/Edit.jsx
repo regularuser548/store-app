@@ -1,6 +1,7 @@
 import React from "react";
 import { Head, router, useForm } from "@inertiajs/react";
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import {Button, Select} from "antd";
 
 export default function Edit({ user, roles, userRoles, permissions, userPermissions }) {
     const { data, setData, post, progress } = useForm({
@@ -38,6 +39,34 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="role">Roles</label>
+
+                      <Select
+                        defaultValue="lucy"
+                        style={{
+                          width: 120,
+                        }}
+                        onChange={handleChange}
+                        options={[
+                          {
+                            value: 'jack',
+                            label: 'Jack',
+                          },
+                          {
+                            value: 'lucy',
+                            label: 'Lucy',
+                          },
+                          {
+                            value: 'Yiminghe',
+                            label: 'yiminghe',
+                          },
+                          {
+                            value: 'disabled',
+                            label: 'Disabled',
+                            disabled: true,
+                          },
+                        ]}
+                      />
+
                         <select name="role" id="role" onChange={handleChange} value={data.role}>
                             {roles.map((role) => (
                                 <option
@@ -53,17 +82,17 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
 
                     <div>
                         {user.isBlocked ? (
-                            <button onClick={handleUnblock}>
+                            <Button onClick={handleUnblock}>
                                 Unblock User
-                            </button>
+                            </Button>
                         ) : (
-                            <button onClick={handleBlock}>
+                            <Button onClick={handleBlock}>
                                 Block User
-                            </button>
+                            </Button>
                         )}
                     </div>
 
-                    <button type="submit">Save Changes</button>
+                    <Button type="primary" onClick={handleSubmit}>Save Changes</Button>
                 </form>
             </div>
         </CrmMenuLayout>
