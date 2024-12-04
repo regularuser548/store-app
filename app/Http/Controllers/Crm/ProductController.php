@@ -10,21 +10,28 @@ use App\Http\Requests\Crm\Product\ProductUpdateRequest;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\TaxonRepository;
 use Auth;
 use Http;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use Vanilo\Category\Models\Taxonomy;
+use Vanilo\Foundation\Models\Taxon;
 
 class ProductController extends Controller
 {
     protected ProductRepository $repository;
     protected MediaRepository $mediaRepository;
+    protected TaxonRepository $taxonRepository;
 
-    public function __construct(ProductRepository $productRepository, MediaRepository $mediaRepository)
+    public function __construct(ProductRepository $productRepository,
+                                MediaRepository $mediaRepository,
+                                TaxonRepository $taxonRepository)
     {
         $this->repository = $productRepository;
         $this->mediaRepository = $mediaRepository;
+        $this->taxonRepository = $taxonRepository;
     }
 
     private function isVideoIdValid(?String $videoId): bool
@@ -64,6 +71,34 @@ class ProductController extends Controller
      */
     public function create(): Response
     {
+
+        $taxonomies = Taxonomy::all();
+        $taxonTree = [];
+
+        foreach ($taxonomies as $taxonomy) {
+            $taxons = Taxon::roots()->byTaxonomy($taxonomy)->get();
+
+
+            foreach ($taxons as $item) {
+                $taxonTree[] = $this->taxonRepository->buildTaxonTree($item, 'value', 'title');
+            }
+        }
+        //dd($taxonTree);
+
+        $taxonomies = Taxonomy::with('taxons.children')->get(); // Eager load taxons and their children
+
+        $tree = $taxonomies->map(function ($taxonomy) {
+            foreach ($taxons as $item) {
+                $taxonTree[] = $this->taxonRepository->buildTaxonTree($item, 'value', 'title');
+            }
+
+            return [
+                'id' => $taxonomy->id,
+                'name' => $taxonomy->name,
+                'taxons' => $this->taxonRepository->buildTaxonTree($taxonomy->taxons)
+            ];
+        });
+
         return Inertia::render('Crm/Product/Create');
     }
 

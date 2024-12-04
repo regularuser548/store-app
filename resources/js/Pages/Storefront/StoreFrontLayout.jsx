@@ -11,10 +11,9 @@ export default function StoreFrontLayout({props, children}) {
   const { auth } = usePage().props
   return (
     <div className='flex-auto'>
-      <Head title="ShopHub CRM"/>
       <header className="bg-[#161616]">
         <div className="flex justify-between items-center p-4 bg-[#161616] text-white md:px-[7%]">
-          <Link  href={route('storefront.index')} className="text-2xl font-bold text-[#ffffff]">ShopHub</Link>
+          <Link href={route('storefront.index')} className="text-2xl font-bold text-[#ffffff]">ShopHub</Link>
           <button className="bg-gray-700 text-white p-2 rounded-full flex items-center space-x-2">
             <span>Nightmode</span>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"

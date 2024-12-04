@@ -4,14 +4,13 @@ import Product from "@/Components/Product.jsx";
 
 export default function Index(props) {
 
-    return (
-        <CrmMenuLayout>
-            <Head title="ShopHub CRM" />
-            <div className='flex flex-wrap'>
-                {props.products.map( (item) => (
-                    <Product key={item.id} item={item} image={props.images[item.id]} isCrm={true}></Product>
-                ))}
-            </div>
-        </CrmMenuLayout>
-    );
+  return (
+    <CrmMenuLayout>
+      <div className='flex flex-wrap'>
+        {props.products.map((item) => (
+          <Product key={item.id} item={item} image={props.images[item.id]} isCrm={true}></Product>
+        ))}
+      </div>
+    </CrmMenuLayout>
+  );
 }

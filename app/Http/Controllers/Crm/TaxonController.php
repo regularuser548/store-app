@@ -73,7 +73,7 @@ class TaxonController extends Controller
 
             //$this->createMedia($taxon, $request);
             if ($request->hasFile('image')) {
-                $taxonomy->addMediaFromRequest('image')
+                $taxon->addMediaFromRequest('image')
                     ->withCustomProperties(['isPrimary' => true])
                     ->toMediaCollection();
             }
@@ -97,10 +97,12 @@ class TaxonController extends Controller
             $taxonTree[] = $this->repository->buildTaxonTree($item, 'value', 'title');
         }
 
+        //dd($taxon->getMedia()->first()?->getUrl());
         return Inertia::render('Crm/Taxon/Edit', [
             'taxons' => $taxonTree,
             'taxonomy' => $taxonomy,
-            'taxon' => $taxon
+            'taxon' => $taxon,
+            'image' => $taxon->getFirstMediaUrl()
         ]);
     }
 
@@ -114,11 +116,11 @@ class TaxonController extends Controller
         try {
 
             $oldParentId = $taxon->parent_id;
-            $taxon->update($request->except('images'));
+            $taxon->update($request->except('image'));
 
             if ($request->hasFile('image')) {
-                $taxonomy->clearMediaCollection();
-                $taxonomy->addMediaFromRequest('image')
+                $taxon->clearMediaCollection();
+                $taxon->addMediaFromRequest('image')
                     ->withCustomProperties(['isPrimary' => true])
                     ->toMediaCollection();
             }
