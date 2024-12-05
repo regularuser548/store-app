@@ -44,11 +44,10 @@ Route::middleware(['web'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
-    Route::get('products/{product}', [CommentController::class, 'show'])->name('comments.show');
+    //Route::get('products/{product}', [CommentController::class, 'show'])->name('comments.show');
     Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
-
 
 //Dashboard
 Route::get('/dashboard', function () {
@@ -96,9 +95,7 @@ Route::prefix('crm/user')->middleware(['auth', 'verified', RoleMiddleware::class
     Route::get('/{user}/orders', [UserRoleController::class, 'viewUserOrders'])->name('user.orders');
 });
 
-
-
-Route::prefix('crm')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
     Route::get('reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
     Route::get('reports/activity', [ReportController::class, 'userActivityReport'])->name('reports.activity');
     Route::get('reports/statistics/{id}', [ReportController::class, 'orderStatistics'])->name('reports.statistics');

@@ -32,6 +32,7 @@ class StorefrontController extends Controller
     public function show(Product $product): Response
     {
         $images = $this->mediaRepository->allMediaForModel($product);
+
         $comments = Comment::where('product_id', $product->id)
             ->with('user')
             ->orderBy('created_at', 'desc')

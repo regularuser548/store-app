@@ -26,15 +26,15 @@ class ProductController extends Controller
     protected TaxonRepository $taxonRepository;
 
     public function __construct(ProductRepository $productRepository,
-                                MediaRepository $mediaRepository,
-                                TaxonRepository $taxonRepository)
+                                MediaRepository   $mediaRepository,
+                                TaxonRepository   $taxonRepository)
     {
         $this->repository = $productRepository;
         $this->mediaRepository = $mediaRepository;
         $this->taxonRepository = $taxonRepository;
     }
 
-    private function isVideoIdValid(?String $videoId): bool
+    private function isVideoIdValid(?string $videoId): bool
     {
         //Video id can be null
         if ($videoId === null)
@@ -72,34 +72,30 @@ class ProductController extends Controller
     public function create(): Response
     {
 
-        $taxonomies = Taxonomy::all();
-        $taxonTree = [];
-
-        foreach ($taxonomies as $taxonomy) {
-            $taxons = Taxon::roots()->byTaxonomy($taxonomy)->get();
-
-
-            foreach ($taxons as $item) {
-                $taxonTree[] = $this->taxonRepository->buildTaxonTree($item, 'value', 'title');
-            }
-        }
-        //dd($taxonTree);
-
         $taxonomies = Taxonomy::with('taxons.children')->get(); // Eager load taxons and their children
 
-        $tree = $taxonomies->map(function ($taxonomy) {
-            foreach ($taxons as $item) {
-                $taxonTree[] = $this->taxonRepository->buildTaxonTree($item, 'value', 'title');
-            }
-
+        $taxonomyTree = $taxonomies->map(function ($taxonomy) {
             return [
-                'id' => $taxonomy->id,
-                'name' => $taxonomy->name,
-                'taxons' => $this->taxonRepository->buildTaxonTree($taxonomy->taxons)
+                'value' => $taxonomy->id,
+                'label' => $taxonomy->name,
+                'children' => $this->buildTaxonTree($taxonomy->taxons)
             ];
         });
+        //dd(json_encode($result, JSON_PRETTY_PRINT));
 
-        return Inertia::render('Crm/Product/Create');
+
+        return Inertia::render('Crm/Product/Create', compact('taxonomyTree'));
+    }
+
+    private function buildTaxonTree($taxons)
+    {
+        return $taxons->map(function ($taxon) {
+            return [
+                'value' => $taxon->id,
+                'label' => $taxon->name,
+                'children' => $this->buildTaxonTree($taxon->children)
+            ];
+        });
     }
 
     /**
@@ -114,6 +110,8 @@ class ProductController extends Controller
         $data['seller_id'] = Auth::id();
 
         $product = $this->repository->create($data);
+
+        $product->addTaxon(Taxon::find($data['taxon_id']));
 
         $this->mediaRepository->addMultipleMediaFromArray($product, $data['images']);
 
@@ -136,9 +134,19 @@ class ProductController extends Controller
      */
     public function edit(ProductShowRequest $request, Product $product): Response
     {
+        $taxonomies = Taxonomy::with('taxons.children')->get(); // Eager load taxons and their children
+
+        $taxonomyTree = $taxonomies->map(function ($taxonomy) {
+            return [
+                'value' => $taxonomy->id,
+                'label' => $taxonomy->name,
+                'children' => $this->buildTaxonTree($taxonomy->taxons)
+            ];
+        });
+
         $images = $this->mediaRepository->allMediaForModelWithIds($product);
 
-        return Inertia::render('Crm/Product/Edit', ['product' => $product, 'images' => $images]);
+        return Inertia::render('Crm/Product/Edit', compact('product', 'taxonomyTree', 'images'));
     }
 
     /**
@@ -150,6 +158,9 @@ class ProductController extends Controller
             return redirect()->back()->withErrors(['video_id' => 'Invalid video id']);
 
         $product = $this->repository->update($request->validated(), $product->id);
+
+        $product->removeTaxon($product->taxons()->first());
+        $product->addTaxon(Taxon::find($request['taxon_id']));
 
         if ($request->hasFile('images'))
             $this->mediaRepository->addMultipleMediaFromArray($product, $request->file('images'));

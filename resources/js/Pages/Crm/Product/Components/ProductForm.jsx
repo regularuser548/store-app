@@ -1,10 +1,10 @@
 import {usePage} from "@inertiajs/react";
 import FormField from "@/Components/FormField.jsx";
-import {Button, Input, Select} from "antd";
+import {Button, Cascader, Input, Select} from "antd";
 
 const {TextArea} = Input;
 
-export default function ProductForm({fields, changeHandler, submit, props}) {
+export default function ProductForm({fields, changeHandler, submit, taxonomyTree}) {
 
   const {errors} = usePage().props;
 
@@ -99,6 +99,10 @@ export default function ProductForm({fields, changeHandler, submit, props}) {
       ></Select>
       {errors.state && <div className="text-red-500">{errors.state}</div>}
 
+      <Cascader options={taxonomyTree} onChange={(value) => changeHandler(values => ({
+        ...values,
+        ['taxon_id']: value?.at(-1),
+      }))} changeOnSelect/>
 
       <Button type="primary" onClick={submit}>Відправити</Button>
     </form>
