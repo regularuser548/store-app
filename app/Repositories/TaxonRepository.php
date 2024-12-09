@@ -2,12 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Http\Controllers\Crm\TaxonomyController;
-use App\Models\Product;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Vanilo\Category\Contracts\Taxon as TaxonContract;
-use Vanilo\Category\Contracts\Taxonomy;
 use Vanilo\Foundation\Models\Taxon;
 
 class TaxonRepository extends BaseRepository
@@ -17,19 +13,32 @@ class TaxonRepository extends BaseRepository
         parent::__construct($taxon);
     }
 
-    public function buildTaxonTree(Taxon $taxon, string $idAlias = 'id', string $nameAlias = 'name'): array
+    public function buildTaxonTree(Taxon $taxon): array
     {
         $tree = [
-            $idAlias => $taxon->id,
-            $nameAlias => $taxon->name,
+            'id' => $taxon->id,
+            'name' => $taxon->name,
         ];
 
         foreach ($taxon->children as $child) {
-            $tree['children'][] = $this->buildTaxonTree($child, $idAlias, $nameAlias);
+            $tree['children'][] = $this->buildTaxonTree($child);
         }
 
         return $tree;
     }
+
+    public function findTaxonParents(Taxon $taxon)
+    {
+        $parents = [$taxon];
+        $parent = $taxon->parent;
+
+        if ($parent === null)
+            return $parents;
+
+        $parents[] = $this->findTaxonParents($parent);
+        return $parent;
+    }
+
 
 }
 

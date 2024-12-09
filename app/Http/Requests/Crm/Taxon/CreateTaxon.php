@@ -5,18 +5,20 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Crm\Taxon;
 
+use App\Traits\ValidatesMedia;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateTaxon extends FormRequest
 {
+    use ValidatesMedia;
     public function rules(): array
     {
         return [
             'name' => 'required|min:2|max:255',
+            'slug' => 'nullable|min:2|max:255',
             'parent_id' => 'nullable|exists:taxons,id',
             'priority' => 'nullable|integer',
-            'images' => 'nullable',
-            'images.*' => 'image|mimes:jpg,jpeg,pjpg,png,gif,webp',
+            'image' => 'nullable|'.$this->getImageRules(),
         ];
     }
 

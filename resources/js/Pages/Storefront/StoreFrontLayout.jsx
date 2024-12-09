@@ -1,14 +1,30 @@
 import {Head, Link, router, useForm, usePage} from "@inertiajs/react";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {Button, Cascader} from "antd";
 
 export default function StoreFrontLayout({props, children}) {
+
+  const [query, setQuery] = useState('');
+  const {auth} = usePage().props
+
+  const [categoryData, setCategoryData] = useState(null);
+
   const handleSearch = (e) => {
     e.preventDefault();
     router.visit(route('storefront.search'), {method: 'get', data: {query}});
   };
 
-  const [query, setQuery] = useState('');
-  const { auth } = usePage().props
+  const handleCategorySelect = (e) => {
+    e.preventDefault();
+
+  }
+
+  //Fetch category data on component mount
+  useEffect(() => {
+    axios(route('storefront.categories'))
+      .then((response) => setCategoryData(response.data));
+  }, []);
+
   return (
     <div className='flex-auto'>
       <header className="bg-[#161616]">
@@ -26,8 +42,13 @@ export default function StoreFrontLayout({props, children}) {
 
         {/* Bottom Part */}
         <div className="flex flex-col md:flex-row items-center justify-between bg-[#272525] p-4 md:px-[7%]">
-          <button className="bg-[#ff8000] text-black px-4 py-2 rounded-md w-full md:w-auto mb-2 md:mb-0">Категорії
-          </button>
+          {/*<button className="bg-[#ff8000] text-black px-4 py-2 rounded-md w-full md:w-auto mb-2 md:mb-0">Категорії*/}
+          {/*</button>*/}
+
+          <Cascader fieldNames={{label: 'name', value: 'id'}} options={categoryData} onChange={handleCategorySelect}>
+            <Button type='primary' className="">Категорії</Button>
+          </Cascader>
+
 
           <form onSubmit={handleSearch} className="relative w-full max-w-md mx-auto md:mx-4">
             <div className="flex">
@@ -67,7 +88,7 @@ export default function StoreFrontLayout({props, children}) {
             </Link>
 
 
-            {auth.user === null ?(
+            {auth.user === null ? (
               <Link href={route('login')} className="flex flex-col items-center text-[#ffffff] hover:text-orange-500">
                 <svg className="w-6 h-6 mb-1" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path

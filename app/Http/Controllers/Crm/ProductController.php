@@ -10,6 +10,7 @@ use App\Http\Requests\Crm\Product\ProductUpdateRequest;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\TaxonomyRepository;
 use App\Repositories\TaxonRepository;
 use Auth;
 use Http;
@@ -24,14 +25,17 @@ class ProductController extends Controller
     protected ProductRepository $repository;
     protected MediaRepository $mediaRepository;
     protected TaxonRepository $taxonRepository;
+    protected TaxonomyRepository $taxonomyRepository;
 
     public function __construct(ProductRepository $productRepository,
                                 MediaRepository   $mediaRepository,
-                                TaxonRepository   $taxonRepository)
+                                TaxonRepository   $taxonRepository,
+                                TaxonomyRepository $taxonomyRepository)
     {
         $this->repository = $productRepository;
         $this->mediaRepository = $mediaRepository;
         $this->taxonRepository = $taxonRepository;
+        $this->taxonomyRepository = $taxonomyRepository;
     }
 
     private function isVideoIdValid(?string $videoId): bool
@@ -40,9 +44,9 @@ class ProductController extends Controller
         if ($videoId === null)
             return true;
 
-        $response = Http::head("https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={$videoId}&format=json");
+        $res = Http::head("https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={$videoId}&format=json");
 
-        if ($response->successful())
+        if ($res->successful())
             return true;
 
         return false;
@@ -71,31 +75,11 @@ class ProductController extends Controller
      */
     public function create(): Response
     {
-
         $taxonomies = Taxonomy::with('taxons.children')->get(); // Eager load taxons and their children
-
-        $taxonomyTree = $taxonomies->map(function ($taxonomy) {
-            return [
-                'value' => $taxonomy->id,
-                'label' => $taxonomy->name,
-                'children' => $this->buildTaxonTree($taxonomy->taxons)
-            ];
-        });
+        $taxonomyTree = $this->taxonomyRepository->buildTaxonomyTree($taxonomies);
         //dd(json_encode($result, JSON_PRETTY_PRINT));
 
-
         return Inertia::render('Crm/Product/Create', compact('taxonomyTree'));
-    }
-
-    private function buildTaxonTree($taxons)
-    {
-        return $taxons->map(function ($taxon) {
-            return [
-                'value' => $taxon->id,
-                'label' => $taxon->name,
-                'children' => $this->buildTaxonTree($taxon->children)
-            ];
-        });
     }
 
     /**
@@ -122,31 +106,21 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-//    public function show(ProductCheckOwnershipRequest $request, Product $product): Response
-//    {
-//        return Inertia::render('Crm/Product/Show', ['product' => $product]);
-//    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(ProductShowRequest $request, Product $product): Response
     {
         $taxonomies = Taxonomy::with('taxons.children')->get(); // Eager load taxons and their children
 
-        $taxonomyTree = $taxonomies->map(function ($taxonomy) {
-            return [
-                'value' => $taxonomy->id,
-                'label' => $taxonomy->name,
-                'children' => $this->buildTaxonTree($taxonomy->taxons)
-            ];
-        });
+        $taxonomyTree = $this->taxonomyRepository->buildTaxonomyTree($taxonomies);
+        //dd($taxonomyTree);
+
+        $currentCategory = $this->taxonRepository->findTaxonParents($product->taxons()->first());
 
         $images = $this->mediaRepository->allMediaForModelWithIds($product);
 
-        return Inertia::render('Crm/Product/Edit', compact('product', 'taxonomyTree', 'images'));
+        return Inertia::render('Crm/Product/Edit', compact('product', 'taxonomyTree',
+            'images', 'currentCategory'));
     }
 
     /**
@@ -159,7 +133,7 @@ class ProductController extends Controller
 
         $product = $this->repository->update($request->validated(), $product->id);
 
-        $product->removeTaxon($product->taxons()->first());
+        $product->taxons()->detach();
         $product->addTaxon(Taxon::find($request['taxon_id']));
 
         if ($request->hasFile('images'))

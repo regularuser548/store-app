@@ -10,9 +10,24 @@ use Vanilo\Category\Contracts\Taxonomy;
 
 class TaxonomyRepository extends BaseRepository
 {
-    public function __construct(Taxonomy $taxonomy)
+    private TaxonRepository $taxonRepository;
+    public function __construct(Taxonomy $taxonomy, TaxonRepository $taxonRepository)
     {
         parent::__construct($taxonomy);
+        $this->taxonRepository = $taxonRepository;
+    }
+
+    public function buildTaxonomyTree(Collection $taxonomies): Collection
+    {
+        return $taxonomies->map(function ($taxonomy) {
+            return [
+                'id' => $taxonomy->id,
+                'name' => $taxonomy->name,
+                'children' => $taxonomy->taxons->map(function ($taxon) {
+                    return $this->taxonRepository->buildTaxonTree($taxon);
+                })
+            ];
+        });
     }
 
 

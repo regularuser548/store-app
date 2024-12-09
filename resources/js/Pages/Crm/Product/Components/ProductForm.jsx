@@ -18,6 +18,8 @@ export default function ProductForm({fields, changeHandler, submit, taxonomyTree
 
   }
 
+
+
   return (
     <form onSubmit={submit} className='w-72'>
 
@@ -99,7 +101,7 @@ export default function ProductForm({fields, changeHandler, submit, taxonomyTree
       ></Select>
       {errors.state && <div className="text-red-500">{errors.state}</div>}
 
-      <Cascader options={taxonomyTree} onChange={(value) => changeHandler(values => ({
+      <Cascader fieldNames={{label: 'name', value: 'id'}} options={taxonomyTree} onChange={(value) => changeHandler(values => ({
         ...values,
         ['taxon_id']: value?.at(-1),
       }))} changeOnSelect/>

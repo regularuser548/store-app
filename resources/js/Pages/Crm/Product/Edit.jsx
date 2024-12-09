@@ -10,7 +10,7 @@ import {CSS} from "@dnd-kit/utilities";
 import SortableMediaList from "@/Pages/Crm/Product/Components/SortableMediaList.jsx";
 import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
 
-export default function Edit({product, images, taxonomyTree}) {
+export default function Edit({product, images, taxonomyTree, currentCategory}) {
   //https://vanilo.io/docs/4.x/products#all-product-fields
   const {data, setData, post, progress} = useForm({
     name: product.name,
@@ -75,6 +75,7 @@ export default function Edit({product, images, taxonomyTree}) {
 
 
       <SortableMediaList images={imageList} setImages={setImageList}></SortableMediaList>
+
       <div>
         <MediaUploadForm fileList={uploadingImages} changeHandler={setUploadingImages} max={10} text='Додати Фото'
                          accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'

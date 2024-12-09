@@ -48,7 +48,7 @@ class TaxonController extends Controller
         $taxonTree = [];
         $taxons = TaxonProxy::roots()->byTaxonomy($taxonomy)->get();
         foreach ($taxons as $item) {
-            $taxonTree[] = $this->repository->buildTaxonTree($item, 'value', 'label');
+            $taxonTree[] = $this->repository->buildTaxonTree($item);
         }
 
         return Inertia::render('Crm/Taxon/Create', [
@@ -94,7 +94,7 @@ class TaxonController extends Controller
 
         $taxonTree = [];
         foreach ($taxons as $item) {
-            $taxonTree[] = $this->repository->buildTaxonTree($item, 'value', 'title');
+            $taxonTree[] = $this->repository->buildTaxonTree($item);
         }
 
         //dd($taxon->getMedia()->first()?->getUrl());

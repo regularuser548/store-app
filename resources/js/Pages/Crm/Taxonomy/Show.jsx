@@ -45,6 +45,7 @@ export default function Show({taxonomy, taxons, image = null, props}) {
     <CrmMenuLayout>
       {taxons && taxons.length > 0 ? (
           <Tree
+            fieldNames={{title: 'name', key: 'id'}}
             showLine
             onSelect={handleSelect}
             // onCheck={onCheck}

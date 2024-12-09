@@ -32,6 +32,7 @@ export default function TaxonForm({fields, imageList, setImageList, taxons, chan
       <FormField id='slug' data={fields} placeholder='Slug' className='block' changeHandler={handleChange}></FormField>
 
       <TreeSelect
+        fieldNames={{label: 'name', value: 'id'}}
         id='parent_id'
         //showSearch
         style={{
@@ -47,7 +48,7 @@ export default function TaxonForm({fields, imageList, setImageList, taxons, chan
         onChange={handleSelect}
         treeDefaultExpandAll
         //onChange={onChange}
-        treeData={[{title: 'Немає батька', value: ''}, ...taxons]}
+        treeData={[{name: 'Немає батька', id: ''}, ...taxons]}
         //onPopupScroll={onPopupScroll}
       />
 

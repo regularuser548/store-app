@@ -79,7 +79,7 @@ class TaxonomyController extends Controller
 
         $taxonTree = [];
         foreach ($taxons as $taxon) {
-            $taxonTree[] = $this->taxonRepository->buildTaxonTree($taxon, 'key', 'title');
+            $taxonTree[] = $this->taxonRepository->buildTaxonTree($taxon);
         }
         //dd(json_encode($taxonTree, JSON_PRETTY_PRINT));
         return Inertia::render('Crm/Taxonomy/Show', ['taxonomy' => $taxonomy, 'taxons' => $taxonTree]);
