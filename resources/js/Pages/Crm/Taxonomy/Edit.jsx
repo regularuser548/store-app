@@ -31,7 +31,7 @@ export default function Edit({taxonomy, image = null, props}) {
       {image ?
         <img src={image} className='w-1/4' alt='image'/>
         :
-        <Empty description={'Немає Іконки'}></Empty>}
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає іконки'}></Empty>}
 
       <Button className='bg-red-500'
               onClick={e => router.delete(route('taxonomy.destroy', {taxonomy: taxonomy.id}))}>Видалити

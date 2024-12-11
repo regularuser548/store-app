@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Product from '../../Components/Product.jsx';
 import {Link, router} from "@inertiajs/react";
-import {Button, Card, Carousel, Col, DatePicker, Image, Row, Space, version} from "antd";
+import {Button, Card, Carousel, Col, DatePicker, Empty, Flex, Image, Row, Space, version} from "antd";
 import StoreFrontLayout from "./StoreFrontLayout.jsx"
 
 export default function Index({products, images}) {
@@ -80,15 +80,18 @@ export default function Index({products, images}) {
           </div>
 
           <div className="text-white text-4xl p-20 ps-5">Найбільш популярні товари</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-            {products.length > 0 ? (
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
               products.map((product) => (
-                <Product item={product} image={images[product.id]} isCrm={false}></Product>
+              <Product item={product} image={images[product.id]} isCrm={false}></Product>
               ))
-            ) : (
-              <p>No products found</p>
-            )}
-          </div>
+            </div>
+          ) : (
+            <Flex justify='center' align='center'>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає товарів'}></Empty>
+            </Flex>
+
+          )}
           <div className="p-20"></div>
           <div className="relative overflow-hidden rounded-md ">
             <Carousel arrows autoplay centerSlidePercentage={100}
@@ -106,15 +109,20 @@ export default function Index({products, images}) {
             </Carousel>
           </div>
           <div className="text-white text-4xl p-20 ps-5">Всі акції</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-            {products.length > 0 ? (
+
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
               products.map((product) => (
-                <Product item={product} image={images[product.id]} isCrm={false}></Product>
+              <Product item={product} image={images[product.id]} isCrm={false}></Product>
               ))
-            ) : (
-              <p>No products found</p>
-            )}
-          </div>
+            </div>
+          ) : (
+            <Flex justify='center' align='center'>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає товарів'}></Empty>
+            </Flex>
+
+          )}
+
         </main>
 
       </div>

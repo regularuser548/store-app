@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Storefront;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Storefront\ProductSearchRequest;
 use App\Models\Comment;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Vanilo\Category\Models\Taxonomy;
+use Vanilo\Foundation\Models\Taxon;
 use Vanilo\Foundation\Search\ProductSearch;
 
 class StorefrontController extends Controller
@@ -48,23 +50,28 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/Show', compact('product', 'images','comments'));
     }
 
-    public function search(Request $request): Response
+    public function search(ProductSearchRequest $request, Taxon $taxon = null): Response
     {
-        //todo: переделать с использованием https://vanilo.io/docs/4.x/product-search
-        $query = $request->input('query');
+        $productFinder = new ProductSearch();
 
-        //$products = Product::where('name', 'like', '%' . $query . '%')->get();
+        $properties = [];
 
-        $products = (new ProductSearch())
-            ->withinTaxon(Taxon::findBySlug('mens-shoes'))
-            ->havingPropertyValuesByName('color', ['red', 'yellow'])
-            ->havingPropertyValuesByName('style', ['casual'])
-            ->nameContains('Retro')
-            ->paginate(50);
+        if ($taxon) {
+            $productFinder->withinTaxon($taxon);
+        }
+
+//        foreach ($request->filters($properties) as $property => $values) {
+//            $productFinder->havingPropertyValuesByName($property, $values);
+//        }
+
+        if ($request->filled('query'))
+            $productFinder->nameContains($request->input('query'));
+
+        $products = $productFinder->getResults();
 
         $images = $this->mediaRepository->primaryImageForEach($products);
 
-        return Inertia::render('Storefront/Index', ['products' => $products, 'images' => $images]);
+        return Inertia::render('Storefront/Search', ['products' => $products, 'images' => $images]);
     }
 
     public function PrivacyPolicy(): Response

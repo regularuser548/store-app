@@ -1,6 +1,8 @@
 import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import Taxonomy from "@/Pages/Crm/Taxonomy/Components/Taxonomy.jsx";
 import React from "react";
+import {Button, Empty} from "antd";
+import {router} from "@inertiajs/react";
 
 export default function Index({taxonomies, images, props}) {
 
@@ -12,7 +14,9 @@ export default function Index({taxonomies, images, props}) {
                         <Taxonomy key={item.id} item={item} image={images[item.id]}></Taxonomy>
                     ))
                 ) : (
-                    <p>No taxonomies found</p>
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає підкатегорій'}>
+                    <Button type="primary" onClick={() => router.visit(route('taxon.create'))}>Додати</Button>
+                  </Empty>
                 )}
             </div>
         </CrmMenuLayout>

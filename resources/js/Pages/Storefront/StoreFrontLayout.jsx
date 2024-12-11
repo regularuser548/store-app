@@ -1,6 +1,6 @@
 import {Head, Link, router, useForm, usePage} from "@inertiajs/react";
 import React, {useEffect, useState} from "react";
-import {Button, Cascader} from "antd";
+import {Button, Cascader, Divider} from "antd";
 
 export default function StoreFrontLayout({props, children}) {
 
@@ -14,9 +14,8 @@ export default function StoreFrontLayout({props, children}) {
     router.visit(route('storefront.search'), {method: 'get', data: {query}});
   };
 
-  const handleCategorySelect = (e) => {
-    e.preventDefault();
-
+  const handleCategorySelect = (e, value) => {
+    router.visit(route('storefront.search', {taxon: value.at(-1)}));
   }
 
   //Fetch category data on component mount
@@ -42,11 +41,10 @@ export default function StoreFrontLayout({props, children}) {
 
         {/* Bottom Part */}
         <div className="flex flex-col md:flex-row items-center justify-between bg-[#272525] p-4 md:px-[7%]">
-          {/*<button className="bg-[#ff8000] text-black px-4 py-2 rounded-md w-full md:w-auto mb-2 md:mb-0">Категорії*/}
-          {/*</button>*/}
 
           <Cascader fieldNames={{label: 'name', value: 'id'}} options={categoryData} onChange={handleCategorySelect}>
-            <Button type='primary' className="">Категорії</Button>
+            <button className="bg-[#ff8000] text-black px-4 py-2 rounded-md w-full md:w-auto mb-2 md:mb-0">Категорії
+            </button>
           </Cascader>
 
 
@@ -56,7 +54,7 @@ export default function StoreFrontLayout({props, children}) {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search for a products"
+                placeholder="Шукати товари"
                 className="w-full p-2 rounded-l-md bg-white text-black border-none focus:outline-none"
               />
               <button type="submit" className="bg-orange-500 p-2 rounded-r-md hover:bg-orange-600 transition-colors">
@@ -70,7 +68,8 @@ export default function StoreFrontLayout({props, children}) {
           </form>
 
           <div className="flex space-x-4 mt-4 md:mt-0 text-gray-300">
-            <Link href={route('cart.show')} className="flex flex-col items-center text-[#ffffff] hover:text-orange-500">
+            <Link href={route('cart.show')}
+                  className="flex flex-col items-center text-[#ffffff] hover:text-orange-500">
               <svg className="w-6 h-6 mb-1" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M12 22.9115L10.55 21.495C5.4 16.4834 2 13.1674 2 9.12169C2 5.80569 4.42 3.21942 7.5 3.21942C9.24 3.21942 10.91 4.08866 12 5.45155C13.09 4.08866 14.76 3.21942 16.5 3.21942C19.58 3.21942 22 5.80569 22 9.12169C22 13.1674 18.6 16.4834 13.45 21.495L12 22.9115Z"
@@ -78,7 +77,8 @@ export default function StoreFrontLayout({props, children}) {
               </svg>
               <span>Довподоби</span>
             </Link>
-            <Link href={route('cart.show')} className="flex flex-col items-center text-[#ffffff] hover:text-orange-500">
+            <Link href={route('cart.show')}
+                  className="flex flex-col items-center text-[#ffffff] hover:text-orange-500">
               <svg className="w-6 h-6 mb-1" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M17.7084 18.75C16.5521 18.75 15.625 19.6771 15.625 20.8333C15.625 21.3859 15.8445 21.9158 16.2352 22.3065C16.6259 22.6972 17.1558 22.9167 17.7084 22.9167C18.2609 22.9167 18.7908 22.6972 19.1815 22.3065C19.5722 21.9158 19.7917 21.3859 19.7917 20.8333C19.7917 20.2808 19.5722 19.7509 19.1815 19.3602C18.7908 18.9695 18.2609 18.75 17.7084 18.75ZM1.04169 2.08333V4.16666H3.12502L6.87502 12.0729L5.45835 14.625C5.3021 14.9167 5.20835 15.2604 5.20835 15.625C5.20835 16.1775 5.42785 16.7074 5.81855 17.0981C6.20925 17.4888 6.73915 17.7083 7.29169 17.7083H19.7917V15.625H7.72919C7.66012 15.625 7.59388 15.5976 7.54504 15.5487C7.49621 15.4999 7.46877 15.4336 7.46877 15.3646C7.46877 15.3125 7.47919 15.2708 7.50002 15.2396L8.43752 13.5417H16.1979C16.9792 13.5417 17.6667 13.1042 18.0209 12.4687L21.75 5.72916C21.8229 5.5625 21.875 5.38541 21.875 5.20833C21.875 4.93206 21.7653 4.66711 21.5699 4.47176C21.3746 4.27641 21.1096 4.16666 20.8334 4.16666H5.4271L4.44794 2.08333M7.29169 18.75C6.13544 18.75 5.20835 19.6771 5.20835 20.8333C5.20835 21.3859 5.42785 21.9158 5.81855 22.3065C6.20925 22.6972 6.73915 22.9167 7.29169 22.9167C7.84422 22.9167 8.37413 22.6972 8.76483 22.3065C9.15553 21.9158 9.37502 21.3859 9.37502 20.8333C9.37502 20.2808 9.15553 19.7509 8.76483 19.3602C8.37413 18.9695 7.84422 18.75 7.29169 18.75Z"
@@ -237,7 +237,8 @@ export default function StoreFrontLayout({props, children}) {
 
                 </li>
                 <li>
-                  <a href="#" className="text-[#ffffff] hover:text-orange-500">ShopHub Обмін<br/>Корпоративним клієнтам</a>
+                  <a href="#" className="text-[#ffffff] hover:text-orange-500">ShopHub Обмін<br/>Корпоративним
+                    клієнтам</a>
                 </li>
               </ul>
             </div>

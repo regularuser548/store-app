@@ -52,13 +52,15 @@ export default function Show({taxonomy, taxons, image = null, props}) {
             treeData={taxons}
             defaultExpandAll
           />) :
-        <Empty description={'Немає підкатегорій'}></Empty>}
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає підкатегорій'}>
+        </Empty>
+      }
 
-
-      <Button onClick={() => router.visit(route('taxon.create', {taxonomy: taxonomy.id}))}
-              className='border bg-gray-200'>
-        Створити Підкатегорію
-      </Button>
+      {/*<Button onClick={() => router.visit(route('taxon.create', {taxonomy: taxonomy.id}))}*/}
+      {/*        className='border bg-gray-200'>*/}
+      {/*  Створити Підкатегорію*/}
+      {/*</Button>*/}
+      <Button type="primary" onClick={() => router.visit(route('taxon.create', {taxonomy: taxonomy.id}))}>Додати</Button>
     </CrmMenuLayout>
   );
 

@@ -90,7 +90,7 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
           id="ytplayer" type="text/html" width="640" height="360"
           src={`https://www.youtube.com/embed/${product.video_id}?rel=0&iv_load_policy=3`}>
         </iframe> :
-        <Empty description={
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
           <span>Відео відсутнє</span>
       }/>}
 

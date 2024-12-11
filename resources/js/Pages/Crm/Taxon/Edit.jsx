@@ -3,7 +3,7 @@ import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import TaxonForm from "@/Pages/Crm/Taxon/Components/TaxonForm.jsx";
 import {Button, Empty} from "antd";
-import {useState} from "react";
+import React, {useState} from "react";
 
 export default function Edit({taxon, taxonomy, taxons, image = null, props}) {
 
@@ -33,7 +33,7 @@ export default function Edit({taxon, taxonomy, taxons, image = null, props}) {
       {image ?
         <img src={image} className='w-1/4' alt='image'/>
         :
-        <Empty description={'Немає Фото'}></Empty>
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає іконки'}></Empty>
       }
 
       <Button className=''

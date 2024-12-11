@@ -1,6 +1,7 @@
 import {usePage} from "@inertiajs/react";
 import FormField from "@/Components/FormField.jsx";
 import {Button, Cascader, Input, Select} from "antd";
+import React from "react";
 
 const {TextArea} = Input;
 
@@ -17,6 +18,12 @@ export default function ProductForm({fields, changeHandler, submit, taxonomyTree
     }))
 
   }
+
+  const dropdownRender = (menus) => (
+    <div style={{ height: '100%' }}>
+      {menus}
+    </div>
+  );
 
 
 
@@ -101,7 +108,7 @@ export default function ProductForm({fields, changeHandler, submit, taxonomyTree
       ></Select>
       {errors.state && <div className="text-red-500">{errors.state}</div>}
 
-      <Cascader fieldNames={{label: 'name', value: 'id'}} options={taxonomyTree} onChange={(value) => changeHandler(values => ({
+      <Cascader placement={'topLeft'} fieldNames={{label: 'name', value: 'id'}} options={taxonomyTree} onChange={(value) => changeHandler(values => ({
         ...values,
         ['taxon_id']: value?.at(-1),
       }))} changeOnSelect/>

@@ -115,7 +115,9 @@ class ProductController extends Controller
         $taxonomyTree = $this->taxonomyRepository->buildTaxonomyTree($taxonomies);
         //dd($taxonomyTree);
 
-        $currentCategory = $this->taxonRepository->findTaxonParents($product->taxons()->first());
+        $currentCategory = null;
+        if ($product->taxons()->count() > 0)
+            $currentCategory = $this->taxonRepository->findTaxonParents($product->taxons()->first());
 
         $images = $this->mediaRepository->allMediaForModelWithIds($product);
 
