@@ -16,6 +16,7 @@ abstract class BaseProductRequest extends FormRequest
 
         return $this->user()->id === $this->product->seller_id;
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -35,7 +36,8 @@ abstract class BaseProductRequest extends FormRequest
             'description' => 'required|min:3|max:255',
             'meta_keywords' => 'nullable|min:3|max:255',
             'state' => 'required|in:draft,inactive,active,unavailable,retired',
-            'video_id' =>'nullable|max:255',
+            'video_id' => 'nullable|max:255',
+            'taxon_id' => 'required|integer|exists:taxons,id',
 
             'images' => 'nullable|list|max:10',
             'images.*' => $this->getImageRules(),

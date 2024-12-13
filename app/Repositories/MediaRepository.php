@@ -17,7 +17,7 @@ class MediaRepository extends BaseRepository
         parent::__construct($media);
     }
 
-    public function firstMediaForEach(Collection $collection, string $mediaCollection = "default", string $urlType=""): array
+    public function firstMediaForEach(Collection $collection, string $mediaCollection = "default", string $urlType = ""): array
     {
         return $collection->mapWithKeys(function ($model) use ($urlType, $mediaCollection) {
             // Return an associative array with the product id as key and image URLs as value
@@ -27,14 +27,14 @@ class MediaRepository extends BaseRepository
         })?->toArray();
     }
 
-    public function allMediaForModel(Model $model, string $mediaCollection = "default", string $urlType=""): array
+    public function allMediaForModel(Model $model, string $mediaCollection = "default", string $urlType = ""): array
     {
         return $model->getMedia($mediaCollection)->map(function ($mediaItem) use ($urlType) {
             return $mediaItem->getUrl($urlType);
         })->toArray();
     }
 
-    public function allMediaForModelWithIds(Model $model, string $mediaCollection = "default", string $urlType=""): array
+    public function allMediaForModelWithIds(Model $model, string $mediaCollection = "default", string $urlType = ""): array
     {
         return $model->getMedia($mediaCollection)->map(function ($mediaItem) use ($urlType) {
             return ['id' => $mediaItem->id, 'url' => $mediaItem->getUrl($urlType),
@@ -52,7 +52,7 @@ class MediaRepository extends BaseRepository
         return true;
     }
 
-    public function primaryImageForEach(Collection $collection, string $mediaCollection = self::IMAGE_COLLECTION_NAME, string $urlType=""): array
+    public function primaryImageForEach(Collection $collection, string $mediaCollection = self::IMAGE_COLLECTION_NAME, string $urlType = ""): array
     {
         return $collection->mapWithKeys(function ($model) use ($urlType, $mediaCollection) {
             // Return an associative array with the product id as key and image URLs as value
@@ -90,7 +90,6 @@ class MediaRepository extends BaseRepository
 
         return true;
     }
-
 
 
 }

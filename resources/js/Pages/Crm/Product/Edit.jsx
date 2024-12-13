@@ -10,7 +10,7 @@ import {CSS} from "@dnd-kit/utilities";
 import SortableMediaList from "@/Pages/Crm/Product/Components/SortableMediaList.jsx";
 import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
 
-export default function Edit({product, images, videos = null, props}) {
+export default function Edit({product, images, taxonomyTree, currentCategory}) {
   //https://vanilo.io/docs/4.x/products#all-product-fields
   const {data, setData, post, progress} = useForm({
     name: product.name,
@@ -25,6 +25,7 @@ export default function Edit({product, images, videos = null, props}) {
     meta_keywords: product.meta_keywords,
     state: product.state,
     video_id: product.video_id,
+    taxon_id: product.taxon_id,
 
     images: '',
 
@@ -68,12 +69,13 @@ export default function Edit({product, images, videos = null, props}) {
 
   return (
     <CrmMenuLayout className="">
-      <ProductForm fields={data} changeHandler={setData} submit={handleSubmit}></ProductForm>
+      <ProductForm fields={data} changeHandler={setData} taxonomyTree={taxonomyTree} submit={handleSubmit}></ProductForm>
 
       {/*<button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>*/}
 
 
       <SortableMediaList images={imageList} setImages={setImageList}></SortableMediaList>
+
       <div>
         <MediaUploadForm fileList={uploadingImages} changeHandler={setUploadingImages} max={10} text='Додати Фото'
                          accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
@@ -88,7 +90,7 @@ export default function Edit({product, images, videos = null, props}) {
           id="ytplayer" type="text/html" width="640" height="360"
           src={`https://www.youtube.com/embed/${product.video_id}?rel=0&iv_load_policy=3`}>
         </iframe> :
-        <Empty description={
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
           <span>Відео відсутнє</span>
       }/>}
 

@@ -3,12 +3,12 @@ import StoreFrontLayout from "@/Pages/Storefront/StoreFrontLayout.jsx";
 import React from "react";
 
 export default function ProfileLayout({props, children}) {
-  const { auth } = usePage().props
+  const {auth} = usePage().props
   return (
 
     <div className="flex-auto bg-[#0f0f0f]">
 
-      {auth.user ?(
+      {auth.user ? (
         <div className="flex flex-col md:flex-row h-full p-3">
           {/* Левая панель */}
           <div className="w-full md:w-64 text-white p-7 flex flex-col">

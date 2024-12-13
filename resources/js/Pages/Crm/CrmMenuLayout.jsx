@@ -4,7 +4,7 @@ export default function CrmMenuLayout({props, children}) {
 
     return (
         <div className='flex'>
-            <Head title="ShopHub CRM"/>
+            <Head title="CRM"/>
 
           <div className=''>
             <Link href={route('storefront.index')} className="block border">Головна</Link>

@@ -44,7 +44,7 @@ export default function Product({item, image, isCrm = false}) {
     //
     // </div>
 
-    <div id={item.id}
+    <article id={item.id}
          className="
          rounded-lg shadow-lg overflow-hidden">
       <div className="flex items-center justify-center h-80  bg-gray-200">
@@ -111,7 +111,7 @@ export default function Product({item, image, isCrm = false}) {
           </div>
         </div>
       </div>
-    </div>
+    </article>
 
   );
 }

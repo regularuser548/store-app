@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Product from '../../Components/Product.jsx';
 import {Link, router} from "@inertiajs/react";
-import {Button, Card, Carousel, Col, DatePicker, Image, Row, Space, version} from "antd";
+import {Button, Card, Carousel, Col, DatePicker, Empty, Flex, Image, Row, Space, version} from "antd";
 import StoreFrontLayout from "./StoreFrontLayout.jsx"
 
 export default function Index({products, images}) {
@@ -59,74 +59,73 @@ export default function Index({products, images}) {
 
   return (
     <StoreFrontLayout>
-    <div className="bg-[#0f0f0f] min-h-screen">
-      {/* Header */}
+      <div className="bg-[#0f0f0f] min-h-screen">
+        {/* Header */}
 
-      <main className="p-4 md:px-[7%]">
-        <div className="relative overflow-hidden rounded-md">
-          <Carousel arrows autoplay centerSlidePercentage={100}
-                    className="carousel-container"
-                    nextArrow={<CustomNextArrow/>}
-                    prevArrow={<CustomPrevArrow/>}
-                    dots={true}
-          >
-            {
-              images2.map((src, index) => (
-                <div key={index} style={containerStyle}>
-                  <img src={src} alt={`Slide ${index + 1}`} style={contentStyle}/>
-                </div>
-              ))}
-          </Carousel>
-        </div>
-
-        <div className="text-white text-4xl p-20 ps-5">Найбільш популярні товари</div>
-        <div className="">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-            {products.length > 0 ? (
-              products.map((product) => (
-                <div className="">
-                  <Product  item={product} image={images[product.id]} isCrm={false}></Product>
-                </div>
-              ))
-            ) : (
-              <p>No products found</p>
-            )}
+        <main className="p-4 md:px-[7%]">
+          <div className="relative overflow-hidden rounded-md">
+            <Carousel arrows autoplay centerSlidePercentage={100}
+                      className="carousel-container"
+                      nextArrow={<CustomNextArrow/>}
+                      prevArrow={<CustomPrevArrow/>}
+                      dots={true}
+            >
+              {
+                images2.map((src, index) => (
+                  <div key={index} style={containerStyle}>
+                    <img src={src} alt={`Slide ${index + 1}`} style={contentStyle}/>
+                  </div>
+                ))}
+            </Carousel>
           </div>
-        </div>
-        <div className="p-20"></div>
-        <div className="relative overflow-hidden rounded-md ">
-          <Carousel arrows autoplay centerSlidePercentage={100}
-                    className="carousel-container"
-                    nextArrow={<CustomNextArrow/>}
-                    prevArrow={<CustomPrevArrow/>}
-                    dots={true}
-          >
-            {
-              images2.map((src, index) => (
-                <div key={index} style={containerStyle}>
-                  <img src={src} alt={`Slide ${index + 1}`} style={contentStyle}/>
-                </div>
-              ))}
-          </Carousel>
-        </div>
-        <div className="text-white text-4xl p-20 ps-5">Всі акції</div>
-        <div className="">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-            {products.length > 0 ? (
+
+          <div className="text-white text-4xl p-20 ps-5">Найбільш популярні товари</div>
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
               products.map((product) => (
-                <div className="">
-                  <Product item={product} image={images[product.id]} isCrm={false}></Product>
-                </div>
+              <Product item={product} image={images[product.id]} isCrm={false}></Product>
               ))
-            ) : (
-              <p>No products found</p>
-            )}
+            </div>
+          ) : (
+            <Flex justify='center' align='center'>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає товарів'}></Empty>
+            </Flex>
+
+          )}
+          <div className="p-20"></div>
+          <div className="relative overflow-hidden rounded-md ">
+            <Carousel arrows autoplay centerSlidePercentage={100}
+                      className="carousel-container"
+                      nextArrow={<CustomNextArrow/>}
+                      prevArrow={<CustomPrevArrow/>}
+                      dots={true}
+            >
+              {
+                images2.map((src, index) => (
+                  <div key={index} style={containerStyle}>
+                    <img src={src} alt={`Slide ${index + 1}`} style={contentStyle}/>
+                  </div>
+                ))}
+            </Carousel>
           </div>
-        </div>
-      </main>
+          <div className="text-white text-4xl p-20 ps-5">Всі акції</div>
 
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
+              products.map((product) => (
+              <Product item={product} image={images[product.id]} isCrm={false}></Product>
+              ))
+            </div>
+          ) : (
+            <Flex justify='center' align='center'>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає товарів'}></Empty>
+            </Flex>
 
-    </div>
+          )}
+
+        </main>
+
+      </div>
     </StoreFrontLayout>
   );
 }

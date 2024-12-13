@@ -16,7 +16,6 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
 
     function handleChange(e) {
         setData('role', e.target.value);
-        console.log(e.target.value);
     }
 
     function handleBlock(e) {

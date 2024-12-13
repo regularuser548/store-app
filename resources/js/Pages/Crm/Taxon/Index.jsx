@@ -14,8 +14,8 @@ export default function Index({taxonomies, images, props}) {
                         <Taxonomy key={item.id} item={item} image={images[item.id]}></Taxonomy>
                     ))
                 ) : (
-                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає категорій'}>
-                    <Button type="primary" onClick={() => router.visit(route('taxonomy.create'))}>Додати</Button>
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає підкатегорій'}>
+                    <Button type="primary" onClick={() => router.visit(route('taxon.create'))}>Додати</Button>
                   </Empty>
                 )}
             </div>
