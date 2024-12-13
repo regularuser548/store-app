@@ -8,6 +8,7 @@ use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Storefront\CartController;
 use App\Http\Controllers\Storefront\CommentController;
+use App\Http\Controllers\Storefront\FavoriteController;
 use App\Http\Controllers\Storefront\OrderController;
 use App\Http\Controllers\Storefront\StorefrontController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('products/{product}', [CommentController::class, 'show'])->name('comments.show');
     Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
+    Route::delete('/favorites/{id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    Route::get('/favorites/{productId}/exists', [FavoriteController::class, 'exists'])->name('favorites.exists');
 });
 
 

@@ -50,11 +50,20 @@ export default function StoreFrontLayout({props, children}) {
           </form>
 
           <div className="flex space-x-4 mt-4 md:mt-0 text-gray-300">
-            <Link href={route('cart.show')} className="flex flex-col items-center text-[#ffffff] hover:text-orange-500">
-              <svg className="w-6 h-6 mb-1" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <Link
+              href={route('favorites.index')}
+              className="flex flex-col items-center text-[#ffffff] hover:text-orange-500"
+            >
+              <svg
+                className="w-6 h-6 mb-1"
+                viewBox="0 0 24 26"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   d="M12 22.9115L10.55 21.495C5.4 16.4834 2 13.1674 2 9.12169C2 5.80569 4.42 3.21942 7.5 3.21942C9.24 3.21942 10.91 4.08866 12 5.45155C13.09 4.08866 14.76 3.21942 16.5 3.21942C19.58 3.21942 22 5.80569 22 9.12169C22 13.1674 18.6 16.4834 13.45 21.495L12 22.9115Z"
-                  fill="white"/>
+                  fill="white"
+                />
               </svg>
               <span>Довподоби</span>
             </Link>
