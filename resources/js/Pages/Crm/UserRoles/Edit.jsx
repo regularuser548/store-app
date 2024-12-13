@@ -84,37 +84,3 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
         </CrmMenuLayout>
     );
 }
-
-
-{/*<h2>Assign Permissions</h2>*/
-}
-{/*<div>*/
-}
-{/*    {permissions.map((permission) => (*/
-}
-{/*        <label key={permission.id}>*/
-}
-{/*            <input*/
-}
-{/*                type="checkbox"*/
-}
-{/*                name="permissions[]"*/
-}
-{/*                value={permission.name}*/
-}
-{/*                defaultChecked={userPermissions.some(*/
-}
-{/*                    (userPermission) => userPermission.name === permission.name*/
-}
-{/*                )}*/
-}
-{/*            />*/
-}
-{/*            {permission.name}*/
-}
-{/*        </label>*/
-}
-{/*    ))}*/
-}
-{/*</div>*/
-}

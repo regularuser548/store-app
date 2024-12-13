@@ -3,6 +3,7 @@
 use App\Http\Controllers\Crm\MediaController;
 use App\Http\Controllers\Crm\ProductController;
 use App\Http\Controllers\Crm\ReportController;
+use App\Http\Controllers\Crm\TaxonController;
 use App\Http\Controllers\Crm\TaxonomyController;
 use App\Http\Controllers\Crm\UserRoleController;
 use App\Http\Controllers\ProfileController;
@@ -18,7 +19,8 @@ use Konekt\Acl\Http\Middleware\RoleMiddleware;
 //Storefront
 Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
 Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
-Route::get('/search', [StorefrontController::class, 'search'])->name('storefront.search');
+Route::get('/search/{taxon?}', [StorefrontController::class, 'search'])->name('storefront.search');
+Route::get('/categories', [StorefrontController::class, 'returnCategoryTree'])->name('storefront.categories');
 
 
 //footerlinks
@@ -44,10 +46,11 @@ Route::middleware(['web'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
-    Route::get('products/{product}', [CommentController::class, 'show'])->name('comments.show');
+    //Route::get('products/{product}', [CommentController::class, 'show'])->name('comments.show');
     Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
@@ -72,11 +75,24 @@ Route::middleware('auth')->group(function () {
 //CRM CRUD
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
     Route::resource('product', ProductController::class)->except(['show']);
-    Route::resource('taxonomy', TaxonomyController::class);
     Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])->name('product.sync.mediaOrder');
     Route::post('setPrimary/{media}', [MediaController::class, 'setPrimaryImage'])->name('product.setPrimary');
     Route::delete('deleteMedia/{media}', [MediaController::class, 'destroy'])->name('product.deleteMedia');
     Route::post('product.addMedia/{product}', [MediaController::class, 'store'])->name('product.addMedia');
+});
+
+//CRM Categorization
+Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':admin'])->group(function () {
+    Route::resource('taxonomy', TaxonomyController::class);
+    //Route::post('syncTaxonomy/{taxonomy}', [TaxonomyController::class, 'sync'])->name('taxonomy.sync');
+    //Route::resource('taxon', TaxonController::class)->except(['index', 'show']);
+    Route::get('/taxonomy/{taxonomy}/taxon/create', [TaxonController::class, 'create'])->name('taxon.create');
+    Route::post('/taxonomy/{taxonomy}/taxon', [TaxonController::class, 'store'])->name('taxon.store');
+    Route::get('/taxonomy/{taxonomy}/taxon/{taxon}/edit', [TaxonController::class, 'edit'])->name('taxon.edit');
+    Route::put('/taxonomy/{taxonomy}/taxon/{taxon}', [TaxonController::class, 'update'])->name('taxon.update');
+    Route::delete('/taxonomy/{taxonomy}/taxon/{taxon}', [TaxonController::class, 'destroy'])->name('taxon.destroy');
+
+    Route::put('/taxonomy/{taxonomy}/sync', [TaxonController::class, 'sync'])->name('taxonomy.sync');
 });
 
 //todo: turn to resource routes
@@ -90,9 +106,7 @@ Route::prefix('crm/user')->middleware(['auth', 'verified', RoleMiddleware::class
     Route::get('/{user}/orders', [UserRoleController::class, 'viewUserOrders'])->name('user.orders');
 });
 
-
-
-Route::prefix('crm')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
     Route::get('reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
     Route::get('reports/activity', [ReportController::class, 'userActivityReport'])->name('reports.activity');
     Route::get('reports/statistics/{id}', [ReportController::class, 'orderStatistics'])->name('reports.statistics');

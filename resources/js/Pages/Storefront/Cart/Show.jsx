@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
-import { Button, message, Space } from 'antd';
+import {Button, Empty, message, Space} from 'antd';
 import { Head, Link } from "@inertiajs/react";
 import CartList from "./CartList";
 import axios from "axios";
@@ -455,7 +455,8 @@ export default function Show({ cart: initialCart, total: initialTotal }) {
                   </div>
                 </>
               ) : (
-                <p className="text-center">Ваш кошик порожній</p>
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Ваш кошик порожній'}></Empty>
+                // <p className="text-center">Ваш кошик порожній</p>
               )}
             </div>
           </div>
