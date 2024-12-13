@@ -60,6 +60,10 @@ class TaxonController extends Controller
 
     public function store(Taxonomy $taxonomy, CreateTaxon $request): RedirectResponse
     {
+        //workaround for https://vanilo.io/docs/4.x/categorization#duplicate-taxon-slugs-on-root-level
+        if ($request->input('parent_id') === null)
+            $request->validate(['slug' => 'unique:taxons,slug']);
+
         try {
             $taxon = TaxonProxy::create(array_merge(
                 $request->except('images'),

@@ -82,9 +82,9 @@ export default function Index({products, images}) {
           <div className="text-white text-4xl p-20 ps-5">Найбільш популярні товари</div>
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-              products.map((product) => (
-              <Product item={product} image={images[product.id]} isCrm={false}></Product>
-              ))
+              {products.map((product) => (
+                <Product item={product} image={images[product.id]} isCrm={false}></Product>
+              ))}
             </div>
           ) : (
             <Flex justify='center' align='center'>
@@ -112,9 +112,9 @@ export default function Index({products, images}) {
 
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-              products.map((product) => (
-              <Product item={product} image={images[product.id]} isCrm={false}></Product>
-              ))
+              {products.map((product) => (
+                <Product item={product} image={images[product.id]} isCrm={false}></Product>
+              ))}
             </div>
           ) : (
             <Flex justify='center' align='center'>

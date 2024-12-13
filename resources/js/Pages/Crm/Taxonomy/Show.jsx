@@ -38,6 +38,7 @@ export default function Show({taxonomy, taxons, image = null, props}) {
   }
 
   function handleSelect(selectedKeys, info) {
+    console.log(selectedKeys);
     router.visit(route('taxon.edit', {taxon: selectedKeys[0], taxonomy: taxonomy.id}));
   }
 
@@ -45,7 +46,7 @@ export default function Show({taxonomy, taxons, image = null, props}) {
     <CrmMenuLayout>
       {taxons && taxons.length > 0 ? (
           <Tree
-            fieldNames={{title: 'name', key: 'id'}}
+            fieldNames={{title: 'name', key: 'slug'}}
             showLine
             onSelect={handleSelect}
             // onCheck={onCheck}

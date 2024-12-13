@@ -15,7 +15,8 @@ export default function StoreFrontLayout({props, children}) {
   };
 
   const handleCategorySelect = (e, value) => {
-    router.visit(route('storefront.search', {taxon: value.at(-1)}));
+    console.log(value)
+    router.visit(route('storefront.search', {slug: value[0].slug, slug2: value.at(-1).slug}));
   }
 
   //Fetch category data on component mount
@@ -42,7 +43,7 @@ export default function StoreFrontLayout({props, children}) {
         {/* Bottom Part */}
         <div className="flex flex-col md:flex-row items-center justify-between bg-[#272525] p-4 md:px-[7%]">
 
-          <Cascader fieldNames={{label: 'name', value: 'id'}} options={categoryData} onChange={handleCategorySelect}>
+          <Cascader fieldNames={{label: 'name', value: 'slug'}} options={categoryData} onChange={handleCategorySelect}>
             <button className="bg-[#ff8000] text-black px-4 py-2 rounded-md w-full md:w-auto mb-2 md:mb-0">Категорії
             </button>
           </Cascader>

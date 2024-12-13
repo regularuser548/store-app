@@ -36,6 +36,7 @@ class StorefrontController extends Controller
     {
         $products = $this->repository->all();
         $images = $this->mediaRepository->primaryImageForEach($products);
+
         return Inertia::render('Storefront/Index', compact('products', 'images'));//map for checking products inCard
     }
 
@@ -50,11 +51,15 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/Show', compact('product', 'images','comments'));
     }
 
-    public function search(ProductSearchRequest $request, Taxon $taxon = null): Response
+    public function search(ProductSearchRequest $request, ?string $slug = null, ?string $slug2 = null): Response
     {
+
+        $taxon = Taxon::findOneByParentsAndSlug($slug, $slug2);
+
         $productFinder = new ProductSearch();
 
         $properties = [];
+        //$taxon = Taxon::findOneByParentsAndSlug($request->query('name'), $request->query('name'));
 
         if ($taxon) {
             $productFinder->withinTaxon($taxon);

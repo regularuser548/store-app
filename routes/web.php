@@ -18,7 +18,7 @@ use Konekt\Acl\Http\Middleware\RoleMiddleware;
 //Storefront
 Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
 Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
-Route::get('/search/{taxon?}', [StorefrontController::class, 'search'])->name('storefront.search');
+Route::get('/search/{slug}/{slug2}', [StorefrontController::class, 'search'])->name('storefront.search');
 Route::get('/categories', [StorefrontController::class, 'returnCategoryTree'])->name('storefront.categories');
 
 

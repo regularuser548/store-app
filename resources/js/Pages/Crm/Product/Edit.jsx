@@ -69,7 +69,7 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
 
   return (
     <CrmMenuLayout className="">
-      <ProductForm fields={data} changeHandler={setData} taxonomyTree={taxonomyTree} submit={handleSubmit}></ProductForm>
+      <ProductForm fields={data} currentCategory={currentCategory} changeHandler={setData} taxonomyTree={taxonomyTree} submit={handleSubmit}></ProductForm>
 
       {/*<button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>*/}
 

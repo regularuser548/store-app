@@ -5,7 +5,7 @@ import React from "react";
 
 const {TextArea} = Input;
 
-export default function ProductForm({fields, changeHandler, submit, taxonomyTree}) {
+export default function ProductForm({fields, changeHandler, submit, taxonomyTree, currentCategory = null}) {
 
   const {errors} = usePage().props;
 
@@ -108,7 +108,8 @@ export default function ProductForm({fields, changeHandler, submit, taxonomyTree
       ></Select>
       {errors.state && <div className="text-red-500">{errors.state}</div>}
 
-      <Cascader placement={'topLeft'} fieldNames={{label: 'name', value: 'id'}} options={taxonomyTree} onChange={(value) => changeHandler(values => ({
+      {console.log(currentCategory)}
+      <Cascader placement={'topLeft'} defaultValue={currentCategory} fieldNames={{label: 'name', value: 'id'}} options={taxonomyTree} onChange={(value) => changeHandler(values => ({
         ...values,
         ['taxon_id']: value?.at(-1),
       }))} changeOnSelect/>

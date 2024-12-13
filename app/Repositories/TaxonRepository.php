@@ -16,7 +16,7 @@ class TaxonRepository extends BaseRepository
     public function buildTaxonTree(Taxon $taxon): array
     {
         $tree = [
-            'id' => $taxon->id,
+            'slug' => $taxon->slug,
             'name' => $taxon->name,
         ];
 
@@ -27,16 +27,17 @@ class TaxonRepository extends BaseRepository
         return $tree;
     }
 
-    public function findTaxonParents(Taxon $taxon)
+    public function findTaxonParents(Taxon $taxon): array
     {
-        $parents = [$taxon];
-        $parent = $taxon->parent;
+        $parentIds = [$taxon->id];
 
-        if ($parent === null)
-            return $parents;
+        while ($taxon->parent) {
+            $parentIds[] = $taxon->parent_id;
+            $taxon = $taxon->parent;
+        }
+        $parentIds[] = $taxon->taxonomy()->get()->first()->id;
 
-        $parents[] = $this->findTaxonParents($parent);
-        return $parent;
+        return array_reverse($parentIds);
     }
 
 
