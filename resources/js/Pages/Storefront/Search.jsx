@@ -18,9 +18,9 @@ export default function Search({products, images}) {
 
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-              products.map((product) => (
+              {products.map((product) => (
               <Product item={product} image={images[product.id]} isCrm={false}></Product>
-              ))
+              ))}
             </div>
           ) : (
             <Flex justify='center' align='center'>
