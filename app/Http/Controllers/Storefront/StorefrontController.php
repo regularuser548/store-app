@@ -39,6 +39,15 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/Index', compact('products', 'images'));//map for checking products inCard
     }
 
+//    public function show(Product $product): Response
+//    {
+//        $images = $this->mediaRepository->allMediaForModel($product);
+//        $comments = Comment::where('product_id', $product->id)
+//            ->with('user')
+//            ->orderBy('created_at', 'desc')
+//            ->get();
+//        return Inertia::render('Storefront/Show', compact('product', 'images','comments'));
+//    }
     public function show(Product $product): Response
     {
         $images = $this->mediaRepository->allMediaForModel($product);
@@ -46,8 +55,16 @@ class StorefrontController extends Controller
         $comments = Comment::where('product_id', $product->id)
             ->with('user')
             ->orderBy('created_at', 'desc')
-            ->get();
-        return Inertia::render('Storefront/Show', compact('product', 'images','comments'));
+            ->get()
+            ->map(function ($comment) {
+                $user = auth()->user();
+                $comment->can_delete = $user->role === 'admin'
+                    || $user->role === 'moderator'
+                    || $user->id === $comment->user_id;
+                return $comment;
+            });
+
+        return Inertia::render('Storefront/Show', compact('product', 'images', 'comments'));
     }
 
     public function search(ProductSearchRequest $request, Taxon $taxon = null): Response

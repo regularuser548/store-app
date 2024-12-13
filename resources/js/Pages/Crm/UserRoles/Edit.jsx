@@ -14,11 +14,17 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
         router.post(route('user.update', { user: user.id }), data);
     }
 
-    function handleChange(e) {
-        setData('role', e.target.value);
-    }
+    // function handleChange(e) {
+    //     setData('role', e.target.value);
+    //     console.log(e.target.value);
+    // }
+  function handleChange(value) {
+    setData("role", value);
+    console.log("Selected Role:", value);
+  }
 
-    function handleBlock(e) {
+
+  function handleBlock(e) {
         e.preventDefault();
         router.post(route('user.block', { user: user.id }));
     }
@@ -36,84 +42,45 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
                 <h1>Edit User: {user.name}</h1>
 
                 <h2>Assign Roles</h2>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="role">Roles</label>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                  <label htmlFor="role" className="block text-sm font-medium">
+                    Roles
+                  </label>
+                  <Select
+                    placeholder="Select a role"
+                    style={{width: 240}}
+                    onChange={(value) => handleChange(value)} // Передаем значение напрямую
+                    value={data.role || undefined} // Убедитесь, что не передаете null
+                  >
+                    {roles.map((role) => (
+                      <Select.Option
+                        key={role.id}
+                        value={role.name}
+                        disabled={userRoles.includes(role.name)}
+                      >
+                        {role.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </div>
 
-                      <Select
-                        defaultValue="lucy"
-                        style={{
-                          width: 120,
-                        }}
-                        onChange={handleChange}
-                        options={[
-                          {
-                            value: 'jack',
-                            label: 'Jack',
-                          },
-                          {
-                            value: 'lucy',
-                            label: 'Lucy',
-                          },
-                          {
-                            value: 'Yiminghe',
-                            label: 'yiminghe',
-                          },
-                          {
-                            value: 'disabled',
-                            label: 'Disabled',
-                            disabled: true,
-                          },
-                        ]}
-                      />
 
-                        <select name="role" id="role" onChange={handleChange} value={data.role}>
-                            {roles.map((role) => (
-                                <option
-                                    key={role.id}
-                                    value={role.name}
-                                    selected={userRoles.includes(role.name)}
-                                >
-                                    {role.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                <div>
+                  {user.isBlocked ? (
+                    <Button onClick={handleUnblock}>
+                      Unblock User
+                    </Button>
+                  ) : (
+                    <Button onClick={handleBlock}>
+                      Block User
+                    </Button>
+                  )}
+                </div>
 
-                    <div>
-                        {user.isBlocked ? (
-                            <Button onClick={handleUnblock}>
-                                Unblock User
-                            </Button>
-                        ) : (
-                            <Button onClick={handleBlock}>
-                                Block User
-                            </Button>
-                        )}
-                    </div>
-
-                    <Button type="primary" onClick={handleSubmit}>Save Changes</Button>
-                </form>
+                <Button type="primary" onClick={handleSubmit}>Save Changes</Button>
+              </form>
             </div>
         </CrmMenuLayout>
     );
 }
-
-
-
-{/*<h2>Assign Permissions</h2>*/}
-{/*<div>*/}
-{/*    {permissions.map((permission) => (*/}
-{/*        <label key={permission.id}>*/}
-{/*            <input*/}
-{/*                type="checkbox"*/}
-{/*                name="permissions[]"*/}
-{/*                value={permission.name}*/}
-{/*                defaultChecked={userPermissions.some(*/}
-{/*                    (userPermission) => userPermission.name === permission.name*/}
-{/*                )}*/}
-{/*            />*/}
-{/*            {permission.name}*/}
-{/*        </label>*/}
-{/*    ))}*/}
-{/*</div>*/}

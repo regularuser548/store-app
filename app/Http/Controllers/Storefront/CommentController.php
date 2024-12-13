@@ -16,19 +16,38 @@ class CommentController extends Controller
         return Inertia::render('Comments/Index', ['comments' => $comments]);
     }
 
+//    public function show(Product $product)
+//    {
+//        $comments = Comment::where('product_id', $product->id)
+//            ->with('user') // Загрузка связанного пользователя
+//            ->orderBy('created_at', 'desc')
+//            ->get();
+//
+//        return Inertia::render('Storefront/Show', [
+//            'product' => $product,
+//            'comments' => $comments,
+//        ]);
+//    }
+
     public function show(Product $product)
     {
         $comments = Comment::where('product_id', $product->id)
-            ->with('user') // Загрузка связанного пользователя
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->with('user')
+            ->get()
+            ->map(function ($comment) {
+                $user = auth()->user();
+                $comment->can_delete = $user->role === 'admin'
+                    || $user->role === 'moderator'
+                    || $user->id === $comment->user_id;
+                return $comment;
+            });
+
 
         return Inertia::render('Storefront/Show', [
             'product' => $product,
             'comments' => $comments,
         ]);
     }
-
 
 
 
@@ -64,14 +83,25 @@ class CommentController extends Controller
         return back()->with('success', 'Комментарий успешно добавлен!');
     }
 
-
-
-
     public function destroy(Comment $comment)
     {
-        $this->authorize('delete', $comment);
-        $comment->delete();
+        $user = auth()->user();
 
-        return back()->with('success', 'Комментарий удален!');
+        if ($user->role === 'admin' || $user->role === 'moderator' || $user->id === $comment->user_id) {
+            $comment->delete();
+            return back()->with('success', 'Комментарий удален!');
+        }
+
+        return back()->withErrors(['error' => 'У вас нет прав для удаления этого комментария.']);
     }
+
+
+
+//    public function destroy(Comment $comment)
+//    {
+//        $this->authorize('delete', $comment);
+//        $comment->delete();
+//
+//        return back()->with('success', 'Комментарий удален!');
+//    }
 }
