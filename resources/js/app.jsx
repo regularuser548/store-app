@@ -7,7 +7,6 @@ import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {StrictMode} from "react";
 import {StyleProvider} from '@ant-design/cssinjs';
 import AntThemeCustomizationProvider from "@/AntThemeCustomizationProvider.jsx";
-import {ConfigProvider} from "antd";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -20,17 +19,18 @@ createInertiaApp({
       createRoot(el).render(
         <StrictMode>
           <AntThemeCustomizationProvider>
-            <App {...props} />
+              <App {...props}/>
           </AntThemeCustomizationProvider>
-        </StrictMode>);
+        </StrictMode>
+    );
     } else {
       createRoot(el).render(
         <AntThemeCustomizationProvider>
           <App {...props} />
         </AntThemeCustomizationProvider>);
     }
-  },
-  progress: {
-    color: '#4B5563',
-  },
+    },
+    progress: {
+      color: '#ff8000',
+    },
 });
