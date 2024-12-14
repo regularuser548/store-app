@@ -7,6 +7,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    background-color: #0f0f0f;
+    color: #ffffff;
+}
+
 .ant-cascader-menu {
     height: fit-content;
 }
