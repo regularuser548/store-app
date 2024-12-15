@@ -1,5 +1,5 @@
 import {usePage} from "@inertiajs/react";
-import FormField from "@/Components/FormField.jsx";
+import FormField from "@/Components/ShopHub/FormField.jsx";
 import {Select, TreeSelect} from "antd";
 import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
 

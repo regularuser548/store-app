@@ -1,10 +1,10 @@
 import React from "react";
 import { Head } from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 
 export default function Show({ user, roles, permissions }) {
     return (
-        <CrmMenuLayout>
+        <>
             <Head title="User Details" />
             <h1>User Details</h1>
             <p>
@@ -22,7 +22,7 @@ export default function Show({ user, roles, permissions }) {
                 <p>No roles assigned.</p>
             )}
 
-        </CrmMenuLayout>
+        </>
     );
 }
 

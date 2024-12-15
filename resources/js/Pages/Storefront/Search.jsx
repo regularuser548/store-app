@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
-import Product from '../../Components/Product.jsx';
+import Product from '../../Components/ShopHub/Product.jsx';
 import {Link, router} from "@inertiajs/react";
 import {Button, Card, Carousel, Col, DatePicker, Empty, Flex, Image, Row, Space, version} from "antd";
-import StoreFrontLayout from "./StoreFrontLayout.jsx"
+import StoreFrontLayout from "../../Layouts/StoreFrontLayout.jsx"
 
 export default function Search({products, images}) {
 
 
   return (
-    <StoreFrontLayout>
       <div className="bg-[#0f0f0f] min-h-screen">
         {/* Header */}
 
@@ -31,6 +30,5 @@ export default function Search({products, images}) {
         </main>
 
       </div>
-    </StoreFrontLayout>
   );
 }

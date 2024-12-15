@@ -21,6 +21,7 @@ class TaxonomyRepository extends BaseRepository
     {
         return $taxonomies->map(function ($taxonomy) {
             return [
+                'id' => $taxonomy->id,
                 'slug' => $taxonomy->slug,
                 'name' => $taxonomy->name,
                 'children' => $taxonomy->rootLevelTaxons()->map(function ($taxon) {

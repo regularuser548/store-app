@@ -12,19 +12,19 @@ export default function Product({ item, image, isCrm = false }) {
     axios.post(route('cart.add'), {product: {id: productId}});
   };
 
-  useEffect(() => {
-    // Проверяем, находится ли товар в избранном
-    const checkFavorite = async () => {
-      try {
-        const response = await axios.get(route('favorites.exists', item.id));
-        setIsFavorite(response.data.exists);
-      } catch (error) {
-        console.error("Failed to check favorite status:", error);
-      }
-    };
-
-    checkFavorite();
-  }, [item.id]);
+  // useEffect(() => {
+  //   // Проверяем, находится ли товар в избранном
+  //   const checkFavorite = async () => {
+  //     try {
+  //       const response = await axios.get(route('favorites.exists', item.id));
+  //       setIsFavorite(response.data.exists);
+  //     } catch (error) {
+  //       console.error("Failed to check favorite status:", error);
+  //     }
+  //   };
+  //
+  //   checkFavorite();
+  // }, [item.id]);
 
   const toggleFavorite = async (productId) => {
     try {
@@ -46,7 +46,7 @@ export default function Product({ item, image, isCrm = false }) {
 
   return (
     <article id={item.id} className="rounded-lg shadow-lg overflow-hidden">
-      <div className="flex items-center justify-center h-80 bg-gray-200">
+      <div className="flex items-center justify-center h-80 bg-gray-400">
         <img
           onClick={() => router.visit(route('storefront.show', { product: item.id }))}
           src={image || "path-to-placeholder-image"}

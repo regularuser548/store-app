@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, router, useForm } from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import {Button, Select} from "antd";
 
 export default function Edit({ user, roles, userRoles, permissions, userPermissions }) {
@@ -35,7 +35,7 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
     }
 
     return (
-        <CrmMenuLayout>
+        <>
             <Head title={`Edit User: ${user.name}`} />
 
             <div>
@@ -81,6 +81,6 @@ export default function Edit({ user, roles, userRoles, permissions, userPermissi
                 <Button type="primary" onClick={handleSubmit}>Save Changes</Button>
               </form>
             </div>
-        </CrmMenuLayout>
+        </>
     );
 }

@@ -1,12 +1,12 @@
 import {Head, router} from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
-import Product from "@/Components/Product.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
+import Product from "@/Components/ShopHub/Product.jsx";
 import {Button, Empty} from "antd";
 
 export default function Index(props) {
 
   return (
-    <CrmMenuLayout>
+    <>
       <div className='flex flex-wrap'>
         {props.products && props.products.length > 0 ?
           props.products.map((item) => (
@@ -16,6 +16,6 @@ export default function Index(props) {
             <Button type="primary" onClick={() => router.visit(route('product.create'))}>Додати</Button>
           </Empty>}
       </div>
-    </CrmMenuLayout>
+    </>
   );
 }

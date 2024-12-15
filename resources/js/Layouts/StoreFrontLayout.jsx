@@ -5,18 +5,26 @@ import {Button, Cascader, Divider} from "antd";
 export default function StoreFrontLayout({props, children}) {
 
   const [query, setQuery] = useState('');
+  const [currentCategory, setCurrentCategory] = useState(null);
+
   const {auth} = usePage().props
 
   const [categoryData, setCategoryData] = useState(null);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    router.visit(route('storefront.search'), {method: 'get', data: {query}});
+    router.visit(route('storefront.search', currentCategory), {method: 'get', data: {query}});
   };
 
   const handleCategorySelect = (e, value) => {
     console.log(value)
-    router.visit(route('storefront.search', {slug: value[0].slug, slug2: value.at(-1).slug}));
+
+    setCurrentCategory({
+      taxonomySlug: value[0].slug,
+      taxonSlug: value.at(-1).slug
+    });
+
+    router.visit(route('storefront.search', currentCategory));
   }
 
   //Fetch category data on component mount

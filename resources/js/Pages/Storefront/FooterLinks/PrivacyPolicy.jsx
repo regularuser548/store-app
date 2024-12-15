@@ -1,9 +1,8 @@
 import React from 'react';
-import StoreFrontLayout from "@/Pages/Storefront/StoreFrontLayout.jsx";
+import StoreFrontLayout from "@/Layouts/StoreFrontLayout.jsx";
 
 const PrivacyPolicy = () => {
   return (
-    <StoreFrontLayout>
       <div className="p-6 bg-[#0f0f0f] min-h-screen text-[#ffffff] md:px-[7%]">
         <h1 className="text-2xl font-bold mb-4">Політика конфіденційності</h1>
         <p className="mb-4">
@@ -78,7 +77,6 @@ const PrivacyPolicy = () => {
         </p>
       </div>
 
-    </StoreFrontLayout>
   );
 };
 

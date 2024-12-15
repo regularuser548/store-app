@@ -1,6 +1,6 @@
 import {useForm} from "@inertiajs/react";
 import {useState} from "react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
 import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
 
@@ -36,13 +36,13 @@ export default function Create({taxonomyTree}) {
   }
 
   return (
-    <CrmMenuLayout>
+    <>
       <ProductForm fields={data} changeHandler={setData} taxonomyTree={taxonomyTree} submit={handleSubmit}></ProductForm>
       <MediaUploadForm fileList={imageList} changeHandler={setImageList} max={10} text='Додати Фото'
                        accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
                        listType='picture-card'>
       </MediaUploadForm>
-    </CrmMenuLayout>
+    </>
   );
 
 }
