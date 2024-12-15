@@ -1,7 +1,7 @@
 import React from "react";
 import { Head } from "@inertiajs/react";
 import { Table, Typography } from "antd";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 
 const { Title, Paragraph } = Typography;
 
@@ -30,7 +30,7 @@ export default function ViewUserOrders({ user, orders }) {
   ];
 
   return (
-    <CrmMenuLayout>
+    <>
       <Head title={`Orders of ${user.name}`} />
       <Title level={2} className="mb-4">Усі замовлення {user.name}</Title>
       {orders.length > 0 ? (
@@ -44,7 +44,7 @@ export default function ViewUserOrders({ user, orders }) {
       ) : (
         <Paragraph>Для цього користувача не знайдено замовлень.</Paragraph>
       )}
-    </CrmMenuLayout>
+    </>
   );
 }
 
@@ -60,7 +60,7 @@ export default function ViewUserOrders({ user, orders }) {
 //
 // export default function ViewUserOrders({ user, orders }) {
 //   return (
-//     <CrmMenuLayout>
+//     <>
 //       <Head title={`Orders of ${user.name}`} />
 //       <h1>Orders of {user.name}</h1>
 //
@@ -92,6 +92,6 @@ export default function ViewUserOrders({ user, orders }) {
 //       ) : (
 //         <p>No orders found for this user.</p>
 //       )}
-//     </CrmMenuLayout>
+//     </>
 //   );
 // }

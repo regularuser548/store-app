@@ -4,8 +4,8 @@ import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
-import StoreFrontLayout from "@/Pages/Storefront/StoreFrontLayout.jsx";
-import ProfileLayout from "@/Pages/Storefront/ProfileLayout.jsx";
+import StoreFrontLayout from "@/Layouts/StoreFrontLayout.jsx";
+import ProfileLayout from "@/Layouts/ProfileLayout.jsx";
 
 
 
@@ -45,7 +45,6 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
     //         </div>
     //     </div>
     // </AuthenticatedLayout>
-    <StoreFrontLayout>
       <ProfileLayout>
         <div className="bg-[#0F0F0F] text-white font-sans pb-80">
           <div className="max-w-2xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -180,6 +179,5 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
         </div>
 
       </ProfileLayout>
-    </StoreFrontLayout>
   );
 }

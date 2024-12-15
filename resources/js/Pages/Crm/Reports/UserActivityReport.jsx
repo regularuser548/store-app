@@ -1,9 +1,9 @@
 import React from "react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 
 export default function UserActivityReport({ userActivityData }) {
   return (
-    <CrmMenuLayout>
+    <>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Активність користувачів</h1>
         <table className="w-full border-collapse border border-gray-300">
@@ -25,7 +25,7 @@ export default function UserActivityReport({ userActivityData }) {
           </tbody>
         </table>
       </div>
-    </CrmMenuLayout>
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import {Link, router, useForm} from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import {Button, Empty, Tree} from "antd";
 
@@ -43,7 +43,7 @@ export default function Show({taxonomy, taxons, image = null, props}) {
   }
 
   return (
-    <CrmMenuLayout>
+    <>
       {taxons && taxons.length > 0 ? (
           <Tree
             fieldNames={{title: 'name', key: 'slug'}}
@@ -62,7 +62,7 @@ export default function Show({taxonomy, taxons, image = null, props}) {
       {/*  Створити Підкатегорію*/}
       {/*</Button>*/}
       <Button type="primary" onClick={() => router.visit(route('taxon.create', {taxonomy: taxonomy.id}))}>Додати</Button>
-    </CrmMenuLayout>
+    </>
   );
 
 }

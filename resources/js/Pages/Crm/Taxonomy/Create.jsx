@@ -1,5 +1,5 @@
 import {useForm} from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import {useState} from "react";
 
@@ -22,9 +22,9 @@ export default function Create(props) {
   }
 
   return (
-    <CrmMenuLayout>
+    <>
       <TaxonomyForm fields={data} imageList={imageList} setImageList={setImageList} changeHandler={setData} submit={handleSubmit}></TaxonomyForm>
-    </CrmMenuLayout>
+    </>
   );
 
 }

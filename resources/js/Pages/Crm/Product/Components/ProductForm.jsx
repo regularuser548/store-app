@@ -1,5 +1,5 @@
 import {usePage} from "@inertiajs/react";
-import FormField from "@/Components/FormField.jsx";
+import FormField from "@/Components/ShopHub/FormField.jsx";
 import {Button, Cascader, Input, Select} from "antd";
 import React from "react";
 

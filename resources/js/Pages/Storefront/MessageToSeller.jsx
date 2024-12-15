@@ -2,15 +2,13 @@ import React, { useState, useRef, useCallback } from "react";
 import { Button, message, Space } from 'antd';
 import { Head, Link } from "@inertiajs/react";
 import axios from "axios";
-import StoreFrontLayout from "@/Pages/Storefront/StoreFrontLayout.jsx";
-import ProfileLayout from "@/Pages/Storefront/ProfileLayout.jsx";
+import StoreFrontLayout from "@/Layouts/StoreFrontLayout.jsx";
+import ProfileLayout from "@/Layouts/ProfileLayout.jsx";
 
 
 
 export default function MessageToSeller({props, children}) {
   return (
-
-    <StoreFrontLayout>
       <ProfileLayout>
 
 
@@ -139,6 +137,5 @@ export default function MessageToSeller({props, children}) {
 
 
       </ProfileLayout>
-    </StoreFrontLayout>
   );
 }

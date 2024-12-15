@@ -1,5 +1,5 @@
 import {router, useForm} from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import {Button, Empty} from "antd";
 import {useState} from "react";
@@ -25,7 +25,7 @@ export default function Edit({taxonomy, image = null, props}) {
   }
 
   return (
-    <CrmMenuLayout>
+    <>
       <TaxonomyForm fields={data} changeHandler={setData} imageList={imageList} setImageList={setImageList}
                     submit={handleSubmit}></TaxonomyForm>
       {image ?
@@ -36,7 +36,7 @@ export default function Edit({taxonomy, image = null, props}) {
       <Button className='bg-red-500'
               onClick={e => router.delete(route('taxonomy.destroy', {taxonomy: taxonomy.id}))}>Видалити
       </Button>
-    </CrmMenuLayout>
+    </>
   );
 
 }

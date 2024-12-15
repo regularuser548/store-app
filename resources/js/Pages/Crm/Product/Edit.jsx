@@ -1,5 +1,5 @@
 import {Head, router, useForm} from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
 import {Button, Card, Empty, Image, Upload} from "antd";
 import {arrayMove, horizontalListSortingStrategy, SortableContext, useSortable} from "@dnd-kit/sortable";
@@ -68,7 +68,7 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
   }
 
   return (
-    <CrmMenuLayout className="">
+    <>
       <ProductForm fields={data} currentCategory={currentCategory} changeHandler={setData} taxonomyTree={taxonomyTree} submit={handleSubmit}></ProductForm>
 
       {/*<button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>*/}
@@ -96,6 +96,6 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
 
       <Button onClick={() => router.delete(route('product.destroy', {product: product.id}))}>Видалити</Button>
 
-    </CrmMenuLayout>
+    </>
   );
 }

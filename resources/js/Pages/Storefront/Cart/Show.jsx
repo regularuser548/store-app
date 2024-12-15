@@ -3,8 +3,8 @@ import {Button, Empty, message, Space} from 'antd';
 import { Head, Link } from "@inertiajs/react";
 import CartList from "./CartList";
 import axios from "axios";
-import StoreFrontLayout from "@/Pages/Storefront/StoreFrontLayout.jsx";
-import ProfileLayout from "@/Pages/Storefront/ProfileLayout.jsx";
+import StoreFrontLayout from "@/Layouts/StoreFrontLayout.jsx";
+import ProfileLayout from "@/Layouts/ProfileLayout.jsx";
 
 // export default function Show({ cart: initialCart, total: initialTotal }) {
 //     const [cart, setCart] = useState(initialCart);
@@ -193,8 +193,6 @@ export default function Show({ cart: initialCart, total: initialTotal }) {
   };
 
   return (
-
-    <StoreFrontLayout>
       <ProfileLayout>
 
 
@@ -464,7 +462,6 @@ export default function Show({ cart: initialCart, total: initialTotal }) {
 
 
       </ProfileLayout>
-    </StoreFrontLayout>
   );
 }
 

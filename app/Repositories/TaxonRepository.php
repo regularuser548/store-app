@@ -16,6 +16,7 @@ class TaxonRepository extends BaseRepository
     public function buildTaxonTree(Taxon $taxon): array
     {
         $tree = [
+            'id' => $taxon->id,
             'slug' => $taxon->slug,
             'name' => $taxon->name,
         ];

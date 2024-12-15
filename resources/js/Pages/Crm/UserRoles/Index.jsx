@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {Head, Link, router} from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import {Button, Input} from "antd";
 
 export default function Index({ users }) {
@@ -12,7 +12,7 @@ export default function Index({ users }) {
     );
 
     return (
-        <CrmMenuLayout>
+        <>
             <Head title="User Roles" />
             <h1>User Roles</h1>
 
@@ -48,7 +48,7 @@ export default function Index({ users }) {
             ) : (
                 <p>No users found.</p>
             )}
-        </CrmMenuLayout>
+        </>
     );
 }
 

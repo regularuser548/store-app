@@ -15,7 +15,7 @@ class FavoriteController extends Controller
             ->where('user_id', auth()->id())
             ->get();
 
-        return Inertia::render('Favorites', [
+        return Inertia::render('Storefront/Favorites', [
             'favorites' => $favorites,
         ]);
     }

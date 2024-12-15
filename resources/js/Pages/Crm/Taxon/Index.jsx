@@ -1,4 +1,4 @@
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import Taxonomy from "@/Pages/Crm/Taxonomy/Components/Taxonomy.jsx";
 import React from "react";
 import {Button, Empty} from "antd";
@@ -7,7 +7,7 @@ import {router} from "@inertiajs/react";
 export default function Index({taxonomies, images, props}) {
 
     return (
-        <CrmMenuLayout>
+        <>
             <div className='flex flex-wrap'>
                 {taxonomies.length > 0 ? (
                     taxonomies.map((item, index) => (
@@ -19,6 +19,6 @@ export default function Index({taxonomies, images, props}) {
                   </Empty>
                 )}
             </div>
-        </CrmMenuLayout>
+        </>
     );
 }

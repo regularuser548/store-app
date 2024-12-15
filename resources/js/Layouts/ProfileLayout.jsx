@@ -1,5 +1,5 @@
 import {Head, Link, router, useForm, usePage} from "@inertiajs/react";
-import StoreFrontLayout from "@/Pages/Storefront/StoreFrontLayout.jsx";
+import StoreFrontLayout from "@/Layouts/StoreFrontLayout.jsx";
 import React from "react";
 
 export default function ProfileLayout({props, children}) {

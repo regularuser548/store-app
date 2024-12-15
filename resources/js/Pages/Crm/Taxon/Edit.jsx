@@ -1,5 +1,5 @@
 import {router, useForm} from "@inertiajs/react";
-import CrmMenuLayout from "@/Pages/Crm/CrmMenuLayout.jsx";
+import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import TaxonForm from "@/Pages/Crm/Taxon/Components/TaxonForm.jsx";
 import {Button, Empty} from "antd";
@@ -28,7 +28,7 @@ export default function Edit({taxon, taxonomy, taxons, image = null, props}) {
   }
 
   return (
-    <CrmMenuLayout>
+    <>
       <TaxonForm fields={data} imageList={imageList} setImageList={setImageList} changeHandler={setData} taxons={taxons} submit={handleSubmit}></TaxonForm>
       {image ?
         <img src={image} className='w-1/4' alt='image'/>
@@ -43,7 +43,7 @@ export default function Edit({taxon, taxonomy, taxons, image = null, props}) {
       <Button className='m-2 p-1 bg-red-500'
               onClick={e => router.delete(route('taxon.destroy', {taxonomy: taxonomy.id, taxon: taxon.id}))}>Видалити
       </Button>
-    </CrmMenuLayout>
+    </>
   );
 
 }
