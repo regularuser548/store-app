@@ -101,6 +101,7 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/MessageToSeller');
     }
 
+
     public function returnCategoryTree(): JsonResponse
     {
         $taxonomies = Taxonomy::with('taxons.children')->get();

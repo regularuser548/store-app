@@ -1,78 +1,11 @@
 import React, { useState, useRef, useCallback } from "react";
 import {Button, Empty, message, Space} from 'antd';
-import { Head, Link } from "@inertiajs/react";
+import {Head, Link, router} from "@inertiajs/react";
 import CartList from "./CartList";
 import axios from "axios";
 import StoreFrontLayout from "@/Layouts/StoreFrontLayout.jsx";
 import ProfileLayout from "@/Layouts/ProfileLayout.jsx";
-
-// export default function Show({ cart: initialCart, total: initialTotal }) {
-//     const [cart, setCart] = useState(initialCart);
-//     const [total, setTotal] = useState(initialTotal);
-//     const debounceTimer = useRef({});
-//
-//     const updateTotal = (cartItems) => {
-//         const newTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-//         setTotal(newTotal);
-//     };
-//
-//     const sendUpdateRequest = useCallback((id, quantity) => {
-//         axios.post(route("cart.update.quantity"), { product_id: id, quantity })
-//             .then(response => console.log('Updated:', response.data))
-//             .catch(error => console.error('Update Error:', error.response?.data || error));
-//     }, []);
-//
-//     const handleQuantityChange = (id, quantity) => {
-//         const updatedCart = cart.map(item =>
-//             item.id === id ? { ...item, quantity } : item
-//         );
-//
-//         setCart(updatedCart);
-//         updateTotal(updatedCart);
-//
-//         clearTimeout(debounceTimer.current[id]);
-//         debounceTimer.current[id] = setTimeout(() => {
-//             sendUpdateRequest(id, quantity);
-//         }, 300);
-//     };
-//
-//     const handleRemoveItem = (id) => {
-//         axios.post(route("cart.remove", { id }))
-//             .then(() => {
-//                 const updatedCart = cart.filter(item => item.id !== id);
-//                 setCart(updatedCart);
-//                 updateTotal(updatedCart);
-//             })
-//             .catch(error => console.error('Remove Error:', error.response?.data || error));
-//     };
-//
-//     return (
-//       <div>
-//         <Head title="Cart"/>
-//         <h1>Your Cart</h1>
-//         {cart.length > 0 ? (
-//           <>
-//             <CartList
-//               cart={cart}
-//               onQuantityChange={handleQuantityChange}
-//               onRemove={handleRemoveItem}
-//             />
-//             <h2>Total: ${total.toFixed(2)}</h2>
-//             <Link href={route("checkout.index")}>
-//               <button>Proceed to Checkout</button>
-//             </Link>
-//           </>
-//         ) : (
-//           <>
-//             <p>Your Cart is empty</p>
-//             <Link href={route("storefront.index")}>
-//               <button>Return to Home</button>
-//             </Link>
-//           </>
-//         )}
-//       </div>
-//     );
-// }
+import Checkout from "@/Pages/Storefront/Checkout.jsx";
 
 
 
@@ -194,121 +127,6 @@ export default function Show({ cart: initialCart, total: initialTotal }) {
 
   return (
       <ProfileLayout>
-
-
-        {/*<main className="bg-[#0f0f0f] ">*/}
-        {/*  <div className="text-white">*/}
-        {/*    {contextHolder}*/}
-        {/*    <div className="max-w-5xl mx-auto">*/}
-        {/*      <div className="flex items-center justify-between mb-8">*/}
-        {/*        <h1 className="text-3xl font-bold">Кошик</h1>*/}
-        {/*        <div className="flex items-center space-x-4">*/}
-        {/*          <button*/}
-        {/*            onClick={handleRemoveSelected}*/}
-        {/*            className="flex items-center text-red-500 hover:text-red-700"*/}
-        {/*          >*/}
-        {/*            Видалити вибрані*/}
-        {/*          </button>*/}
-        {/*        </div>*/}
-        {/*      </div>*/}
-
-        {/*      {cart.length > 0 ? (*/}
-        {/*        <>*/}
-        {/*          <div className="space-y-4">*/}
-        {/*            {cart.map((item) => (*/}
-        {/*              <div*/}
-        {/*                key={item.id}*/}
-        {/*                className="flex items-center justify-between bg-gray-800 p-4 rounded-lg shadow-md"*/}
-        {/*              >*/}
-        {/*                <div className="flex items-center gap-4">*/}
-        {/*                  <input*/}
-        {/*                    type="checkbox"*/}
-        {/*                    className="w-5 h-5 text-orange-500 rounded"*/}
-        {/*                    checked={selectedItems.includes(item.id)}*/}
-        {/*                    onChange={() => toggleSelectItem(item.id)}*/}
-        {/*                  />*/}
-        {/*                  <img*/}
-        {/*                    src={item.image}*/}
-        {/*                    alt={item.name}*/}
-        {/*                    className="w-20 h-20 object-cover rounded-lg"*/}
-        {/*                  />*/}
-        {/*                  <div>*/}
-        {/*                    <h2 className="text-lg font-semibold">{item.name}</h2>*/}
-        {/*                    <p className="text-sm text-gray-400">*/}
-        {/*                      Продавець: {item.seller}*/}
-        {/*                    </p>*/}
-        {/*                    <div className="mt-2 flex items-center gap-2">*/}
-        {/*                      /!*<span className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">*!/*/}
-        {/*                      /!*  -{item.discount}%*!/*/}
-        {/*                      /!*</span>*!/*/}
-        {/*                      /!*<span className="line-through text-gray-500">*!/*/}
-        {/*                      /!*  {item.originalPrice} ₴*!/*/}
-        {/*                      /!*</span>*!/*/}
-        {/*                      <span className="text-orange-400 font-semibold">*/}
-        {/*                    {item.price} ₴*/}
-        {/*                  </span>*/}
-        {/*                    </div>*/}
-        {/*                  </div>*/}
-        {/*                </div>*/}
-        {/*                <div className="flex items-center gap-4">*/}
-        {/*                  <div className="flex items-center space-x-2">*/}
-        {/*                    <button*/}
-        {/*                      onClick={() =>*/}
-        {/*                        handleQuantityChange(item.id, Math.max(1, item.quantity - 1))*/}
-        {/*                      }*/}
-        {/*                      className="px-2 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"*/}
-        {/*                    >*/}
-        {/*                      -*/}
-        {/*                    </button>*/}
-        {/*                    <span className="px-4 py-1 bg-gray-900 rounded">*/}
-        {/*                  {item.quantity}*/}
-        {/*                </span>*/}
-        {/*                    <button*/}
-        {/*                      onClick={() =>*/}
-        {/*                        handleQuantityChange(item.id, item.quantity + 1)*/}
-        {/*                      }*/}
-        {/*                      className="px-2 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"*/}
-        {/*                    >*/}
-        {/*                      +*/}
-        {/*                    </button>*/}
-        {/*                  </div>*/}
-        {/*                  <button*/}
-        {/*                    onClick={() => handleRemoveItem(item.id)}*/}
-        {/*                    className="text-red-500 hover:text-red-700"*/}
-        {/*                  >*/}
-        {/*                    Видалити*/}
-        {/*                  </button>*/}
-        {/*                </div>*/}
-        {/*              </div>*/}
-        {/*            ))}*/}
-        {/*          </div>*/}
-        {/*          <div className="mt-8 flex items-center justify-between">*/}
-        {/*            <button*/}
-        {/*              onClick={() => window.location.href = route("storefront.index")}*/}
-        {/*              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"*/}
-        {/*            >*/}
-        {/*              Продовжити покупки*/}
-        {/*            </button>*/}
-
-        {/*            <div className="flex gap-4">*/}
-        {/*              <h2 className="text-2xl font-bold">*/}
-        {/*                Всього: <span className="text-orange-400">{total.toFixed(2)} ₴</span>*/}
-        {/*              </h2>*/}
-        {/*              <button*/}
-        {/*                className="px-6 py-2 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600"*/}
-        {/*                onClick={() => console.log("Checkout selected")}*/}
-        {/*              >*/}
-        {/*                Оформити замовлення*/}
-        {/*              </button>*/}
-        {/*            </div>*/}
-        {/*          </div>*/}
-        {/*        </>*/}
-        {/*      ) : (*/}
-        {/*        <p>Ваш кошик порожній</p>*/}
-        {/*      )}*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*</main>*/}
 
 
         <main className="bg-[#0f0f0f] min-h-screen">
@@ -445,7 +263,7 @@ export default function Show({ cart: initialCart, total: initialTotal }) {
                       </h2>
                       <button
                         className="px-6 py-2 border border-[#FF8000] text-[#FF8000] font-bold rounded-lg hover:text-orange-600"
-                        onClick={() => console.log("Checkout selected")}
+                        onClick={() => router.visit(route("checkout.index"))}
                       >
                         Оформити замовлення
                       </button>
