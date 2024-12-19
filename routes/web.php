@@ -34,7 +34,6 @@ Route::prefix('/cart')->group(function () {
     //Route::post('/addQuantity', [CartController::class, 'addQuantity'])->name('cart.update.quantity.add');
     //Route::post('/removeQuantity', [CartController::class, 'removeQuantity'])->name('cart.update.quantity.remove');
     Route::post('/changeQuantity', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
-
 });
 
 Route::middleware(['web'])->group(function () {
