@@ -1,30 +1,33 @@
-import {Head, Link, router, useForm, usePage} from "@inertiajs/react";
+import {Head, Link, router, useForm, usePage, useRemember} from "@inertiajs/react";
 import React, {useEffect, useState} from "react";
 import {Button, Cascader, Divider} from "antd";
 
-export default function StoreFrontLayout({props, children}) {
+export default function StoreFrontLayout({children}) {
 
-  const [query, setQuery] = useState('');
-  const [currentCategory, setCurrentCategory] = useState(null);
-
-  const {auth} = usePage().props
+  const {props} = usePage();
+  const {user} = usePage().props.auth;
 
   const [categoryData, setCategoryData] = useState(null);
 
+  const [query, setQuery] = useState('');
+  const [currentCategory, setCurrentCategory] = useState(props.currentCategory);
+
   const handleSearch = (e) => {
     e.preventDefault();
-    router.visit(route('storefront.search', currentCategory), {method: 'get', data: {query}});
+
+    let queryString = query === '' ? {} : query
+    router.visit(route('storefront.search', currentCategory), {data: {query: queryString}});
   };
 
   const handleCategorySelect = (e, value) => {
     console.log(value)
 
-    setCurrentCategory({
-      taxonomySlug: value[0].slug,
-      taxonSlug: value.at(-1).slug
-    });
+    setCurrentCategory(value);
 
-    router.visit(route('storefront.search', currentCategory));
+    let path = value.map(entry => entry.slug).toString().replaceAll(',', '/');
+
+    let queryString = query === '' ? {} : query
+    router.visit(route('storefront.search') + '/' + path, {data: {query: queryString}});
   }
 
   //Fetch category data on component mount
@@ -32,6 +35,22 @@ export default function StoreFrontLayout({props, children}) {
     axios(route('storefront.categories'))
       .then((response) => setCategoryData(response.data));
   }, []);
+
+  useEffect(() => {
+    console.log(props.currentCategory);
+  }, [props]);
+
+  useEffect(() => {
+    console.log('Current category: ' + props.currentCategory);
+    setCurrentCategory(props.currentCategory);
+    setQuery(props.query);
+  }, [props]);
+
+  //Go to category url when it is changed
+  // useEffect(() => {
+  //   let queryString = query === '' ? {} : query
+  //   router.visit(route('storefront.search', currentCategory), {data: {query: queryString}});
+  // }, [query, currentCategory]);
 
   return (
     <div className='flex-auto'>
@@ -51,7 +70,8 @@ export default function StoreFrontLayout({props, children}) {
         {/* Bottom Part */}
         <div className="flex flex-col md:flex-row items-center justify-between bg-[#272525] p-4 md:px-[7%]">
 
-          <Cascader fieldNames={{label: 'name', value: 'slug'}} options={categoryData} onChange={handleCategorySelect}>
+          <Cascader fieldNames={{label: 'name', value: 'slug'}} options={categoryData}
+                    value={currentCategory} onChange={handleCategorySelect}>
             <button className="bg-[#ff8000] text-black px-4 py-2 rounded-md w-full md:w-auto mb-2 md:mb-0">Категорії
             </button>
           </Cascader>
@@ -106,7 +126,7 @@ export default function StoreFrontLayout({props, children}) {
             </Link>
 
 
-            {auth.user === null ? (
+            {user === null ? (
               <Link href={route('login')} className="flex flex-col items-center text-[#ffffff] hover:text-orange-500">
                 <svg className="w-6 h-6 mb-1" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -121,7 +141,7 @@ export default function StoreFrontLayout({props, children}) {
                     d="M6.09373 17.8125C6.97915 17.1354 7.96873 16.6017 9.06248 16.2115C10.1562 15.8212 11.3021 15.6257 12.5 15.625C13.6979 15.6243 14.8437 15.8198 15.9375 16.2115C17.0312 16.6031 18.0208 17.1368 18.9062 17.8125C19.5139 17.1007 19.9871 16.2934 20.326 15.3906C20.6649 14.4878 20.834 13.5243 20.8333 12.5C20.8333 10.191 20.0219 8.22465 18.3989 6.60104C16.776 4.97743 14.8097 4.16597 12.5 4.16666C10.1903 4.16736 8.22394 4.97916 6.60102 6.60208C4.97811 8.22499 4.16665 10.191 4.16665 12.5C4.16665 13.5243 4.33609 14.4878 4.67498 15.3906C5.01387 16.2934 5.48679 17.1007 6.09373 17.8125ZM12.5 13.5417C11.4757 13.5417 10.6118 13.1903 9.90831 12.4875C9.20484 11.7847 8.85345 10.9208 8.85415 9.89583C8.85484 8.87083 9.20658 8.00694 9.90936 7.30416C10.6121 6.60138 11.4757 6.24999 12.5 6.24999C13.5243 6.24999 14.3882 6.60173 15.0916 7.3052C15.7951 8.00868 16.1465 8.87222 16.1458 9.89583C16.1451 10.9194 15.7937 11.7833 15.0916 12.4875C14.3896 13.1917 13.5257 13.543 12.5 13.5417ZM12.5 22.9167C11.059 22.9167 9.70484 22.643 8.43748 22.0958C7.17012 21.5486 6.06769 20.8066 5.13019 19.8698C4.19269 18.933 3.45068 17.8305 2.90415 16.5625C2.35762 15.2944 2.08401 13.9403 2.08331 12.5C2.08262 11.0597 2.35623 9.70555 2.90415 8.4375C3.45206 7.16944 4.19408 6.06701 5.13019 5.1302C6.0663 4.1934 7.16873 3.45138 8.43748 2.90416C9.70623 2.35694 11.0604 2.08333 12.5 2.08333C13.9396 2.08333 15.2937 2.35694 16.5625 2.90416C17.8312 3.45138 18.9337 4.1934 19.8698 5.1302C20.8059 6.06701 21.5482 7.16944 22.0969 8.4375C22.6455 9.70555 22.9187 11.0597 22.9166 12.5C22.9146 13.9403 22.641 15.2944 22.0958 16.5625C21.5507 17.8305 20.8087 18.933 19.8698 19.8698C18.9309 20.8066 17.8285 21.549 16.5625 22.0969C15.2965 22.6448 13.9423 22.918 12.5 22.9167Z"
                     fill="white"/>
                 </svg>
-                <span>{auth.user.name}</span>
+                <span>{user.name}</span>
               </Link>
             )}
 
