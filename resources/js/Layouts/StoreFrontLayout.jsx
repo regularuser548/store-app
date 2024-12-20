@@ -15,35 +15,59 @@ export default function StoreFrontLayout({children}) {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    let queryString = query === '' ? {} : query
-    router.visit(route('storefront.search', currentCategory), {data: {query: queryString}});
+    // let path = currentCategory.toString().replaceAll(',', '/');
+    //
+    // let queryString = query === '' ? {} : query
+    // router.visit(route('storefront.search') + '/' + path, {data: {query: queryString}});
+
+    router.visit(generateSearchUrl(currentCategory));
   };
 
   const handleCategorySelect = (e, value) => {
     console.log(value)
 
-    setCurrentCategory(value);
+    let slugs = value.map(entry => entry.slug);
 
-    let path = value.map(entry => entry.slug).toString().replaceAll(',', '/');
+    setCurrentCategory(slugs);
 
-    let queryString = query === '' ? {} : query
-    router.visit(route('storefront.search') + '/' + path, {data: {query: queryString}});
+    // let path = slugs.toString().replaceAll(',', '/');
+    //
+    // let queryString = query === '' ? {} : query
+    // let url = route('storefront.search') + '/' + path + '?query=' + queryString;
+    // console.log(url);
+    // router.visit(route('storefront.search') + '/' + path, {data: {query: queryString}});
+
+    router.visit(generateSearchUrl(slugs));
   }
 
-  //Fetch category data on component mount
+  const generateSearchUrl = (currentCategory) => {
+    let url = route('storefront.search');
+
+    if (currentCategory !== undefined && currentCategory !== null)
+      url += `/${currentCategory.toString().replaceAll(',', '/')}`;
+
+    if (query !== '')
+      url += `?query=${query}`;
+
+    console.log(url);
+    return url;
+
+  }
+
+  //Fetch category data on layout mount
   useEffect(() => {
     axios(route('storefront.categories'))
       .then((response) => setCategoryData(response.data));
   }, []);
 
+  //Set new state values when page changes
   useEffect(() => {
-    console.log(props.currentCategory);
-  }, [props]);
-
-  useEffect(() => {
-    console.log('Current category: ' + props.currentCategory);
     setCurrentCategory(props.currentCategory);
-    setQuery(props.query);
+
+    props.query === undefined || props.query === null
+      ? setQuery('')
+      : setQuery(props.query);
+
   }, [props]);
 
   //Go to category url when it is changed
@@ -57,14 +81,14 @@ export default function StoreFrontLayout({children}) {
       <header className="bg-[#161616]">
         <div className="flex justify-between items-center p-4 bg-[#161616] text-white md:px-[7%]">
           <Link href={route('storefront.index')} className="text-2xl font-bold text-[#ffffff]">ShopHub</Link>
-          <button className="bg-gray-700 text-white p-2 rounded-full flex items-center space-x-2">
-            <span>Nightmode</span>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                    d="M12 3v1M12 21v1m-6-6H5m14 0h-1m-9.96-4.84l-.7-.7m11.31.7l-.7-.7M5.34 17.66l-.7.7m11.32-.7l-.7.7M9 12a3 3 0 106 0 3 3 0 00-6 0z"/>
-            </svg>
-          </button>
+          {/*<button className="bg-gray-700 text-white p-2 rounded-full flex items-center space-x-2">*/}
+          {/*  <span>Nightmode</span>*/}
+          {/*  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"*/}
+          {/*       xmlns="http://www.w3.org/2000/svg">*/}
+          {/*    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"*/}
+          {/*          d="M12 3v1M12 21v1m-6-6H5m14 0h-1m-9.96-4.84l-.7-.7m11.31.7l-.7-.7M5.34 17.66l-.7.7m11.32-.7l-.7.7M9 12a3 3 0 106 0 3 3 0 00-6 0z"/>*/}
+          {/*  </svg>*/}
+          {/*</button>*/}
         </div>
 
         {/* Bottom Part */}
