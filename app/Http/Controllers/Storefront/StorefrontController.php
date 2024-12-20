@@ -23,8 +23,8 @@ class StorefrontController extends Controller
     protected MediaRepository $mediaRepository;
     protected TaxonomyRepository $taxonomyRepository;
 
-    public function __construct(ProductRepository $productRepository,
-                                MediaRepository $mediaRepository,
+    public function __construct(ProductRepository  $productRepository,
+                                MediaRepository    $mediaRepository,
                                 TaxonomyRepository $taxonomyRepository)
     {
         $this->repository = $productRepository;
@@ -68,14 +68,15 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/Show', compact('product', 'images', 'comments'));
     }
 
-    public function search(ProductSearchRequest $request, ?string $taxonomySlug = null, ?string $taxonSlug = null): Response
+    public function search(ProductSearchRequest $request, ?string $path = null): Response
     {
         $productFinder = new ProductSearch();
 
         $properties = [];
+        $slugs = $path !== null ? explode('/', $path) : null;
 
-        if ($taxonomySlug and $taxonSlug)
-            $productFinder->withinTaxon(Taxon::findOneByParentsAndSlug($taxonomySlug, $taxonSlug));
+        if ($slugs and count($slugs) > 1)
+            $productFinder->withinTaxon(Taxon::findOneByParentsAndSlug($slugs[0], end($slugs)));
 
 //        foreach ($request->filters($properties) as $property => $values) {
 //            $productFinder->havingPropertyValuesByName($property, $values);
@@ -88,7 +89,12 @@ class StorefrontController extends Controller
 
         $images = $this->mediaRepository->primaryImageForEach($products);
 
-        return Inertia::render('Storefront/Search', ['products' => $products, 'images' => $images]);
+        //dd($slugs);
+
+        return Inertia::render('Storefront/Search', ['products' => $products,
+            'images' => $images,
+            'currentCategory' => $slugs,
+            'query' => $request->input('query')]);
     }
 
     public function PrivacyPolicy(): Response

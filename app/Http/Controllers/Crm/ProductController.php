@@ -116,7 +116,7 @@ class ProductController extends Controller
         //dd($taxonomyTree);
 
         $currentCategory = null;
-        //if ($product->taxons()->count() > 0)
+        if ($product->taxons()->count() > 0)
             $currentCategory = $this->taxonRepository->findTaxonParents($product->taxons()->first());
             //dd($currentCategory);
 

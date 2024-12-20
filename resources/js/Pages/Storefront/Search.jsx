@@ -8,27 +8,27 @@ export default function Search({products, images}) {
 
 
   return (
-      <div className="bg-[#0f0f0f] min-h-screen">
-        {/* Header */}
+    <div className="bg-[#0f0f0f] min-h-screen">
+      {/* Header */}
 
-        <main className="p-4 md:px-[7%]">
+      <main className="p-4 md:px-[7%]">
 
-          <div className="text-white text-4xl p-20 ps-5">Результати пошуку:</div>
+        <div className="text-white text-4xl p-20 ps-5">Результати пошуку:</div>
 
-          {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-              {products.map((product) => (
+        {products.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
+            {products.map((product) => (
               <Product item={product} image={images[product.id]} isCrm={false}></Product>
-              ))}
-            </div>
-          ) : (
-            <Flex justify='center' align='center'>
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Нічого не знайшлось'}></Empty>
-            </Flex>
-          )}
+            ))}
+          </div>
+        ) : (
+          <Flex justify='center' align='center'>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Нічого не знайшлось'}></Empty>
+          </Flex>
+        )}
 
-        </main>
+      </main>
 
-      </div>
+    </div>
   );
 }
