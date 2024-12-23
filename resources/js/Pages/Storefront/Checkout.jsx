@@ -4,7 +4,8 @@ import {Form, Input, Button, Typography, List, message, Checkbox} from "antd";
 
 const { Title, Paragraph } = Typography;
 
-export default function Checkout({ cartItems, userData }) {
+export default function Checkout({ cartItems, userData, total: initialTotal}) {
+  const [total, setTotal] = useState(initialTotal);
   const { data, setData, post, processing, errors } = useForm({
     name: userData.name || "",
     surname: userData.surname || "",
@@ -155,7 +156,7 @@ export default function Checkout({ cartItems, userData }) {
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span>1 товар на суму</span>
-                <span className="font-bold">2 000 ₴</span>
+                <span className="font-bold">{total.toFixed(2)} ₴</span>
               </div>
               <div className="flex justify-between">
                 <span>Вартість доставки</span>
@@ -164,7 +165,7 @@ export default function Checkout({ cartItems, userData }) {
               <hr className="border-gray-700"/>
               <div className="flex justify-between text-lg font-bold">
                 <span>До сплати:</span>
-                <span>2 199 ₴</span>
+                <span>${119 + parseFloat(total.toFixed(2))} ₴</span>
               </div>
             </div>
 
@@ -233,9 +234,10 @@ export default function Checkout({ cartItems, userData }) {
                             </svg>
                           </div>
                           <div className="flex-grow text-center sm:text-left sm:ml-4">
-                            <h3 className="text-sm font-medium">{item.name}</h3>
+                            <h3 className="text-lg font-medium">{item.name}</h3>
                           </div>
-                          <div className="text-right sm:text-left w-full sm:w-auto">
+                          <div className="text-right flex  sm:text-left w-full sm:w-auto">ё
+                            <p className="text-lg pr-20 font-medium">{item.quantity}</p>
                             <p className="text-lg font-bold text-white">{item.price} ₴</p>
                           </div>
                         </div>
