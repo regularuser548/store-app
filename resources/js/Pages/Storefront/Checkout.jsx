@@ -236,8 +236,8 @@ export default function Checkout({ cartItems, userData, total: initialTotal}) {
                           <div className="flex-grow text-center sm:text-left sm:ml-4">
                             <h3 className="text-lg font-medium">{item.name}</h3>
                           </div>
-                          <div className="text-right flex  sm:text-left w-full sm:w-auto">ё
-                            <p className="text-lg pr-20 font-medium">{item.quantity}</p>
+                          <div className="text-right flex  sm:text-left w-full sm:w-auto">
+                            <p className="text-lg pr-20 font-medium">{item.quantity}x</p>
                             <p className="text-lg font-bold text-white">{item.price} ₴</p>
                           </div>
                         </div>

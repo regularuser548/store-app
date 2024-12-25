@@ -1,6 +1,6 @@
-import {Head, Link, router, useForm, usePage, useRemember} from "@inertiajs/react";
+import {Link, router, usePage} from "@inertiajs/react";
 import React, {useEffect, useState} from "react";
-import {Button, Cascader, Divider} from "antd";
+import {Cascader} from "antd";
 
 export default function StoreFrontLayout({children}) {
 
@@ -15,42 +15,43 @@ export default function StoreFrontLayout({children}) {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    // let path = currentCategory.toString().replaceAll(',', '/');
-    //
-    // let queryString = query === '' ? {} : query
-    // router.visit(route('storefront.search') + '/' + path, {data: {query: queryString}});
-
     router.visit(generateSearchUrl(currentCategory));
   };
 
   const handleCategorySelect = (e, value) => {
-    console.log(value)
-
     let slugs = value.map(entry => entry.slug);
 
     setCurrentCategory(slugs);
-
-    // let path = slugs.toString().replaceAll(',', '/');
-    //
-    // let queryString = query === '' ? {} : query
-    // let url = route('storefront.search') + '/' + path + '?query=' + queryString;
-    // console.log(url);
-    // router.visit(route('storefront.search') + '/' + path, {data: {query: queryString}});
 
     router.visit(generateSearchUrl(slugs));
   }
 
   const generateSearchUrl = (currentCategory) => {
-    let url = route('storefront.search');
+    // let url = route('storefront.search');
+    //
+    // if (currentCategory !== undefined && currentCategory !== null)
+    //   url += `/${currentCategory.toString().replaceAll(',', '/')}`;
+    //
+    // if (query !== '')
+    //   url += `?query=${query}`;
+    //
+    // console.log(url);
+    // return url;
+
+    let url = new URL(route('storefront.search'));
 
     if (currentCategory !== undefined && currentCategory !== null)
-      url += `/${currentCategory.toString().replaceAll(',', '/')}`;
+      url.pathname = `/search/${currentCategory.toString().replaceAll(',', '/')}`;
+    else
+      url.pathname = '/search';
 
     if (query !== '')
-      url += `?query=${query}`;
+      url.searchParams.set('query', query);
+    else
+      url.searchParams.delete('query');
 
-    console.log(url);
-    return url;
+
+    return url.toString();
 
   }
 
@@ -69,12 +70,6 @@ export default function StoreFrontLayout({children}) {
       : setQuery(props.query);
 
   }, [props]);
-
-  //Go to category url when it is changed
-  // useEffect(() => {
-  //   let queryString = query === '' ? {} : query
-  //   router.visit(route('storefront.search', currentCategory), {data: {query: queryString}});
-  // }, [query, currentCategory]);
 
   return (
     <div className='flex-auto'>

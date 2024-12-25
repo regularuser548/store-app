@@ -27,6 +27,8 @@ class ProductController extends Controller
     protected TaxonRepository $taxonRepository;
     protected TaxonomyRepository $taxonomyRepository;
 
+    const productsPerPage = 10;
+
     public function __construct(ProductRepository $productRepository,
                                 MediaRepository   $mediaRepository,
                                 TaxonRepository   $taxonRepository,
@@ -57,17 +59,16 @@ class ProductController extends Controller
      */
     public function index(): Response
     {
-        //todo: add pagination
-        //todo: move to repository
+        $query = Product::query();
 
-        if (Auth::user()->hasRole('admin'))
-            $products = $this->repository->all();
-        else
-            $products = $this->repository->all()->where('seller_id', '=', Auth::id())->flatten();
+        if (!Auth::user()->hasRole('admin'))
+            $query->where('seller_id', '=', Auth::id());
 
-        $imageUrls = $this->mediaRepository->primaryImageForEach($products);
+        $paginator = $query->paginate(self::productsPerPage)->withQueryString();
 
-        return Inertia::render('Crm/Product/Index', ['products' => $products, 'images' => $imageUrls]);
+        $imageUrls = $this->mediaRepository->primaryImageForEach(collect($paginator->items()));
+
+        return Inertia::render('Crm/Product/Index', ['paginator' => $paginator, 'images' => $imageUrls]);
     }
 
     /**
