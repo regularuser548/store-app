@@ -13,9 +13,6 @@
     color: #ffffff;
 }
 
-table, tr, td, th {
-    border: 1px inset rgba(217,217,217, 59%) !important;
-}
 
 .ant-cascader-menu {
     height: fit-content;

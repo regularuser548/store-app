@@ -66,7 +66,9 @@ class ProductController extends Controller
 
         $paginator = $query->paginate(self::productsPerPage)->withQueryString();
 
-        $imageUrls = $this->mediaRepository->primaryImageForEach(collect($paginator->items()));
+        //todo: add categories to table
+
+        $imageUrls = $this->mediaRepository->primaryImageForEach(collect($paginator->items()), urlType: 'thumbnail');
 
         return Inertia::render('Crm/Product/Index', ['paginator' => $paginator, 'images' => $imageUrls]);
     }
