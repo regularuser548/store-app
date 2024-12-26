@@ -62,8 +62,9 @@ Route::middleware('auth')->group(function () {
 
 //Dashboard
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return redirect()->route('profile.edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 //Profile
 Route::middleware('auth')->group(function () {
