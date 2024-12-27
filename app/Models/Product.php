@@ -24,5 +24,23 @@ class Product extends \Vanilo\Foundation\Models\Product
         return $this->getThumbnailUrl();
     }
 
-    protected $appends = ['thumbnail_url'];
+    public function getCategoryPathAttribute(): ?string
+    {
+        $taxon = $this->taxons()?->get()?->first();
+
+        if (!$taxon)
+            return null;
+
+        $categoryPath = [$taxon->name];
+
+        while ($taxon->parent) {
+            $categoryPath[] = $taxon->parent->name;
+            $taxon = $taxon->parent;
+        }
+        $categoryPath[] = $taxon->taxonomy()->get()->first()->name;
+
+        return implode('/', array_reverse($categoryPath));
+    }
+
+    protected $appends = ['thumbnail_url', 'category_path'];
 }

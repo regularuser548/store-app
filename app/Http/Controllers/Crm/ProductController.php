@@ -27,7 +27,7 @@ class ProductController extends Controller
     protected TaxonRepository $taxonRepository;
     protected TaxonomyRepository $taxonomyRepository;
 
-    const productsPerPage = 10;
+    const productsPerPage = 20;
 
     public function __construct(ProductRepository $productRepository,
                                 MediaRepository   $mediaRepository,
@@ -66,11 +66,12 @@ class ProductController extends Controller
 
         $paginator = $query->paginate(self::productsPerPage)->withQueryString();
 
-        //todo: add categories to table
+        //$categories = $this->taxonomyRepository->buildTaxonomyTree(collect($paginator->items()));
+        //dd($paginator->items()[0]->taxons()->get());
 
-        $imageUrls = $this->mediaRepository->primaryImageForEach(collect($paginator->items()), urlType: 'thumbnail');
+        //$imageUrls = $this->mediaRepository->primaryImageForEach(collect($paginator->items()), urlType: 'thumbnail');
 
-        return Inertia::render('Crm/Product/Index', ['paginator' => $paginator, 'images' => $imageUrls]);
+        return Inertia::render('Crm/Product/Index', ['paginator' => $paginator]);
     }
 
     /**

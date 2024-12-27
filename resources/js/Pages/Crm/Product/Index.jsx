@@ -4,16 +4,17 @@ import Product from "@/Components/ShopHub/Product.jsx";
 import {Avatar, Button, Empty, Flex, Image, List, Pagination, Space, Table, Tag} from "antd";
 import React from "react";
 
-export default function Index({paginator, images}) {
+export default function Index({paginator}) {
 
   const products = paginator.data;
 
-  const onChange = (page) => {
+  const onPageChange = (page) => {
     // let url = new URL(window.location.href);
     // url.searchParams.set('page', page);
 
     router.visit(paginator.links[page].url);
   };
+
 
   const columns = [
     {
@@ -39,18 +40,33 @@ export default function Index({paginator, images}) {
       title: 'Статус',
       key: 'state',
       dataIndex: 'state',
-      render: (_, {state}) => (
-        <Tag>
-          {state}
-        </Tag>
+      render: (_, {state}) => {
+        let color = '';
 
-      )
+        if (state === 'inactive')
+          color = 'gold';
+
+        if (state === 'active')
+          color = 'green';
+
+        if (state === 'unavailable')
+          color = 'volcano';
+
+        if (state === 'retired')
+          color = 'red';
+
+        return (
+          <Tag color={color}>
+            {state}
+          </Tag>
+        );
+      }
 
     },
     {
       title: 'Категорія',
-      key: 'taxon',
-      dataIndex: 'taxon',
+      key: 'category_path',
+      dataIndex: 'category_path',
     },
     {
       title: 'Дії',
@@ -58,13 +74,12 @@ export default function Index({paginator, images}) {
       render: (_, product) => (
         <Space size="middle">
           <Link href={route('product.edit', product.id)}>Редагувати</Link>
-          <Link href={route('product.destroy', product.id)}>Видалити</Link>
         </Space>
       ),
     },
   ];
 
-  console.log(products[0]);
+  //console.log(products[0]);
 
   return (
     <div className='p-4'>
@@ -78,34 +93,14 @@ export default function Index({paginator, images}) {
       {/*    </Empty>}*/}
       {/*</div>*/}
 
-      {/*<List*/}
-      {/*  itemLayout="horizontal"*/}
-      {/*  dataSource={products}*/}
-      {/*  renderItem={(item, index) => (*/}
-      {/*    <List.Item actions={[<Link href={route('product.edit', item.id)}>Редагувати</Link>,*/}
-      {/*      <Link href={route('product.destroy', item.id)}>Видалити</Link>]}>*/}
-      {/*      <List.Item.Meta*/}
-      {/*        avatar={<img className={'max-w-32'} src={images[item.id]} alt=''/>}*/}
-      {/*        title={<Link href={route('product.edit', item.id)}>{item.name}</Link>}*/}
-      {/*        description={ <>*/}
-      {/*          <p>{item.description}</p>*/}
-      {/*          <p>*/}
-      {/*            <Tag color="green">{item.state}</Tag>*/}
-      {/*          </p>*/}
-      {/*        </>}*/}
-
-      {/*      />*/}
-      {/*      <p style={{fontWeight: "bold", fontSize: "16px"}}>Ціна: {item.price} ₴</p>*/}
-      {/*      <p style={{fontWeight: "bold", fontSize: "16px"}}>Ціна: {item.price} ₴</p>*/}
-      {/*    </List.Item>*/}
-      {/*  )}*/}
-      {/*/>*/}
-      <Table columns={columns} dataSource={products}/>
-      <Flex justify='center'>
-        <Pagination current={paginator.current_page} onChange={onChange}
-                    total={paginator.total}
-                    defaultPageSize={paginator.per_page}/>
-      </Flex>
+      <Table columns={columns} dataSource={products} pagination={{
+        position: ['bottomCenter'],
+        current: paginator.current_page,
+        onChange:onPageChange,
+        total: paginator.total,
+        defaultPageSize: paginator.per_page,
+        hideOnSinglePage: true,
+      }}/>
     </div>
   );
 }
