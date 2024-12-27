@@ -7,42 +7,43 @@ import EmptyHeart from "@/Icons/EmptyHeart.jsx";
 
 export default function Product({ item, image, isCrm = false }) {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleAddToCart = (productId) => {
     axios.post(route('cart.add'), {product: {id: productId}});
   };
 
-  // useEffect(() => {
-  //   // Проверяем, находится ли товар в избранном
-  //   const checkFavorite = async () => {
-  //     try {
-  //       const response = await axios.get(route('favorites.exists', item.id));
-  //       setIsFavorite(response.data.exists);
-  //     } catch (error) {
-  //       console.error("Failed to check favorite status:", error);
-  //     }
-  //   };
-  //
-  //   checkFavorite();
-  // }, [item.id]);
+  useEffect(() => {
+    const checkFavorite = async () => {
+      try {
+        const response = await axios.get(route('favorites.exists', item.id));
+        setIsFavorite(response.data.exists);
+      } catch (error) {
+        console.error("Failed to check favorite status:", error);
+      }
+    };
+
+    checkFavorite();
+  }, [item.id]);
 
   const toggleFavorite = async (productId) => {
+    const previousState = isFavorite;
+    setIsFavorite(!isFavorite);
     try {
       if (isFavorite) {
-        // Удаляем из избранного
-        await axios.delete(`/favorites/${productId}`);
+        await axios.delete(route('favorites.destroy', productId));
         message.success("Removed from favorites");
       } else {
-        // Добавляем в избранное
         await axios.post(route('favorites.store'), { product_id: productId });
         message.success("Added to favorites");
       }
-      setIsFavorite(!isFavorite); // Переключаем состояние
     } catch (error) {
       console.error("Failed to toggle favorite:", error);
       message.error("Failed to update favorite status.");
+      setIsFavorite(previousState);
     }
   };
+
 
   return (
     <article id={item.id} className="rounded-lg shadow-lg overflow-hidden">
@@ -74,6 +75,7 @@ export default function Product({ item, image, isCrm = false }) {
             <div className="w-full md:w-auto flex justify-end">
               <button
                 onClick={() => toggleFavorite(item.id)}
+                disabled={loading}
                 className="flex flex-col items-center hover:text-white"
               >
                 {isFavorite ? <FilledHeart/> : <EmptyHeart/>}

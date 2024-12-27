@@ -62,7 +62,7 @@ export default function MyOrders({ orders }) {
                     className="flex items-center p-3 border border-gray-700 rounded shadow-sm"
                   >
                     <img
-                      src={item.image}
+                      src={item.thumbUrl}
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded mr-4"
                     />

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Storefront;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
 use Inertia\Inertia;
@@ -22,16 +23,17 @@ class FavoriteController extends Controller
 
     public function store(Request $request)
     {
-        // Добавление товара в избранное
-        $request->validate(['product_id' => 'required|exists:products,id']);
+        $product = Product::findOrFail($request->input('product_id'));
 
-        $favorite = Favorite::firstOrCreate([
+        Favorite::updateOrCreate([
             'user_id' => auth()->id(),
-            'product_id' => $request->product_id,
+            'product_id' => $product->id,
         ]);
 
-        return response()->json(['message' => 'Product added to favorites', 'favorite' => $favorite]);
+        return back()->with('success', "Product added to favorites");
     }
+
+
 
     public function exists($productId)
     {
@@ -42,10 +44,11 @@ class FavoriteController extends Controller
         return response()->json(['exists' => $exists]);
     }
 
-    public function destroy($id)
+    public function destroy($productId)
     {
-        // Удаление товара из избранного
-        $favorite = Favorite::where('user_id', auth()->id())->where('product_id', $id)->first();
+        $favorite = Favorite::where('user_id', auth()->id())
+            ->where('product_id', $productId)
+            ->first();
 
         if (!$favorite) {
             return response()->json(['message' => 'Product not found in favorites'], 404);
@@ -55,4 +58,5 @@ class FavoriteController extends Controller
 
         return response()->json(['message' => 'Product removed from favorites']);
     }
+
 }

@@ -51,7 +51,7 @@ export default function SalesReport({ salesData }) {
         dataSource={salesData}
         rowKey={(record) => record.id}
         bordered
-        pagination={true}
+        pagination={false}
       />
     </div>
   );
