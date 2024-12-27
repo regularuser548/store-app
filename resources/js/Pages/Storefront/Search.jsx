@@ -1,34 +1,48 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Product from '../../Components/ShopHub/Product.jsx';
-import {Link, router} from "@inertiajs/react";
-import {Button, Card, Carousel, Col, DatePicker, Empty, Flex, Image, Row, Space, version} from "antd";
-import StoreFrontLayout from "../../Layouts/StoreFrontLayout.jsx"
+import {router} from "@inertiajs/react";
+import {Empty, Flex, Pagination} from "antd";
 
-export default function Search({products, images}) {
+export default function Search({paginator, images}) {
 
+  const products = paginator.data;
+
+  const onChange = (page) => {
+    // let url = new URL(window.location.href);
+    // url.searchParams.set('page', page);
+
+    router.visit(paginator.links[page].url);
+  };
 
   return (
-      <div className="bg-[#0f0f0f] min-h-screen">
-        {/* Header */}
+    <div className="bg-[#0f0f0f] min-h-screen">
+      {/* Header */}
 
-        <main className="p-4 md:px-[7%]">
+      <main className="p-4 md:px-[7%]">
 
-          <div className="text-white text-4xl p-20 ps-5">Результати пошуку:</div>
+        <div className="text-white text-4xl p-20 ps-5">Результати пошуку:</div>
 
-          {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
-              {products.map((product) => (
-              <Product item={product} image={images[product.id]} isCrm={false}></Product>
-              ))}
-            </div>
-          ) : (
-            <Flex justify='center' align='center'>
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Нічого не знайшлось'}></Empty>
-            </Flex>
-          )}
+        {products.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
+            {products.map((product) => (
+              <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>
+            ))}
+          </div>
+        ) : (
+          <Flex justify='center' align='center'>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Нічого не знайшлось'}></Empty>
+          </Flex>
+        )}
 
-        </main>
+        <Flex justify='center'>
+          <Pagination current={paginator.current_page} onChange={onChange}
+                      total={paginator.total}
+                      defaultPageSize={paginator.per_page} />
+        </Flex>
 
-      </div>
+
+      </main>
+
+    </div>
   );
 }

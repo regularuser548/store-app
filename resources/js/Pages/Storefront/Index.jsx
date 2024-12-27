@@ -80,9 +80,9 @@ export default function Index({products, images}) {
 
           <div className="text-white text-4xl p-20 ps-5">Найбільш популярні товари</div>
           {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
               {products.map((product) => (
-                <Product item={product} image={images[product.id]} isCrm={false}></Product>
+                <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>
               ))}
             </div>
           ) : (
@@ -110,9 +110,9 @@ export default function Index({products, images}) {
           <div className="text-white text-4xl p-20 ps-5">Всі акції</div>
 
           {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-40 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
               {products.map((product) => (
-                <Product item={product} image={images[product.id]} isCrm={false}></Product>
+                <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>
               ))}
             </div>
           ) : (

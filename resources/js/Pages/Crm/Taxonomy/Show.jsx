@@ -1,10 +1,9 @@
-import {Link, router, useForm} from "@inertiajs/react";
+import {Link, router, useForm, usePage} from "@inertiajs/react";
 import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import {Button, Empty, Tree} from "antd";
 
 export default function Show({taxonomy, taxons, image = null, props}) {
-
   // const {data, setData, post, progress} = useForm({
   //   name: taxonomy.name,
   //   slug: taxonomy.slug,
@@ -46,7 +45,7 @@ export default function Show({taxonomy, taxons, image = null, props}) {
     <>
       {taxons && taxons.length > 0 ? (
           <Tree
-            fieldNames={{title: 'name', key: 'slug'}}
+            fieldNames={{title: 'name', key: 'id'}}
             showLine
             onSelect={handleSelect}
             // onCheck={onCheck}

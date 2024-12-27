@@ -19,8 +19,9 @@ createInertiaApp({
   resolve: name => {
     const pages = import.meta.glob('./Pages/**/*.jsx', {eager: true})
     let page = pages[`./Pages/${name}.jsx`]
-    page.default.layout = name.startsWith('Crm/') ? page => <CrmMenuLayout children={page}/> : page => <StoreFrontLayout
-      children={page}/>
+    //console.log(page.default.layout)
+    page.default.layout = name.startsWith('Crm/') ? page => <CrmMenuLayout children={page}/> : (page) =>
+      <StoreFrontLayout children={page}/>
     return page
   },
   setup({el, App, props}) {
