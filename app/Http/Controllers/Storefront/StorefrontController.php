@@ -10,7 +10,6 @@ use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Vanilo\Category\Models\Taxonomy;
@@ -85,13 +84,14 @@ class StorefrontController extends Controller
         if ($request->filled('query'))
             $productFinder->nameContains($request->input('query'));
 
-        $products = $productFinder->getResults();
+        $paginator = $productFinder->paginate()->withQueryString();
+        //dd($products);
 
-        $images = $this->mediaRepository->primaryImageForEach($products);
+        $images = $this->mediaRepository->primaryImageForEach(collect($paginator->items()));
 
         //dd($slugs);
 
-        return Inertia::render('Storefront/Search', ['products' => $products,
+        return Inertia::render('Storefront/Search', ['paginator' => $paginator,
             'images' => $images,
             'currentCategory' => $slugs,
             'query' => $request->input('query')]);
