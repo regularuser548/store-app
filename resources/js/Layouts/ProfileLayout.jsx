@@ -25,7 +25,7 @@ export default function ProfileLayout({props, children}) {
 
             {/* Меню */}
             <nav className="space-y-4">
-              <Link href={route('login')}
+              <Link href={route('orders.index')}
                     className="rounded-md px-1 py-1 text-sm lg:text-base flex items-center space-x-3 whitespace-nowrap text-[#ffffff] hover:text-orange-500"
                     type="primary">
                 <svg width="28" height="28" className="flex-shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +58,7 @@ export default function ProfileLayout({props, children}) {
                 <span>Кошик</span>
               </Link>
 
-              <Link href={route('login')}
+              <Link href={route('favorites.index')}
                     className="rounded-md px-1 py-1 text-sm lg:text-base flex items-center space-x-3 whitespace-nowrap text-[#ffffff] hover:text-orange-500"
                     type="primary">
                 <svg width="28" height="28" className="flex-shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">

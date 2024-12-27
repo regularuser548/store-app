@@ -129,40 +129,6 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
               )}
             </div>
 
-            {/* Мои заказы */}
-            <div className="border-b-2 border-[#D9D9D9]">
-              <button
-                onClick={() => setOrdersOpen((prev) => !prev)}
-                className="w-full text-left py-4 flex justify-between items-center"
-              >
-                <span>Мої замовлення</span>
-                <span className="text-gray-400">{isOrdersOpen ? '\u25B2' : '\u25BC'}</span>
-              </button>
-              {isOrdersOpen && (
-                <div className="pl-4 py-4">
-                  {orders.length ? (
-                    orders.map((order) => (
-                      <div key={order.id} className="mb-4">
-                        <p className="font-bold">{order.name}</p>
-                        <p className="text-gray-400">{order.phone_number}</p>
-                        <div>
-                          {order.items.map((item, index) => (
-                            <p key={index} className="text-gray-400">
-                              {item.name} x {item.quantity} - {item.price} грн
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-400">У вас немає замовлень</p>
-                  )}
-                  <button className="mt-4 bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition">
-                    Переглянути всі замовлення
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </ProfileLayout>

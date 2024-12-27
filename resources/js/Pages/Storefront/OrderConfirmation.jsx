@@ -9,7 +9,7 @@ export default function OrderConfirmation({ orderId }) {
             <Link href={route("storefront.index")}>
                 <button>Continue Shopping</button>
             </Link>
-            <Link href={route("storefront.index")}>
+            <Link href={route("orders.index")}>
                 <button>Go to Orders</button>
             </Link>
         </div>

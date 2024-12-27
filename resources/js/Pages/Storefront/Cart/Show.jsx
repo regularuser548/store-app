@@ -445,7 +445,7 @@ export default function Show({ cart: initialCart, total: initialTotal }) {
                       </h2>
                       <button
                         className="px-6 py-2 border border-[#FF8000] text-[#FF8000] font-bold rounded-lg hover:text-orange-600"
-                        onClick={() => console.log("Checkout selected")}
+                        onClick={() => (window.location.href = route("checkout.index"))}
                       >
                         Оформити замовлення
                       </button>

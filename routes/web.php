@@ -31,10 +31,7 @@ Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/show', [CartController::class, 'showCart'])->name('cart.show');
     Route::post('/remove/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    //Route::post('/addQuantity', [CartController::class, 'addQuantity'])->name('cart.update.quantity.add');
-    //Route::post('/removeQuantity', [CartController::class, 'removeQuantity'])->name('cart.update.quantity.remove');
     Route::post('/changeQuantity', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
-
 });
 
 Route::middleware(['web'])->group(function () {
@@ -59,6 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites/{productId}/exists', [FavoriteController::class, 'exists'])->name('favorites.exists');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/my-orders', [ProfileController::class, 'orders'])->name('orders.index');
+});
 
 //Dashboard
 Route::get('/dashboard', function () {

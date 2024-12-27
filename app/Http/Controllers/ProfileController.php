@@ -93,13 +93,10 @@ class ProfileController extends Controller
 
     public function update(ProfileUpdateRequest $request)
     {
-        // Валидируем входные данные
         $validatedData = $request->validated();
 
-        // Получаем текущего пользователя
         $user = \auth()->user();
 
-        // Обновляем данные пользователя
         $user->fill([
             'email' => $validatedData['email'] ?? $user->email,
             'phone_number' => $validatedData['phone_number'] ?? $user->phone_number,
@@ -107,15 +104,12 @@ class ProfileController extends Controller
             'name' => $validatedData['name'] ?? $user->name,
         ]);
 
-        // Если email изменился, сбрасываем подтверждение
         if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
+            $user->forceFill(['email_verified_at' => null]);
         }
 
-        // Сохраняем изменения
         $user->save();
 
-        // Возвращаем успешный JSON-ответ
         return response()->json([
             'success' => true,
             'message' => 'Профіль оновлено',
@@ -123,6 +117,18 @@ class ProfileController extends Controller
     }
 
 
+    public function orders()
+    {
+        $orders = auth()->user()->orders()->with('items')->get()->map(function ($order) {
+            $order->date = $order->created_at->format('d.m.Y');
+            $order->status = $order->status ?? 'Очікується';
+            $order->items->each(function ($item) {
+                $item->image = $item->product->image ?? '/default-image.jpg';
+            });
+            return $order;
+        });
+        return inertia('Storefront/MyOrders', ['orders' => $orders]);
+    }
 
     /**
      * Delete the user's account.
