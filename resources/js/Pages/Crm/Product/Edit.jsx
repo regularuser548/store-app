@@ -1,4 +1,5 @@
-import {Head, router, useForm} from "@inertiajs/react";
+import {Head, router} from "@inertiajs/react";
+import {useForm} from 'laravel-precognition-react-inertia';
 import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
 import {Button, Card, Empty, Image, Upload} from "antd";
@@ -12,7 +13,7 @@ import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx"
 
 export default function Edit({product, images, taxonomyTree, currentCategory}) {
   //https://vanilo.io/docs/4.x/products#all-product-fields
-  const {data, setData, post, progress} = useForm({
+  const form = useForm('put', route('product.update', {product: product.id}), {
     name: product.name,
     sku: product.sku,
     stock: product.stock,
@@ -26,12 +27,15 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
     state: product.state,
     video_id: product.video_id,
     taxon_id: product.taxon_id,
+    category_slugs: product.category_slugs,
 
     images: '',
 
     //workaround
     _method: 'put'
   })
+
+  form.setValidationTimeout(1000);
 
   const [imageList, setImageList] = useState(images);
   //const [videoList, setVideoList] = useState(videos);
@@ -51,7 +55,7 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
     mediaOrder.append("collection_name", 'default');
 
     axios.post(route('product.sync.mediaOrder', {product: product.id}), mediaOrder)
-      .then(r => router.post(route('product.update', {product: product.id}), data));
+      .then(r => form.submit());
 
   }
 
@@ -69,7 +73,8 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
 
   return (
     <>
-      <ProductForm fields={data} currentCategory={currentCategory} changeHandler={setData} taxonomyTree={taxonomyTree} submit={handleSubmit}></ProductForm>
+      <ProductForm form={form} taxonomyTree={taxonomyTree}
+                   submit={handleSubmit}></ProductForm>
 
       {/*<button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>*/}
 
@@ -92,7 +97,7 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
         </iframe> :
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
           <span>Відео відсутнє</span>
-      }/>}
+        }/>}
 
       <Button onClick={() => router.delete(route('product.destroy', {product: product.id}))}>Видалити</Button>
 
