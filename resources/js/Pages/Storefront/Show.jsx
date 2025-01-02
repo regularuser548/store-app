@@ -117,7 +117,7 @@ export default function Show({ product,images,comments = [] }) {
           {/* Product Details */}
           <div className="">
             <p>
-              <span className="font-bold">Код замовлення:</span> {product.sku}
+              <span className="font-bold">Код замовлення:</span> {product.id}
             </p>
             <p>
               <span className="font-bold">Виробник товару:</span> Samsung
