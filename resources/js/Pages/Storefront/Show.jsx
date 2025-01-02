@@ -4,6 +4,7 @@ import {router, useForm} from '@inertiajs/react';
 import {Button, Input, Rate, Tag} from "antd";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import axios from "axios";
 
 
 const {TextArea} = Input;
@@ -24,12 +25,22 @@ export default function Show({ product,images,comments = [] }) {
       router.delete(route('comments.destroy', id));
     }
   };
+  const handleAddToCart = () => {
+    axios.post(route('cart.add'), {product});
+  };
 
+
+  const ratings = comments
+    .filter(comment => comment.rating !== undefined) // Отбираем только те, у которых есть рейтинг
+    .map(comment => comment.rating); // Извлекаем значения рейтинга
+
+  const averageRating = ratings.length > 0
+    ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length
+    : 0; // Если нет рейтингов, возвращаем 0
+  console.log("Среднее арифметическое:", averageRating);
 
   const ImageSlider = () => {
     // Данные слайдов
-
-
     const images2 = images.map((item, index) => ({
       original: item,
       thumbnail: item,
@@ -80,6 +91,10 @@ export default function Show({ product,images,comments = [] }) {
   };
 
 
+
+  console.log(product);
+
+
   return (
     <div>
       <div className="flex flex-col lg:flex-row bg-[#0F0F0F] text-white p-6 rounded-md">
@@ -93,8 +108,8 @@ export default function Show({ product,images,comments = [] }) {
           <div>
             <h2 className="text-2xl font-bold ">{product.name}</h2>
             <div className="flex items-center space-x-2 ">
-              <span className="text-yellow-500">★☆☆☆☆</span>
-              <span className="text-sm text-gray-400">(Оцінка товару - 1/5)</span>
+              <span className="text-yellow-500"> <Rate disabled defaultValue={averageRating}/></span>
+              <span className="text-sm text-gray-400">(Оцінка товару - {averageRating})</span>
             </div>
             <p className="text-3xl font-semibold ">Ціна: {product.price} грн.</p>
           </div>
@@ -102,7 +117,7 @@ export default function Show({ product,images,comments = [] }) {
           {/* Product Details */}
           <div className="">
             <p>
-              <span className="font-bold">Код замовлення:</span> 365714604
+              <span className="font-bold">Код замовлення:</span> {product.id}
             </p>
             <p>
               <span className="font-bold">Виробник товару:</span> Samsung
@@ -113,19 +128,23 @@ export default function Show({ product,images,comments = [] }) {
           <div className="mb-4">
             <h3 className="text-xl font-semibold">Опис:</h3>
             <ul className="mt-2 text-gray-300">
-              <li>Роздільна здатність дисплея: 2340 x 1080</li>
-              <li>Частота оновлення екрана: 120 Гц</li>
-              <li>Вбудована пам'ять: 256 ГБ</li>
-              <li>Операційна система: Android</li>
+              <li>{product.description}</li>
             </ul>
           </div>
 
           {/* Purchase Button */}
           <div className="flex items-center mt-4">
-            <button className="bg-orange-500 text-white py-2 px-6 rounded-md hover:bg-orange-600">
-              Придбати 🛒
+            <button className="bg-orange-500 text-[#000000] font-bold py-2 px-6 rounded-md hover:bg-orange-600 flex items-center" onClick={() => handleAddToCart()}>
+              Придбати <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.75 27.5C8.0625 27.5 7.47417 27.2554 6.985 26.7663C6.49583 26.2771 6.25083 25.6883 6.25 25C6.24917 24.3117 6.49417 23.7233 6.985 23.235C7.47583 22.7467 8.06417 22.5017 8.75 22.5C9.43583 22.4983 10.0246 22.7433 10.5163 23.235C11.0079 23.7267 11.2525 24.315 11.25 25C11.2475 25.685 11.0029 26.2738 10.5163 26.7663C10.0296 27.2588 9.44083 27.5033 8.75 27.5ZM21.25 27.5C20.5625 27.5 19.9742 27.2554 19.485 26.7663C18.9958 26.2771 18.7508 25.6883 18.75 25C18.7492 24.3117 18.9942 23.7233 19.485 23.235C19.9758 22.7467 20.5642 22.5017 21.25 22.5C21.9358 22.4983 22.5246 22.7433 23.0163 23.235C23.5079 23.7267 23.7525 24.315 23.75 25C23.7475 25.685 23.5029 26.2738 23.0163 26.7663C22.5296 27.2588 21.9408 27.5033 21.25 27.5ZM7.6875 7.5L10.6875 13.75H19.4375L22.875 7.5H7.6875ZM6.5 5H24.9375C25.4167 5 25.7812 5.21375 26.0312 5.64125C26.2813 6.06875 26.2917 6.50083 26.0625 6.9375L21.625 14.9375C21.3958 15.3542 21.0887 15.6771 20.7038 15.9062C20.3188 16.1354 19.8967 16.25 19.4375 16.25H10.125L8.75 18.75H23.75V21.25H8.75C7.8125 21.25 7.10417 20.8388 6.625 20.0163C6.14583 19.1938 6.125 18.3758 6.5625 17.5625L8.25 14.5L3.75 5H1.25V2.5H5.3125L6.5 5Z" fill="black"/>
+            </svg>
+
             </button>
-            <span className="ml-4 text-green-400">В наявності</span>
+            <span
+              className={`ml-4 ${
+                product.stock ? "text-green-400" : "text-red-400"
+              }`}
+            >{product.stock ? "В наявності" : "Не в наявності"}</span>
           </div>
         </div>
       </div>
