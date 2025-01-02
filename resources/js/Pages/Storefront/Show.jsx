@@ -2,8 +2,11 @@
 import React from 'react';
 import {router, useForm} from '@inertiajs/react';
 import {Button, Input, Rate, Tag} from "antd";
-const {TextArea} = Input;
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 
+
+const {TextArea} = Input;
 export default function Show({ product,images,comments = [] }) {
   const { data, setData, post, errors } = useForm({
     comment: '',
@@ -21,51 +24,92 @@ export default function Show({ product,images,comments = [] }) {
       router.delete(route('comments.destroy', id));
     }
   };
+  // console.log(images);
+
+
+  const ImageSlider = () => {
+    // Данные слайдов
+
+
+    const images2 = Array.from(product.media).map((item, index) => ({
+      original: item.original_url, // Assuming item.imageUrl is where the URL is stored for the original image
+      thumbnail: item.original_url, // Assuming item.thumbnailUrl is where the URL is stored for the thumbnail
+    }));
+
+    console.log(images2);
+    // const images = [
+    //   {
+    //     original: "https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/27/2782915/393720.jpg", // Основное изображение
+    //     thumbnail: "https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/27/2782915/393720.jpg", // Миниатюра
+    //   },
+    // ];
+
+    return (
+      <div className="w-96 h-full">
+        {/* Контейнер для галереи */}
+        <ImageGallery
+          items={images2}
+          showIndex={false}
+        showBullets={true}
+        infinite={true}
+        showThumbnails={true}
+        showFullscreenButton={true}
+        showGalleryFullscreenButton={true}
+        showPlayButton={false}
+        showGalleryPlayButton={true}
+        showNav={true}
+        slideVertically={false}
+        isRTL={false}
+        slideDuration={450}
+        slideInterval={2000}
+        slideOnThumbnailOver={false}
+        thumbnailPosition= "bottom"
+        showVideo={false}
+        useWindowKeyDown={true}
+          renderItem={(item) => (
+            <div className="w-full h-full flex justify-center items-center">
+              {/* Контейнер для изображения */}
+              <img
+                src={item.original}
+                alt={item.description}
+                className="w-full h-max object-fill" // Изображение на весь размер контейнера
+              />
+            </div>
+          )}
+          renderThumbInner={(item) => (
+            <img
+              src={item.thumbnail}
+              alt={item.description}
+              className="" // Стили миниатюр
+            />
+          )}
+        />
+      </div>
+    );
+  };
+
 
   return (
-
-
     <div>
-      <div className="flex flex-col lg:flex-row bg-[#0F0F0F] text-white p-6 rounded-md ">
-        {/* Carousel Section */}
-        <div className="lg:w-1/2 flex justify-center items-center bg-[#0F0F0F] rounded-md">
-          <div className="grid grid-cols-1 gap-4">
-            {/* Main Image */}
-            <div className="bg-gray-700 w-64 h-64 rounded-md flex items-center justify-center">
-              {/* Placeholder */}
-              <span className="text-gray-500 text-lg">Main Image</span>
-            </div>
-            {/* Thumbnail Images */}
-            <div className="flex space-x-2">
-              {Array(4)
-                .fill(0)
-                .map((_, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-gray-700 w-16 h-16 rounded-md flex items-center justify-center"
-                  >
-                    {/* Placeholder */}
-                    <span className="text-gray-500 text-sm">Img {idx + 1}</span>
-                  </div>
-                ))}
-            </div>
-          </div>
+      <div className="flex flex-col lg:flex-row bg-[#0F0F0F] text-white p-6 rounded-md">
+        <div className="lg:w-2/3 flex justify-center items-center bg-[#0F0F0F] rounded-md">
+          <ImageSlider/>
         </div>
 
         {/* Details Section */}
-        <div className="lg:w-1/2 lg:pl-6 flex flex-col justify-between mt-6 lg:mt-0 ">
+        <div className="lg:w-1/3 flex flex-col justify-between lg:pl-6  lg:mt-0">
           {/* Product Info */}
           <div>
-            <h2 className="text-2xl font-bold">{product.name}</h2>
-            <div className="flex items-center space-x-2 mt-2">
+            <h2 className="text-2xl font-bold ">{product.name}</h2>
+            <div className="flex items-center space-x-2 ">
               <span className="text-yellow-500">★☆☆☆☆</span>
               <span className="text-sm text-gray-400">(Оцінка товару - 1/5)</span>
             </div>
-            <p className="text-3xl font-semibold mt-4">Ціна: {product.price} грн.</p>
+            <p className="text-3xl font-semibold ">Ціна: {product.price} грн.</p>
           </div>
 
           {/* Product Details */}
-          <div className="mt-6">
+          <div className="">
             <p>
               <span className="font-bold">Код замовлення:</span> 365714604
             </p>
@@ -75,9 +119,9 @@ export default function Show({ product,images,comments = [] }) {
           </div>
 
           {/* Product Description */}
-          <div className="mt-6">
+          <div className="mb-4">
             <h3 className="text-xl font-semibold">Опис:</h3>
-            <ul className="mt-2 text-gray-300 space-y-1">
+            <ul className="mt-2 text-gray-300">
               <li>Роздільна здатність дисплея: 2340 x 1080</li>
               <li>Частота оновлення екрана: 120 Гц</li>
               <li>Вбудована пам'ять: 256 ГБ</li>
@@ -86,7 +130,7 @@ export default function Show({ product,images,comments = [] }) {
           </div>
 
           {/* Purchase Button */}
-          <div className="mt-6 flex items-center">
+          <div className="flex items-center mt-4">
             <button className="bg-orange-500 text-white py-2 px-6 rounded-md hover:bg-orange-600">
               Придбати 🛒
             </button>
