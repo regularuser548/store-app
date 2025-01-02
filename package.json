@@ -28,6 +28,7 @@
         "@dnd-kit/utilities": "^3.2.2",
         "@inertiajs/inertia": "^0.11.1",
         "antd": "^5.21.2",
+        "laravel-precognition-react-inertia": "^0.5.14",
         "react-image-gallery": "^1.3.0",
         "react-slick": "^0.30.3",
         "slick-carousel": "^1.8.1",
