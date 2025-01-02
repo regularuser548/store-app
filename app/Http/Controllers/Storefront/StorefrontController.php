@@ -50,7 +50,8 @@ class StorefrontController extends Controller
 //    }
     public function show(Product $product): Response
     {
-        $images = $this->mediaRepository->allMediaForModel($product);
+        //$images = $this->mediaRepository->allMediaForModel($product);
+        $images = $product->getImageUrls('thumbnail');
 
         $comments = Comment::where('product_id', $product->id)
             ->with('user')
