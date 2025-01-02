@@ -24,25 +24,16 @@ export default function Show({ product,images,comments = [] }) {
       router.delete(route('comments.destroy', id));
     }
   };
-  // console.log(images);
 
 
   const ImageSlider = () => {
     // Данные слайдов
 
 
-    const images2 = Array.from(product.media).map((item, index) => ({
-      original: item.original_url, // Assuming item.imageUrl is where the URL is stored for the original image
-      thumbnail: item.original_url, // Assuming item.thumbnailUrl is where the URL is stored for the thumbnail
+    const images2 = images.map((item, index) => ({
+      original: item,
+      thumbnail: item,
     }));
-
-    console.log(images2);
-    // const images = [
-    //   {
-    //     original: "https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/27/2782915/393720.jpg", // Основное изображение
-    //     thumbnail: "https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/27/2782915/393720.jpg", // Миниатюра
-    //   },
-    // ];
 
     return (
       <div className="w-96 h-full">
