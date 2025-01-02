@@ -58,10 +58,11 @@ class StorefrontController extends Controller
             ->get()
             ->map(function ($comment) {
                 $user = auth()->user();
-                $comment->can_delete = $user->role === 'admin'
-                    || $user->role === 'moderator'
-                    || $user->id === $comment->user_id;
+                $comment->can_delete = $user?->role === 'admin'
+                    || $user?->role === 'moderator'
+                    || $user?->id === $comment->user_id;
                 return $comment;
+                dd($comment);
             });
 
         return Inertia::render('Storefront/Show', compact('product', 'images', 'comments'));

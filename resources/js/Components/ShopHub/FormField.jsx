@@ -1,14 +1,29 @@
-import {usePage} from "@inertiajs/react";
-import {Input} from "antd";
+import {Form, Input} from "antd";
+import React from "react";
 
-export default function FormField({id, data, changeHandler, className = '', ...props}) {
+export default function FormField({
+                                    id, form, label = null, placeholder = null, required = false, children = null,
+                                    ...props
+                                  }) {
 
-    const {errors} = usePage().props;
+  const rules = required ? [{required: true}] : [];
 
-    return (
-        <div>
-            <Input id={id} value={data[id]} onChange={changeHandler} className={className} {...props}/>
-            {errors[id] && <div className="text-red-500">{errors[id]}</div>}
-        </div>
-    )
+  return (
+    <Form.Item
+      label={label}
+      name={id}
+      hasFeedback={form.invalid(id)}
+      validateStatus={form.invalid(id) ? 'error' : 'success'}
+      help={form.invalid(id) ? form.errors[id] : ''}
+      rules={rules}
+    >
+      {
+        children ? children :
+
+          <Input placeholder={placeholder} id={id}
+                 onChange={(e) => form.setData(id, e.target.value)}
+                 onBlur={(e) => {form.setData(id, e.target.value);}} {...props}/>
+      }
+    </Form.Item>
+  )
 }
