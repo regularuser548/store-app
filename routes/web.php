@@ -12,6 +12,7 @@ use App\Http\Controllers\Storefront\CommentController;
 use App\Http\Controllers\Storefront\FavoriteController;
 use App\Http\Controllers\Storefront\OrderController;
 use App\Http\Controllers\Storefront\StorefrontController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Konekt\Acl\Http\Middleware\RoleMiddleware;
@@ -75,7 +76,7 @@ Route::middleware('auth')->group(function () {
 
 //CRM CRUD
 Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':seller|admin'])->group(function () {
-    Route::resource('product', ProductController::class)->except(['show']);
+    Route::resource('product', ProductController::class)->except(['show'])->middleware([HandlePrecognitiveRequests::class]);
     Route::post('syncMediaOrder/{product}', [MediaController::class, 'syncMediaOrder'])->name('product.sync.mediaOrder');
     Route::post('setPrimary/{media}', [MediaController::class, 'setPrimaryImage'])->name('product.setPrimary');
     Route::delete('deleteMedia/{media}', [MediaController::class, 'destroy'])->name('product.deleteMedia');

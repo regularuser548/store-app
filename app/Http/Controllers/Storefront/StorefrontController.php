@@ -50,7 +50,8 @@ class StorefrontController extends Controller
 //    }
     public function show(Product $product): Response
     {
-        $images = $this->mediaRepository->allMediaForModel($product);
+        //$images = $this->mediaRepository->allMediaForModel($product);
+        $images = $product->getImageUrls('thumbnail');
 
         $comments = Comment::where('product_id', $product->id)
             ->with('user')
@@ -58,10 +59,11 @@ class StorefrontController extends Controller
             ->get()
             ->map(function ($comment) {
                 $user = auth()->user();
-                $comment->can_delete = $user->role === 'admin'
-                    || $user->role === 'moderator'
-                    || $user->id === $comment->user_id;
+                $comment->can_delete = $user?->role === 'admin'
+                    || $user?->role === 'moderator'
+                    || $user?->id === $comment->user_id;
                 return $comment;
+                dd($comment);
             });
 
         return Inertia::render('Storefront/Show', compact('product', 'images', 'comments'));
