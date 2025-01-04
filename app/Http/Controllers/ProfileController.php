@@ -123,10 +123,14 @@ class ProfileController extends Controller
             $order->date = $order->created_at->format('d.m.Y');
             $order->status = $order->status ?? 'Очікується';
             $order->items->each(function ($item) {
-                $item->image = $item->product->image ?? '/default-image.jpg';
+//                dd($item->product);
+                  $item->image = $item->product?->getThumbnailUrl();
+
             });
+//            dd($order);
             return $order;
         });
+//        dd($orders);
         return inertia('Storefront/MyOrders', ['orders' => $orders]);
     }
 

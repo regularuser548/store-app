@@ -63,7 +63,7 @@ export default function MyOrders({ orders }) {
                   >
                     {console.log(item)}
                     <img
-                      src={item.thumbnail_url}
+                      src={item.image}
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded mr-4"
                     />
