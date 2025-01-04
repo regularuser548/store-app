@@ -56,9 +56,15 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Konekt\Acl\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Vanilo\Foundation\Models\Order;
 
 class User extends \Konekt\User\Models\User //implements MustVerifyEmail
 {
     use HasRoles;
     use HasFactory;
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
 }
