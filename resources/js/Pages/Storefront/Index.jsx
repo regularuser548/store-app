@@ -56,7 +56,7 @@ export default function Index({products, images}) {
     "https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/27/2782895/393722.jpg"
   ];
 
-
+console.log(products)
   return (
       <div className="bg-[#0f0f0f] min-h-screen">
         {/* Header */}
