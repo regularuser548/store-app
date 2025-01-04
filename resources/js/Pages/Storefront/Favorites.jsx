@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Head, usePage } from "@inertiajs/react";
-import { Button, List, Empty, Select, message } from "antd";
+import {Button, List, Empty, Select, message, Flex} from "antd";
 import ProfileLayout from "@/Layouts/ProfileLayout.jsx";
 import Product from "../../Components/ShopHub/Product.jsx";
 
@@ -61,24 +61,36 @@ export default function Favorites() {
           </div>
         </div>
 
+        {/*{favorites.length > 0 ? (*/}
+        {/*  <div className="product-list grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-8 mt-6">*/}
+        {/*    {favorites.map((product) => (*/}
+        {/*      <Product*/}
+        {/*        key={product.id}*/}
+        {/*        item={product}*/}
+        {/*        image={images[product.id]}*/}
+        {/*        isCrm={false}*/}
+        {/*      />*/}
+        {/*    ))}*/}
+        {/*  </div>*/}
+        {/*) : (*/}
+        {/*  <div className="empty-state flex justify-center items-center mt-10">*/}
+        {/*    <Empty*/}
+        {/*      image={Empty.PRESENTED_IMAGE_SIMPLE}*/}
+        {/*      description="Немає товарів"*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*)}*/}
         {favorites.length > 0 ? (
-          <div className="product-list grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-8 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
             {favorites.map((product) => (
-              <Product
-                key={product.id}
-                item={product}
-                image={images[product.id]}
-                isCrm={false}
-              />
+              <Product key={product.id} item={product} image={product.thumbnail_url} isCrm={false}></Product>
             ))}
           </div>
         ) : (
-          <div className="empty-state flex justify-center items-center mt-10">
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description="Немає товарів"
-            />
-          </div>
+          <Flex justify='center' align='center'>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає товарів'}></Empty>
+          </Flex>
+
         )}
       </div>
     </ProfileLayout>

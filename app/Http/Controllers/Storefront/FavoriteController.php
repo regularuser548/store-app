@@ -12,14 +12,18 @@ class FavoriteController extends Controller
 {
     public function index()
     {
-        $favorites = Favorite::with('product')
-            ->where('user_id', auth()->id())
-            ->get();
+        $favorites = Favorite::where('user_id', auth()->id())
+            ->with('product') // Подтягиваем связанные продукты
+            ->get()
+            ->map(function ($favorite) {
+                return $favorite->product; // Возвращаем только данные о продукте
+            });
 
         return Inertia::render('Storefront/Favorites', [
             'favorites' => $favorites,
         ]);
     }
+
 
     public function store(Request $request)
     {

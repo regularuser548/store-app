@@ -61,8 +61,9 @@ export default function MyOrders({ orders }) {
                     key={index}
                     className="flex items-center p-3 border border-gray-700 rounded shadow-sm"
                   >
+                    {console.log(item)}
                     <img
-                      src={item.thumbUrl}
+                      src={item.thumbnail_url}
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded mr-4"
                     />
