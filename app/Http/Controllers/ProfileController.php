@@ -16,28 +16,122 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+//    public function edit(Request $request): Response
+//    {
+//        return Inertia::render('Profile/Edit', [
+//            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+//            'status' => session('status'),
+//        ]);
+//    }
+
     public function edit(Request $request): Response
     {
+        $user = $request->user();
+        $orders = $user->orders()->with('items')->get();
+
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
+            'userData' => [
+                'name' => $user->name,
+                'surname' => $user->surname ?? 'Пусто',
+                'phone_number' => $user->phone_number ?? 'Пусто',
+                'email' => $user->email,
+            ],
+            'orders' => $orders->map(function ($order) {
+                return [
+                    'id' => $order->id,
+                    'name' => $order->name,
+                    'phone_number' => $order->phone_number,
+                    'items' => $order->items->map(function ($item) {
+                        return [
+                            'name' => $item->name,
+                            'quantity' => $item->quantity,
+                            'price' => $item->price,
+                        ];
+                    }),
+                ];
+            }),
         ]);
     }
+
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+//    public function update(ProfileUpdateRequest $request): RedirectResponse
+//    {
+//        $request->user()->fill($request->validated());
+//
+//        if ($request->user()->isDirty('email')) {
+//            $request->user()->email_verified_at = null;
+//        }
+//
+//        $request->user()->save();
+//
+//        return Redirect::route('profile.edit');
+//    }
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+//    public function update(ProfileUpdateRequest $request)
+//    {
+////        \auth()->user()->update($request->all());
+//
+//        $validatedData = $request->validated();
+//
+//        $user = \auth()->user();
+//
+//        $user->update($validatedData);
+//
+//        if ($request->user()->isDirty('email')) {
+//            $request->user()->email_verified_at = null;
+//        }
+//
+//        $request->user()->save();
+//
+//        return response()->json(['success' => true, 'message' => 'Профиль обновлен']);
+//    }
+
+    public function update(ProfileUpdateRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        $user = \auth()->user();
+
+        $user->fill([
+            'email' => $validatedData['email'] ?? $user->email,
+            'phone_number' => $validatedData['phone_number'] ?? $user->phone_number,
+            'surname' => $validatedData['surname'] ?? $user->surname,
+            'name' => $validatedData['name'] ?? $user->name,
+        ]);
+
+        if ($user->isDirty('email')) {
+            $user->forceFill(['email_verified_at' => null]);
         }
 
-        $request->user()->save();
+        $user->save();
 
-        return Redirect::route('profile.edit');
+        return response()->json([
+            'success' => true,
+            'message' => 'Профіль оновлено',
+        ]);
+    }
+
+
+    public function orders()
+    {
+        $orders = auth()->user()->orders()->with('items')->get()->map(function ($order) {
+            $order->date = $order->created_at->format('d.m.Y');
+            $order->status = $order->status ?? 'Очікується';
+            $order->items->each(function ($item) {
+//                dd($item->product);
+                  $item->image = $item->product?->getThumbnailUrl();
+
+            });
+//            dd($order);
+            return $order;
+        });
+//        dd($orders);
+        return inertia('Storefront/MyOrders', ['orders' => $orders]);
     }
 
     /**

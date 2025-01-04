@@ -32,8 +32,6 @@ Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/show', [CartController::class, 'showCart'])->name('cart.show');
     Route::post('/remove/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    //Route::post('/addQuantity', [CartController::class, 'addQuantity'])->name('cart.update.quantity.add');
-    //Route::post('/removeQuantity', [CartController::class, 'removeQuantity'])->name('cart.update.quantity.remove');
     Route::post('/changeQuantity', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
 });
 
@@ -55,15 +53,19 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
-    Route::delete('/favorites/{id}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
-    Route::get('/favorites/{productId}/exists', [FavoriteController::class, 'exists'])->name('favorites.exists');
+    Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    Route::get('/favorites/exists/{productId}', [FavoriteController::class, 'exists'])->name('favorites.exists');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/my-orders', [ProfileController::class, 'orders'])->name('orders.index');
+});
 
 //Dashboard
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return redirect()->route('profile.edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 //Profile
 Route::middleware('auth')->group(function () {
