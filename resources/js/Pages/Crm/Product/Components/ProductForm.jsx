@@ -59,7 +59,7 @@ export default function ProductForm({initialValues, submit, submitUrl, taxonomyT
       },
     },
   };
-  //console.log(form.data)
+  console.log(form.getFieldsValue())
 
   return (
 
@@ -118,7 +118,6 @@ export default function ProductForm({initialValues, submit, submitUrl, taxonomyT
         name="weight"
         validateStatus={errors.weight ? "error" : ""}
         help={errors.weight || ""}
-        required
       >
         <Input onBlur={() => handleBlur("weight")}/>
       </Form.Item>
@@ -128,7 +127,6 @@ export default function ProductForm({initialValues, submit, submitUrl, taxonomyT
         name="width"
         validateStatus={errors.width ? "error" : ""}
         help={errors.width || ""}
-        required
       >
         <Input onBlur={() => handleBlur("width")}/>
       </Form.Item>
@@ -138,7 +136,6 @@ export default function ProductForm({initialValues, submit, submitUrl, taxonomyT
         name="height"
         validateStatus={errors.height ? "error" : ""}
         help={errors.height || ""}
-        required
       >
         <Input onBlur={() => handleBlur("height")}/>
       </Form.Item>
@@ -148,7 +145,6 @@ export default function ProductForm({initialValues, submit, submitUrl, taxonomyT
         name="length"
         validateStatus={errors.length ? "error" : ""}
         help={errors.length || ""}
-        required
       >
         <Input onBlur={() => handleBlur("length")}/>
       </Form.Item>
@@ -168,7 +164,6 @@ export default function ProductForm({initialValues, submit, submitUrl, taxonomyT
         name="video_id"
         validateStatus={errors.video_id ? "error" : ""}
         help={errors.video_id || ""}
-        required
       >
         <Input onBlur={() => handleBlur("video_id")}/>
       </Form.Item>

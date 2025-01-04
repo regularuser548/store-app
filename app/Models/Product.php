@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Cart;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
@@ -42,5 +43,18 @@ class Product extends \Vanilo\Foundation\Models\Product
         return implode('/', array_reverse($categoryPath));
     }
 
-    protected $appends = ['thumbnail_url', 'category_path'];
+    public function getIsLikedAttribute(): bool
+    {
+        return Favorite::where('user_id', auth()->id())
+            ->where('product_id', $this->id)
+            ->exists();
+    }
+
+    public function getIsInCartAttribute(): bool
+    {
+        //dd(Cart::getItems());
+        return Cart::getItems()->contains('product_id', $this->id);
+    }
+
+    protected $appends = ['thumbnail_url', 'category_path', 'is_liked', 'is_in_cart'];
 }
