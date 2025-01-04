@@ -35,8 +35,6 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
     _method: 'put'
   })
 
-  form.setValidationTimeout(1000);
-
   const [imageList, setImageList] = useState(images);
   //const [videoList, setVideoList] = useState(videos);
 
@@ -73,8 +71,8 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
 
   return (
     <>
-      <ProductForm form={form} taxonomyTree={taxonomyTree}
-                   submit={handleSubmit}></ProductForm>
+      <ProductForm initialValues={form.data} taxonomyTree={taxonomyTree}
+                   submit={handleSubmit} submitUrl={route('product.update', {product: product.id})}></ProductForm>
 
       {/*<button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>*/}
 

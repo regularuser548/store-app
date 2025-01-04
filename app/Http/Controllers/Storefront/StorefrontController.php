@@ -33,10 +33,12 @@ class StorefrontController extends Controller
 
     public function index(): Response
     {
-        $products = $this->repository->all();
+        $products = Product::where('state', '=', 'active')
+            ->orWhere('state', '=', 'unavailable')->get();
+
         $images = $this->mediaRepository->primaryImageForEach($products);
 
-        return Inertia::render('Storefront/Index', compact('products', 'images'));//map for checking products inCard
+        return Inertia::render('Storefront/Index', compact('products', 'images'));
     }
 
 //    public function show(Product $product): Response
@@ -51,6 +53,9 @@ class StorefrontController extends Controller
     public function show(Product $product): Response
     {
         //$images = $this->mediaRepository->allMediaForModel($product);
+        if (!$product->state == 'active' or $product->state == 'unavailable' or $product->state == 'retired')
+            abort(404);
+
         $images = $product->getImageUrls('thumbnail');
 
         $comments = Comment::where('product_id', $product->id)
@@ -73,7 +78,7 @@ class StorefrontController extends Controller
     {
         $productFinder = new ProductSearch();
 
-        $properties = [];
+        //$properties = [];
         $slugs = $path !== null ? explode('/', $path) : null;
 
         if ($slugs and count($slugs) > 1)
@@ -87,11 +92,8 @@ class StorefrontController extends Controller
             $productFinder->nameContains($request->input('query'));
 
         $paginator = $productFinder->paginate()->withQueryString();
-        //dd($products);
 
         $images = $this->mediaRepository->primaryImageForEach(collect($paginator->items()));
-
-        //dd($slugs);
 
         return Inertia::render('Storefront/Search', ['paginator' => $paginator,
             'images' => $images,

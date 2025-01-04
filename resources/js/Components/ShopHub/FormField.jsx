@@ -21,7 +21,7 @@ export default function FormField({
         children ? children :
 
           <Input placeholder={placeholder} id={id}
-                 onChange={(e) => form.setData(id, e.target.value)}
+                 //onChange={(e) => form.setData(id, e.target.value)}
                  onBlur={(e) => {form.setData(id, e.target.value);}} {...props}/>
       }
     </Form.Item>
