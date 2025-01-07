@@ -1,4 +1,4 @@
-import {Button, Cascader, Col, Form, Input, Row, Select} from "antd";
+import {Button, Cascader, Col, Form, Input, InputNumber, Row, Select} from "antd";
 import React, {useState} from "react";
 import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
 import {router} from "@inertiajs/react";
@@ -6,35 +6,9 @@ import {router} from "@inertiajs/react";
 const {TextArea} = Input;
 
 export default function ProductForm({
-                                      initialValues, submitHandler, validateFieldHandler, taxonomyTree, errors,
+                                      form, initialValues, submitHandler, validateFieldHandler, taxonomyTree, errors,
                                       uploadingImages, setUploadingImages
                                     }) {
-
-  const [form] = Form.useForm();
-
-  // const validateField = async (fieldName, fieldValue) => {
-  //   try {
-  //     // Make a Precognition validation request
-  //     await axios.put(
-  //       precognitiveValidationUrl,
-  //       //{ [fieldName]: fieldValue },
-  //       form.getFieldsValue(),
-  //       {headers: {Precognition: true}}
-  //     );
-  //     // Clear the error for the field if validation passes
-  //     setErrors((prevErrors) => ({...prevErrors, [fieldName]: undefined}));
-  //   } catch (error) {
-  //     if (error.response && error.response.data.errors) {
-  //       // Set the validation error for the field
-  //       setErrors((prevErrors) => ({
-  //         ...prevErrors,
-  //         [fieldName]: error.response.data.errors[fieldName]?.[0],
-  //       }));
-  //     }
-  //   }
-  //
-  // };
-
 
   const handleBlur = (fieldName) => {
     const fieldValue = form.getFieldValue(fieldName);
@@ -42,28 +16,6 @@ export default function ProductForm({
       validateFieldHandler(fieldName, fieldValue);
     }
   };
-
-  // function handleSubmit(values) {
-  //
-  //   values.taxon_id = values.full_category_ids?.at(-1);
-  //
-  //   console.log(values);
-  //
-  //   //router.post(submitUrl).then()
-  //
-  //   if (uploadingImages.length > 0) {
-  //     let newImages = new FormData();
-  //
-  //     uploadingImages.forEach((item, index) => {
-  //       newImages.append(`images[${index}]`, item.originFileObj);
-  //     });
-  //
-  //     //router.post(route('product.addMedia', {product: product.id}), newImages, {preserveState: false});
-  //
-  //
-  //
-  // }
-
 
   const formItemLayout = {
     labelCol: {
@@ -83,7 +35,6 @@ export default function ProductForm({
       },
     },
   };
-  //console.log(form.getFieldsValue())
 
   return (
 
@@ -96,7 +47,7 @@ export default function ProductForm({
       initialValues={initialValues}
     >
       <Row gutter={16}>
-        <Col span={12}>
+        <Col span={12} xs={24} md={12}>
           <Form.Item
             label="Ім'я"
             name="name"
@@ -159,7 +110,7 @@ export default function ProductForm({
         </Col>
 
 
-        <Col span={12}>
+        <Col span={12} xs={24} md={12}>
           <Form.Item
             label="Висота"
             name="height"
@@ -223,7 +174,7 @@ export default function ProductForm({
             help={errors.full_category_ids || ""}
             required
           >
-            <Cascader placement={'topLeft'}
+            <Cascader //placement={'topLeft'}
                       fieldNames={{label: 'name', value: 'id'}}
                       options={taxonomyTree}
                       changeOnSelect/>
@@ -245,17 +196,26 @@ export default function ProductForm({
             help={errors.description || ""}
             required
           >
-            <TextArea onBlur={() => handleBlur("description")}/>
+            <TextArea rows={4} onBlur={() => handleBlur("description")}/>
           </Form.Item>
         </Col>
       </Row>
 
-      <Row gutter={16}>
-        <MediaUploadForm fileList={uploadingImages} changeHandler={setUploadingImages} max={10} text='Додати Фото'
-                         accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
-                         listType='picture-card'>
+      <Row>
+        <Col span={24}>
+          <Form.Item
+            name="images"
+            validateStatus={errors.images ? "error" : ""}
+            help={errors.images || ""}
+            required
+          >
+            <MediaUploadForm fileList={uploadingImages} changeHandler={setUploadingImages} max={10} text='Додати Фото'
+                             accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
+                             listType='picture-card'>
 
-        </MediaUploadForm>
+            </MediaUploadForm>
+          </Form.Item>
+        </Col>
       </Row>
 
       <Row gutter={16}>
