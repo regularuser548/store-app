@@ -1,5 +1,5 @@
 import {router, useForm, usePage} from "@inertiajs/react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
 import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
@@ -30,7 +30,12 @@ export default function Create({taxonomyTree}) {
   const [uploadingImages, setUploadingImages] = useState([]);
 
 
-  const [errors, setErrors] = useState(usePage().props.errors);
+  const {errors} = usePage().props;
+  const [precognitiveErrors, setPrecognitiveErrors] = useState({});
+
+  useEffect(() => {
+    setPrecognitiveErrors((prevErrors) => ({...prevErrors, ...errors}));
+  }, [errors]);
 
   const validateField = async (fieldName, fieldValue) => {
     try {
@@ -41,11 +46,11 @@ export default function Create({taxonomyTree}) {
         {headers: {Precognition: true}}
       );
       // Clear the error for the field if validation passes
-      setErrors((prevErrors) => ({...prevErrors, [fieldName]: undefined}));
+      setPrecognitiveErrors((prevErrors) => ({...prevErrors, [fieldName]: undefined}));
     } catch (error) {
       if (error.response && error.response.data.errors) {
         // Set the validation error for the field
-        setErrors((prevErrors) => ({
+        setPrecognitiveErrors((prevErrors) => ({
           ...prevErrors,
           [fieldName]: error.response.data.errors[fieldName]?.[0],
         }));
@@ -60,15 +65,15 @@ export default function Create({taxonomyTree}) {
     data.images = uploadingImages.map(obj => obj.originFileObj);
     data.taxon_id = data.full_category_ids?.at(-1);
 
-    console.log(data);
+    //console.log(data);
     router.post(route('product.store'), data);
   }
 
-  console.log(errors)
+  //console.log(usePage().props.errors);
 
   return (
     <>
-      <ProductForm form={form} initialValues={initialValues} taxonomyTree={taxonomyTree} errors={errors}
+      <ProductForm form={form} initialValues={initialValues} taxonomyTree={taxonomyTree} errors={precognitiveErrors}
                    submitHandler={handleSubmit}
                    uploadingImages={uploadingImages}
                    setUploadingImages={setUploadingImages}
