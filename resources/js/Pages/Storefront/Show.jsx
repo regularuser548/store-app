@@ -37,7 +37,7 @@ export default function Show({ product,images,comments = [] }) {
   const averageRating = ratings.length > 0
     ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length
     : 0; // Если нет рейтингов, возвращаем 0
-  console.log("Среднее арифметическое:", averageRating);
+  // console.log("Середнє арифметичне:", averageRating);
 
   const ImageSlider = () => {
     // Данные слайдов
@@ -120,7 +120,7 @@ export default function Show({ product,images,comments = [] }) {
               <span className="font-bold">Код замовлення:</span> {product.id}
             </p>
             <p>
-              <span className="font-bold">Виробник товару:</span> Samsung
+              {/*<span className="font-bold">Виробник товару:</span> Samsung*/}
             </p>
           </div>
 
@@ -166,7 +166,7 @@ export default function Show({ product,images,comments = [] }) {
         {/*</div>*/}
 
         <div className="w-full max-w-2xl mt-8">
-          <h2 className="text-xl font-semibold mb-4">Комментарии</h2>
+          <h2 className="text-xl font-semibold mb-4 flex justify-center">Коментарі</h2>
           {comments.length > 0 ? (
             comments.map((comment) => (
               <div key={comment.id} className="border-b py-4">
@@ -189,16 +189,16 @@ export default function Show({ product,images,comments = [] }) {
               </div>
             ))
           ) : (
-            <p className="text-gray-500">Комментариев пока нет.</p>
+            <p className="text-gray-500">Коментарів поки що немає.</p>
           )}
         </div>
 
         <div className="mt-8 w-full max-w-md">
-          <h2 className="text-xl font-semibold">Добавить комментарий</h2>
+          <h2 className="text-xl font-semibold">Додати коментар</h2>
           <form onSubmit={handleSubmit} className="mt-4">
             <TextArea
               rows={4}
-              placeholder="Ваш комментарий..."
+              placeholder="Додати коментар..."
               value={data.comment}
               onChange={(e) => setData('comment', e.target.value)}
             ></TextArea>
@@ -207,22 +207,21 @@ export default function Show({ product,images,comments = [] }) {
               <p className="text-red-500 text-sm">{errors.comment}</p>
             )}
 
-            <div className="mt-2">
-              <label>
+            <div className="mt-4 flex justify-around items-centerь">
+              <label className="text-2xl">
                 Оценка:
-                <Rate onChange={(e) => setData('rating', Number(e))} value={data.rating}/>
+                <Rate rootClassName="ms-2" onChange={(e) => setData('rating', Number(e))} value={data.rating}/>
               </label>
+              <Button
+                type="primary"
+                onClick={handleSubmit}
+              >
+                Отправить
+              </Button>
             </div>
             {errors.rating && (
               <p className="text-red-500 text-sm">{errors.rating}</p>
             )}
-
-            <Button
-              type="primary"
-              onClick={handleSubmit}
-            >
-              Отправить
-            </Button>
           </form>
         </div>
       </div>
