@@ -1,10 +1,8 @@
 import {router, usePage} from "@inertiajs/react";
 import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
-import {Button, Empty, Form, Tabs} from "antd";
+import {Button, Divider, Empty, Form, message, Tabs} from "antd";
 import React, {useEffect, useState} from "react";
 import SortableMediaList from "@/Pages/Crm/Product/Components/SortableMediaList.jsx";
-import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
-import TabPane from "antd/es/tabs/TabPane.js";
 
 export default function Edit({product, images, taxonomyTree, currentCategory}) {
   //https://vanilo.io/docs/4.x/products#all-product-fields
@@ -28,6 +26,8 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
     _method: 'put'
   }
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const [form] = Form.useForm();
 
   const [imageList, setImageList] = useState(images);
@@ -45,7 +45,7 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
   const validateField = async (fieldName, fieldValue) => {
     try {
       // Make a Precognition validation request
-      await axios.post(
+      await axios.put(
         route('product.update', {product: product.id}),
         form.getFieldsValue(),
         {headers: {Precognition: true}}
@@ -64,20 +64,26 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
 
   };
 
-  function handleSubmit(values) {
-
-  }
-
-
-  function updateProduct() {
+  function handleSubmit() {
     let data = form.getFieldsValue();
 
     data.images = uploadingImages.map(obj => obj.originFileObj);
     data.taxon_id = data.full_category_ids?.at(-1);
 
     //console.log(data);
-    return axios.put(route('product.update', {product: product.id}), data);
+    axios.post(route('product.update', {product: product.id}), data, {method: 'put'})
+      .then(r => messageApi.open({
+          type: 'success',
+          content: 'Данні успішно оновлено',
+        })
+      )
+      .catch(r => messageApi.open({
+          type: 'error',
+          content: 'Помилка оновлення данних',
+        })
+      )
   }
+
 
   function syncMediaOrder() {
     let mediaOrder = new FormData();
@@ -88,17 +94,7 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
 
     mediaOrder.append("collection_name", 'default');
 
-    return axios.post(route('product.sync.mediaOrder', {product: product.id}), mediaOrder)
-  }
-
-  function addMedia() {
-    let newImages = new FormData();
-
-    uploadingImages.forEach((item, index) => {
-      newImages.append(`images[${index}]`, item.originFileObj);
-    });
-
-    return axios.post(route('product.addMedia', {product: product.id}), newImages)
+    return axios.put(route('product.sync.mediaOrder', {product: product.id}), mediaOrder)
   }
 
   const items = [
@@ -114,6 +110,10 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
                        setUploadingImages={setUploadingImages}
                        validateFieldHandler={validateField}>
           </ProductForm>
+
+          <Button className='m-2' onClick={() => router.delete(route('product.destroy', {product: product.id}))}>
+            Видалити Товар
+          </Button>
         </div>,
     },
     {
@@ -121,39 +121,32 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
       label: "Фото Товара",
       children:
         <div>
+          <Button type={'primary'}>Зберегти порядок розташування</Button>
+          <Divider/>
           <SortableMediaList images={imageList} setImages={setImageList}></SortableMediaList>
         </div>,
     },
     {
       key: "3",
       label: "Відео Товара",
-      children: <div>Content of Tab 3</div>, // Tab content
+      children:
+        <div>
+          {product.video_id ?
+            <iframe
+              id="ytplayer" type="text/html" width="640" height="360"
+              src={`https://www.youtube.com/embed/${product.video_id}?rel=0&iv_load_policy=3`}>
+            </iframe> :
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+              <span>Відео відсутнє</span>
+            }/>}
+        </div>,
     },
   ];
 
   return (
     <>
-
-      {/*<button className='border m-2 p-1' onClick={() => router.visit(route('product.index'))}>Cancel</button>*/}
-
-
-      {/*{product.video_id ?*/}
-      {/*  <iframe*/}
-      {/*    id="ytplayer" type="text/html" width="640" height="360"*/}
-      {/*    src={`https://www.youtube.com/embed/${product.video_id}?rel=0&iv_load_policy=3`}>*/}
-      {/*  </iframe> :*/}
-      {/*  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={*/}
-      {/*    <span>Відео відсутнє</span>*/}
-      {/*  }/>}*/}
-
-      <div className='m-2'>
-        <Button type={'primary'}>Зберегти</Button>
-        <Button>Скасувати</Button>
-        <Button onClick={() => router.delete(route('product.destroy', {product: product.id}))}>Видалити</Button>
-      </div>
-
+      {contextHolder}
       <Tabs items={items}/>
-
     </>
   );
 }
