@@ -102,7 +102,6 @@ export default function MediaUploadForm({text, fileList, changeHandler, accept, 
           {fileList.length >= max ? null : uploadButton}
         </Upload>
       </SortableContext>
-      {errors.images && <div className="text-red-500">{errors.images}</div>}
     </DndContext>
   );
 

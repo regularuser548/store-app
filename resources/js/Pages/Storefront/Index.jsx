@@ -107,7 +107,7 @@ console.log(products)
                 ))}
             </Carousel>
           </div>
-          <div className="text-white text-4xl p-20 ps-5">Всі акції</div>
+          <div className="text-white text-4xl p-20 ps-5">Останні товари</div>
 
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">

@@ -72,7 +72,10 @@ use Vanilo\Cart\Facades\Cart;
                 dd($comment);
             });
 
-        return Inertia::render('Storefront/Show', compact('product', 'images', 'comments'));
+        $currentCategory = $product->getCategorySlugsAttribute();
+
+        return Inertia::render('Storefront/Show', compact('product', 'images', 'comments',
+            'currentCategory'));
     }
 
     public function search(ProductSearchRequest $request, ?string $path = null): Response

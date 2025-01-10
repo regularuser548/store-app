@@ -13,6 +13,18 @@
     color: #ffffff;
 }
 
+.image-gallery img {
+    height: 400px;
+}
+
+.image-gallery-thumbnail img {
+    max-height: 100px;
+    object-fit: contain
+}
+
+.image-gallery {
+    max-width: 100%;
+}
 
 .ant-cascader-menu {
     height: fit-content;
