@@ -88,7 +88,7 @@ export default function Index({paginator}) {
   //console.log(products[0]);
 
   return (
-    <div className='p-4'>
+    <div>
       {/*<div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20'>*/}
       {/*  {products && products.length > 0 ?*/}
       {/*    products.map((item) => (*/}
@@ -98,6 +98,8 @@ export default function Index({paginator}) {
       {/*      <Button type="primary" onClick={() => router.visit(route('product.create'))}>Додати</Button>*/}
       {/*    </Empty>}*/}
       {/*</div>*/}
+
+      <h1 className="text-2xl font-bold mb-4">Список Товарів</h1>
 
       <Table columns={columns} dataSource={products} pagination={{
         position: ['bottomCenter'],
