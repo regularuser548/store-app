@@ -12,16 +12,27 @@ export default function Favorites() {
   const images = props.images || {};
   const [filter, setFilter] = useState("date_added");
 
-  const removeFromFavorites = async (productId) => {
+  // const removeFromFavorites = async (productId) => {
+  //   try {
+  //     const response = await axios.delete(`/favorites/${productId}`);
+  //     message.success(response.data.message);
+  //     location.reload();
+  //   } catch (error) {
+  //     console.error("Failed to remove product from favorites:", error);
+  //     message.error("Failed to remove from favorites.");
+  //   }
+  // };
+  const toggleFavorite = async (productId) => {
     try {
-      const response = await axios.delete(`/favorites/${productId}`);
+      const response = await axios.post(`/favorites/toggle/${productId}`);
       message.success(response.data.message);
       location.reload();
     } catch (error) {
-      console.error("Failed to remove product from favorites:", error);
-      message.error("Failed to remove from favorites.");
+      console.error("Failed to toggle favorite status:", error);
+      message.error("Не удалось изменить статус избранного.");
     }
   };
+
 
   const handleBuyAll = () => {
     message.success("Всі товари додані в корзину!");
@@ -83,7 +94,7 @@ export default function Favorites() {
         {favorites.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
             {favorites.map((product) => (
-              <Product key={product.id} item={product} image={product.thumbnail_url} isCrm={false}></Product>
+              <Product key={product.id} item={product} image={product.thumbnail_url} isLiked={product.is_liked} isCrm={false}></Product>
             ))}
           </div>
         ) : (

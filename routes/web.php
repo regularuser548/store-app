@@ -22,6 +22,8 @@ Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index'
 Route::get('/product/{product}/show', [StorefrontController::class, 'show'])->name('storefront.show');
 Route::get('/search/{path?}', [StorefrontController::class, 'search'])->name('storefront.search')->where('path', '.*');
 Route::get('/categories', [StorefrontController::class, 'returnCategoryTree'])->name('storefront.categories');
+//Route::get('/cart/exists/{productId}', [StorefrontController::class, 'isInCart']);
+
 
 
 //footer links
@@ -52,8 +54,9 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
-    Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
-    Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    Route::post('/favorites/toggle/{productId}', [FavoriteController::class, 'toggleLike']);
+//    Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
+//    Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
     Route::get('/favorites/exists/{productId}', [FavoriteController::class, 'exists'])->name('favorites.exists');
 });
 
@@ -112,8 +115,11 @@ Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':
     Route::get('reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
     Route::get('reports/activity', [ReportController::class, 'userActivityReport'])->name('reports.activity');
     Route::get('reports/statistics/{id}', [ReportController::class, 'orderStatistics'])->name('reports.statistics');
-    Route::put('reports/statistics/update', [ReportController::class, 'updateOrderStatistics'])->name('reports.statistics.update');
 
+    Route::put('reports/orders/update', [ReportController::class, 'updateOrderItemAndStatistics'])->name('reports.orders.update');
+
+    Route::get('reports/orders/{userId}', [ReportController::class, 'userOrders'])->name('reports.orders');
 });
+
 
 require __DIR__ . '/auth.php';

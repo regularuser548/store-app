@@ -62,7 +62,8 @@ class CartController extends Controller
 
         Cart::addItem($product);
 
-        return back()->with('success', "Product added to cart");
+//        return back()->with('success', "Product added to cart");
+        return response()->json(['success' => true, 'message' => "Product added to cart"]);
     }
 
     public function removeFromCart(Request $request,Product $product)
@@ -71,6 +72,7 @@ class CartController extends Controller
 
         Cart::removeProduct($product);
 
-        return back()->with('success', "Product removed from cart");
+//        return back()->with('success', "Product removed from cart");
+        return response()->json(['success' => true, 'message' => "Product removed from cart"]);
     }
 }

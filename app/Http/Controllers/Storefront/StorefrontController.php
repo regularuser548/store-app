@@ -15,8 +15,9 @@ use Inertia\Response;
 use Vanilo\Category\Models\Taxonomy;
 use Vanilo\Foundation\Models\Taxon;
 use Vanilo\Foundation\Search\ProductSearch;
+use Vanilo\Cart\Facades\Cart;
 
-class StorefrontController extends Controller
+    class StorefrontController extends Controller
 {
     protected ProductRepository $repository;
     protected MediaRepository $mediaRepository;
@@ -100,6 +101,25 @@ class StorefrontController extends Controller
             'currentCategory' => $slugs,
             'query' => $request->input('query')]);
     }
+
+
+    //    public function isInCart($productId)
+    //    {
+    //        try {
+    //            $product = Product::findOrFail($productId);
+    //
+    ////            return response()->json(['is_in_cart' => $product->is_in_cart], 200);
+    //            return response()->json([
+    //                'is_in_cart' => !$product->is_in_cart,
+    //                'message' => !$product->is_in_cart
+    //                    ? 'Товар добавлен в избранное'
+    //                    : 'Товар удалён из избранного',
+    //            ]);
+    //        } catch (\Exception $e) {
+    //            return response()->json(['error' => $e->getMessage()], 500);
+    //        }
+    //    }
+
 
     public function PrivacyPolicy(): Response
     {
