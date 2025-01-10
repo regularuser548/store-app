@@ -21,7 +21,7 @@ function SortableImage({image, setPrimaryHandler, deleteHandler}) {
     <Card ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <Tooltip title='Зробити основним'>
         {/*Set Primary Button*/}
-        <Button onClick={() => setPrimaryHandler(image.id)}>
+        <Button onClick={() => setPrimaryHandler(image.id)} className='m-2'>
           {image.isPrimary ? <CheckOutlined/> : <PlusOutlined/>}
         </Button>
       </Tooltip>
@@ -31,7 +31,7 @@ function SortableImage({image, setPrimaryHandler, deleteHandler}) {
         <Button color="danger" onClick={() => deleteHandler(image.id)}><DeleteOutlined/></Button>
       </Tooltip>
       <img src={image.url} alt=''
-           className='max-w-48 max-h-48'/>
+           className='w-48 h-40 object-contain'/>
     </Card>
   );
 }

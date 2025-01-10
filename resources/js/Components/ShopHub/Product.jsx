@@ -47,12 +47,12 @@ export default function Product({ item, image, isCrm = false }) {
 
   return (
     <article id={item.id} className="rounded-lg shadow-lg overflow-hidden">
-      <div className="flex items-center justify-center h-80 bg-gray-400">
+      <div className="flex items-center justify-center h-80 bg-white">
         <img
           onClick={() => router.visit(route('storefront.show', { product: item.id }))}
           src={image || "path-to-placeholder-image"}
           alt=""
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain"
         />
       </div>
 

@@ -15,13 +15,16 @@ export default function Index({paginator}) {
     router.visit(paginator.links[page].url);
   };
 
+  console.log(products);
 
   const columns = [
     {
       title: 'Фото',
-      dataIndex: 'thumbnail_url',
-      key: 'thumbnail_url',
-      render: (url) => <img src={url} alt='' className="max-w-24"/>,
+      key: 'image',
+      render: (product) => {
+        let url = product?.media?.find((element) => element?.custom_properties?.isPrimary === true)?.original_url;
+        return <img src={url} alt='' className="h-24 w-24 object-contain"/>
+      },
     },
     {
       title: 'Назва',
@@ -67,6 +70,9 @@ export default function Index({paginator}) {
       title: 'Категорія',
       key: 'category_path',
       dataIndex: 'category_path',
+      render: (_, product) => (
+        <span>{product.category_path.toString().replaceAll(',', '/')}</span>
+      ),
     },
     {
       title: 'Дії',
@@ -96,7 +102,7 @@ export default function Index({paginator}) {
       <Table columns={columns} dataSource={products} pagination={{
         position: ['bottomCenter'],
         current: paginator.current_page,
-        onChange:onPageChange,
+        onChange: onPageChange,
         total: paginator.total,
         defaultPageSize: paginator.per_page,
         hideOnSinglePage: true,

@@ -25,7 +25,7 @@ class Product extends \Vanilo\Foundation\Models\Product
         return $this->getThumbnailUrl();
     }
 
-    public function getCategoryPathAttribute(): ?string
+    public function getCategoryPathAttribute(): ?array
     {
         $taxon = $this->taxons()?->get()?->first();
 
@@ -40,7 +40,25 @@ class Product extends \Vanilo\Foundation\Models\Product
         }
         $categoryPath[] = $taxon->taxonomy()->get()->first()->name;
 
-        return implode('/', array_reverse($categoryPath));
+        return array_reverse($categoryPath);
+    }
+
+    public function getCategorySlugsAttribute(): ?array
+    {
+        $taxon = $this->taxons()?->get()?->first();
+
+        if (!$taxon)
+            return null;
+
+        $categorySlugs = [$taxon->slug];
+
+        while ($taxon->parent) {
+            $categorySlugs[] = $taxon->parent->slug;
+            $taxon = $taxon->parent;
+        }
+        $categorySlugs[] = $taxon->taxonomy()->get()->first()->slug;
+
+        return array_reverse($categorySlugs);
     }
 
     public function getIsLikedAttribute(): bool
@@ -56,5 +74,5 @@ class Product extends \Vanilo\Foundation\Models\Product
         return Cart::getItems()->contains('product_id', $this->id);
     }
 
-    protected $appends = ['thumbnail_url', 'category_path', 'is_liked', 'is_in_cart'];
+    protected $appends = ['thumbnail_url', 'category_path', 'category_slugs', 'is_liked', 'is_in_cart'];
 }
