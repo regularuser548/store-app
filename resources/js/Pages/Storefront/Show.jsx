@@ -80,7 +80,7 @@ export default function Show({product, images, comments = []}) {
                       href: route('storefront.index'),
                       title: <HomeOutlined/>,
                     },
-                    ...product.category_path.map((name, index) => ({
+                    ...product?.category_path?.map((name, index) => ({
                       title: name
                     }))
                   ]}

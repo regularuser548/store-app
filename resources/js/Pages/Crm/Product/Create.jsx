@@ -1,5 +1,5 @@
 import {router, useForm, usePage} from "@inertiajs/react";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import ProductForm from "@/Pages/Crm/Product/Components/ProductForm.jsx";
 import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
@@ -73,6 +73,8 @@ export default function Create({taxonomyTree}) {
 
   return (
     <>
+      <h1 className="text-2xl font-bold mb-6">Додати Товар</h1>
+
       <ProductForm form={form} initialValues={initialValues} taxonomyTree={taxonomyTree} errors={precognitiveErrors}
                    submitHandler={handleSubmit}
                    uploadingImages={uploadingImages}
