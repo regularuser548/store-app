@@ -1,4 +1,3 @@
-// import React from 'react';
 import React from 'react';
 import {router, useForm} from '@inertiajs/react';
 import {Breadcrumb, Button, Input, Rate, Tag} from "antd";
@@ -49,6 +48,25 @@ export default function Show({product, images, comments = []}) {
       thumbnail: item.original_url,
     }));
 
+    //Add video if it exists
+    if (product.video_id) {
+      imageGalleryItems.unshift({
+        embedUrl: "https://www.youtube.com/embed/" + product.video_id,
+        thumbnail: `https://img.youtube.com/vi/${product.video_id}/0.jpg`,
+        renderItem:
+          (item) => (
+            <div className="video-wrapper flex justify-center">
+              <iframe
+                width="80%"
+                height="400px"
+                src={item.embedUrl}
+                allowFullScreen
+              ></iframe>
+            </div>
+          )
+      })
+    }
+
     return (
       <div className="w-full h-full">
         {/* Контейнер для галереи */}
@@ -65,7 +83,6 @@ export default function Show({product, images, comments = []}) {
           slideInterval={2000}
           slideOnThumbnailOver={false}
           thumbnailPosition="bottom"
-          showVideo={true}
           useWindowKeyDown={true}
         />
       </div>
