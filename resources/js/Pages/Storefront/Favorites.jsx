@@ -83,7 +83,9 @@ export default function Favorites() {
         {favorites.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
             {favorites.map((product) => (
-              <Product key={product.id} item={product} image={product.thumbnail_url} isCrm={false}></Product>
+              <Product key={product.id} item={product}
+                       image={product?.media?.find((element) => element?.custom_properties?.isPrimary === true)?.original_url}>
+              </Product>
             ))}
           </div>
         ) : (
