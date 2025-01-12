@@ -146,6 +146,7 @@ export default function Edit({product, images, taxonomyTree, currentCategory}) {
   return (
     <>
       {contextHolder}
+      <h1 className="text-2xl font-bold mb-4">Редагувати Товар</h1>
       <Tabs items={items}/>
     </>
   );

@@ -91,7 +91,7 @@ export default function Favorites() {
               <Product
                 key={product.id}
                 item={product}
-                image={product.thumbnail_url}
+                image={product?.media?.find((element) => element?.custom_properties?.isPrimary === true)?.original_url}
                 isLiked={product.is_liked}
                 isInCart={product.is_in_cart}
                 isCrm={false}
