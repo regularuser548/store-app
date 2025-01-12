@@ -65,7 +65,7 @@ export default function MyOrders({ orders }) {
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-16 h-16 object-cover rounded mr-4"
+                      className="w-16 h-16 object-contain rounded mr-4"
                     />
                     <div className="flex-grow">
                       <p className="text-gray-200 font-medium">{item.name}</p>

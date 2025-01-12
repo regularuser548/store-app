@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Product;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -123,8 +124,9 @@ class ProfileController extends Controller
             $order->date = $order->created_at->format('d.m.Y');
             $order->status = $order->status ?? 'Очікується';
             $order->items->each(function ($item) {
+
 //                dd($item->product);
-                  $item->image = $item->product?->getThumbnailUrl();
+                  $item->image = Product::find($item->product?->id)->getImageUrl();
 
             });
 //            dd($order);

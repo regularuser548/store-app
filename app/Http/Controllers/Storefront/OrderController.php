@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Storefront;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Vanilo\Cart\Facades\Cart;
@@ -18,6 +19,7 @@ class OrderController extends Controller
                 'name' => $item->product->name,
                 'price' => $item->price,
                 'quantity' => $item->quantity,
+                'image' => Product::find($item->product->id)->getImageUrl(),
             ];
         });
 

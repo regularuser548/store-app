@@ -1,13 +1,14 @@
 import {Link, router, usePage} from "@inertiajs/react";
 import React, {useEffect, useState} from "react";
 import {Button, Cascader, Divider} from "antd";
-import Dropdown from "@/Components/Dropdown.jsx";
+
 
 
 export default function StoreFrontLayout({children}) {
 
   const {props} = usePage();
   const {user} = usePage().props.auth;
+  const {auth} = usePage().props;
 
   const [categoryData, setCategoryData] = useState(null);
 
@@ -22,9 +23,9 @@ export default function StoreFrontLayout({children}) {
     router.visit(generateSearchUrl(currentCategory));
   };
 
-    const toggleDropdown = () => {
-      setIsDropdownOpen(!isDropdownOpen);
-    };
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const handleCategorySelect = (e, value) => {
     let slugs = value.map(entry => entry.slug);
@@ -199,7 +200,6 @@ export default function StoreFrontLayout({children}) {
                   <span>{user.name}</span>
                 </div>
               )}
-
               {isDropdownOpen && (
                 <div
                   className="absolute right-0 mt-2 bg-black shadow-lg rounded-lg z-50"
@@ -235,13 +235,38 @@ export default function StoreFrontLayout({children}) {
                   >
                     Улюблене
                   </Link>
-                  <Link
-                    href={route('logout')}
-                    method="post"
+                  {
+                    auth?.roles?.[0]?.name === 'admin' || auth?.roles?.[0]?.name === 'seller' ?
+                      <Link
+                        href={route('product.index')}
+                        className="block px-4 py-3 text-white hover:bg-yellow-500 transition duration-200"
+                      >
+                        CRM
+                      </Link>
+                      : null
+                  }
+                  {/*<a*/}
+                  {/*  href={route('logout')}*/}
+                  {/*  // onClick={() => {router.post(route('logout'),{preserveState:false})}}*/}
+                  {/*  method='POST'*/}
+                  {/*  className="block px-4 py-3 text-white hover:bg-red-500 rounded-b-lg transition duration-200"*/}
+                  {/*>*/}
+                  {/*  Вийти*/}
+                  {/*</a>*/}
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.post(route('logout'), {}, {
+                        onSuccess: () => {
+                          window.location.reload();
+                        },
+                      });
+                    }}
                     className="block px-4 py-3 text-white hover:bg-red-500 rounded-b-lg transition duration-200"
                   >
                     Вийти
-                  </Link>
+                  </a>
                 </div>
               )}
             </div>
