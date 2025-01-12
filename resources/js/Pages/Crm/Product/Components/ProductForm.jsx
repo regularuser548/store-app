@@ -2,6 +2,7 @@ import {Button, Cascader, Col, Form, Input, InputNumber, Row, Select} from "antd
 import React, {useState} from "react";
 import MediaUploadForm from "@/Pages/Crm/Product/Components/MediaUploadForm.jsx";
 import {router} from "@inertiajs/react";
+import {PlusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
 const {TextArea} = Input;
 
@@ -175,9 +176,9 @@ export default function ProductForm({
             required
           >
             <Cascader //placement={'topLeft'}
-                      fieldNames={{label: 'name', value: 'id'}}
-                      options={taxonomyTree}
-                      changeOnSelect/>
+              fieldNames={{label: 'name', value: 'id'}}
+              options={taxonomyTree}
+              changeOnSelect/>
           </Form.Item>
 
           <Form.Item
@@ -218,12 +219,14 @@ export default function ProductForm({
         </Col>
       </Row>
 
-      <Row gutter={16}>
-        <Form.Item label={null}>
-          <Button type="primary" htmlType="submit">
-            Відправити
-          </Button>
-        </Form.Item>
+      <Row>
+        <Col span={1}>
+          <Form.Item label={null}>
+            <Button type="primary" htmlType="submit">
+              Відправити
+            </Button>
+          </Form.Item>
+        </Col>
       </Row>
     </Form>
 

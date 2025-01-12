@@ -84,6 +84,7 @@ export default function MediaUploadForm({text, fileList, changeHandler, accept, 
     </button>
   );
   return (
+    <div className='ms-3'>
     <DndContext sensors={[sensor]} onDragEnd={onDragEnd}>
       <SortableContext items={fileList.map((i) => i.uid)} strategy={horizontalListSortingStrategy}>
         <Upload
@@ -103,6 +104,7 @@ export default function MediaUploadForm({text, fileList, changeHandler, accept, 
         </Upload>
       </SortableContext>
     </DndContext>
+    </div>
   );
 
 
