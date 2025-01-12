@@ -71,7 +71,7 @@ export default function Index({paginator}) {
       key: 'category_path',
       dataIndex: 'category_path',
       render: (_, product) => (
-        <span>{product.category_path.toString().replaceAll(',', '/')}</span>
+        <span>{product.category_path?.toString().replaceAll(',', '/')}</span>
       ),
     },
     {
