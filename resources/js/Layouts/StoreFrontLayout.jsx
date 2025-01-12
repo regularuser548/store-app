@@ -204,6 +204,7 @@ export default function StoreFrontLayout({children}) {
                 <div
                   className="absolute right-0 mt-2 bg-black shadow-lg rounded-lg z-50"
                   style={{minWidth: '220px'}}
+                  onClick={toggleDropdown}
                 >
                   <Link
                     href={route('profile.edit')}
