@@ -3,7 +3,7 @@ import {
   DndContext, closestCenter, useSensor, useSensors, PointerSensor, KeyboardSensor,
 } from '@dnd-kit/core';
 import {
-  arrayMove, SortableContext, verticalListSortingStrategy, useSortable,
+  arrayMove, SortableContext, verticalListSortingStrategy, useSortable, rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {Button, Card, message, Tooltip} from "antd";
@@ -31,7 +31,7 @@ function SortableImage({image, setPrimaryHandler, deleteHandler}) {
         <Button color="danger" onClick={() => deleteHandler(image.id)}><DeleteOutlined/></Button>
       </Tooltip>
       <img src={image.url} alt=''
-           className='w-48 h-40 object-contain'/>
+           className='w-36 h-36 object-contain'/>
     </Card>
   );
 }
@@ -124,9 +124,9 @@ function ImageList({images, setImages}) {
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={images} strategy={verticalListSortingStrategy}>
+      <SortableContext items={images} strategy={rectSortingStrategy}>
         {contextHolder}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {images.map((image) => (
             <SortableImage key={image.id} image={image} setPrimaryHandler={handleSetPrimary}
                            deleteHandler={handleDelete}/>
