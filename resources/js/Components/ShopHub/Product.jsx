@@ -13,20 +13,6 @@ export default function Product({ item, image, isCrm = false,isLiked,isInCart}) 
   const [checkIsInCart, setCheckIsInCart] = useState(isInCart);
 
 
-  // const handleAddToCart = (productId) => {
-  //   axios.post(route('cart.add'), {product: {id: productId}});
-  // };
-
-  // const handleAddToCart = async (productId) => {
-  //   try {
-  //     await axios.post(route('cart.add'), { product: { id: productId } });
-  //     setIsInCart(true);
-  //     message.success("Товар добавлен в корзину!");
-  //   } catch (error) {
-  //     console.error("Failed to add to cart:", error);
-  //     message.error("Не удалось добавить товар в корзину.");
-  //   }
-  // };
   const handleAddToCart = async (productId) => {
     try {
       const response = await axios.post('/cart/add', { product: { id: productId } });
@@ -37,37 +23,6 @@ export default function Product({ item, image, isCrm = false,isLiked,isInCart}) 
       console.error("Failed to add to cart:", error);
     }
   };
-
-
-
-  // useEffect(() => {
-  //   const checkFavorite = async () => {
-  //     try {
-  //       const response = await axios.get(`/favorites/exists/${item.id}`);
-  //       setIsFavorite(response.data.exists);
-  //     } catch (error) {
-  //       console.error("Failed to check favorite status:", error);
-  //     }
-  //   };
-  //
-  //   checkFavorite();
-  // }, [item.id]);
-
-  // useEffect(() => {
-  //   const checkCartStatus = async () => {
-  //     try {
-  //       const response = await axios.get(`/cart/exists/${item.id}`);
-  //       setIsInCart(response.data.is_in_cart);
-  //     } catch (error) {
-  //       console.error("Failed to check cart status:", error);
-  //     }
-  //   };
-  //
-  //   checkCartStatus();
-  // }, [item.id]);
-
-
-
 
 
   const toggleFavorite = async (productId) => {
@@ -130,21 +85,26 @@ export default function Product({ item, image, isCrm = false,isLiked,isInCart}) 
               {isCrm ? (
                 <button
                   className="font-bold"
-                  onClick={() => router.visit(route('product.edit', { product: item.id }))}
+                  onClick={() =>
+                    router.visit(route("product.edit", {product: item.id}))
+                  }
                 >
                   Edit
                 </button>
               ) : (
                 <button
                   className="bg-[#ff8000] text-black rounded-md px-1 py-3 font-bold text-sm lg:text-base flex items-center"
-                  onClick={() => handleAddToCart(item.id)}
+                  onClick={
+                    checkIsInCart
+                      ? () => router.visit(route("cart.show"))
+                      : () => handleAddToCart(item.id)
+                  }
                 >
-                    Придбати
+                  {checkIsInCart ? "В кошику" : "Придбати"}
                   <span className="ml-1">
                     {checkIsInCart ? <FilledCart/> : <EmptyCart/>}
                   </span>
                 </button>
-
               )}
             </div>
           </div>

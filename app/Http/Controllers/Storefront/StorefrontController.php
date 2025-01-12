@@ -106,23 +106,6 @@ use Vanilo\Cart\Facades\Cart;
     }
 
 
-    //    public function isInCart($productId)
-    //    {
-    //        try {
-    //            $product = Product::findOrFail($productId);
-    //
-    ////            return response()->json(['is_in_cart' => $product->is_in_cart], 200);
-    //            return response()->json([
-    //                'is_in_cart' => !$product->is_in_cart,
-    //                'message' => !$product->is_in_cart
-    //                    ? 'Товар добавлен в избранное'
-    //                    : 'Товар удалён из избранного',
-    //            ]);
-    //        } catch (\Exception $e) {
-    //            return response()->json(['error' => $e->getMessage()], 500);
-    //        }
-    //    }
-
 
     public function PrivacyPolicy(): Response
     {

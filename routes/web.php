@@ -35,6 +35,7 @@ Route::prefix('/cart')->group(function () {
     Route::get('/show', [CartController::class, 'showCart'])->name('cart.show');
     Route::post('/remove/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     Route::post('/changeQuantity', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
+    Route::post('/add-multiple', [CartController::class, 'addMultipleToCart']);
 });
 
 Route::middleware(['web'])->group(function () {
@@ -55,8 +56,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites/toggle/{productId}', [FavoriteController::class, 'toggleLike']);
-//    Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
-//    Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
     Route::get('/favorites/exists/{productId}', [FavoriteController::class, 'exists'])->name('favorites.exists');
 });
 

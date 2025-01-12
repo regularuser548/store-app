@@ -44,7 +44,7 @@ export default function SalesReport({ salesData }) {
   ];
 
   return (
-    <div className="p-4">
+    <div className="">
       <h1 className="text-2xl font-bold mb-4">Звіти про продажі</h1>
       <Table
         columns={columns}
