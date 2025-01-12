@@ -26,6 +26,7 @@ export default function Show({ user, roles, permissions }) {
     );
 }
 
+
 {/*<h2>Permissions:</h2>*/}
 {/*{permissions.length > 0 ? (*/}
 {/*    <ul>*/}

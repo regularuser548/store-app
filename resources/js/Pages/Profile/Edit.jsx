@@ -62,15 +62,6 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                   {isEditing ? (
                     <>
                       <div>
-                        <p>Логін (телефон)</p>
-                        <input
-                          name="phone_number"
-                          value={formData.phone_number}
-                          onChange={handleChange}
-                          className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
-                        />
-                      </div>
-                      <div>
                         <p>Прізвище</p>
                         <input
                           name="surname"
@@ -84,6 +75,53 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                         <input
                           name="name"
                           value={formData.name}
+                          onChange={handleChange}
+                          className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <p>Ім’я</p>
+                        <p className="text-gray-400">{formData.name}</p>
+                      </div>
+                      <div>
+                        <p>Прізвище</p>
+                        <p className="text-gray-400">{formData.surname}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <button
+                  onClick={isEditing ? handleSave : () => setIsEditing(true)}
+                  className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition"
+                >
+                  {isEditing ? 'Зберегти' : 'Редагувати'}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Контакты */}
+          <div className="border-b-2 border-[#D9D9D9]">
+            <button
+              onClick={() => setOrdersOpen((prev) => !prev)} // Используем отдельный стейт
+              className="w-full text-left py-4 flex justify-between items-center"
+            >
+              <p>Контакти</p>
+              <span className="text-gray-400">{isOrdersOpen ? '\u25B2' : '\u25BC'}</span>
+            </button>
+            {isOrdersOpen && (
+              <div className="pl-4 py-4 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {isEditing ? (
+                    <>
+                      <div>
+                        <p>Логін (телефон)</p>
+                        <input
+                          name="phone_number"
+                          value={formData.phone_number}
                           onChange={handleChange}
                           className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
                         />
@@ -105,47 +143,27 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                         <p className="text-gray-400">{formData.phone_number}</p>
                       </div>
                       <div>
-                        <p>Прізвище</p>
-                          <p className="text-gray-400">{formData.surname}</p>
-                        </div>
-                        <div>
-                          <p>Ім’я</p>
-                          <p className="text-gray-400">{formData.name}</p>
-                        </div>
-                        <div>
-                          <p>Email</p>
-                          <p className="text-gray-400">{formData.email}</p>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <button
-                    onClick={isEditing ? handleSave : () => setIsEditing(true)}
-                    className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition"
-                  >
-                    {isEditing ? 'Зберегти' : 'Редагувати'}
-                  </button>
+                        <p>Email</p>
+                        <p className="text-gray-400">{formData.email}</p>
+                      </div>
+                    </>
+                  )}
                 </div>
-              )}
-            </div>
-
+                <button
+                  onClick={isEditing ? handleSave : () => setIsEditing(true)}
+                  className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition"
+                >
+                  {isEditing ? 'Зберегти' : 'Редагувати'}
+                </button>
+              </div>
+            )}
           </div>
+
         </div>
-      </ProfileLayout>
-    );
-  }
-
-
-
-
-
-
-
-
-
-
-
-
+      </div>
+    </ProfileLayout>
+  );
+}
 
 
 // export default function Edit({ auth, mustVerifyEmail, status }) {

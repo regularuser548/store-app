@@ -62,7 +62,8 @@ class CartController extends Controller
 
         Cart::addItem($product);
 
-        return back()->with('success', "Product added to cart");
+//        return back()->with('success', "Product added to cart");
+        return response()->json(['success' => true, 'message' => "Товар доданий до кошику"]);
     }
 
     public function removeFromCart(Request $request,Product $product)
@@ -71,6 +72,29 @@ class CartController extends Controller
 
         Cart::removeProduct($product);
 
-        return back()->with('success', "Product removed from cart");
+//        return back()->with('success', "Product removed from cart");
+        return response()->json(['success' => true, 'message' => "Product removed from cart"]);
     }
+
+    public function addMultipleToCart(Request $request)
+    {
+        $productIds = $request->input('productIds', []);
+
+        if (empty($productIds)) {
+            return response()->json(['success' => false, 'message' => 'Список товарів порожній.'], 400);
+        }
+
+        $products = Product::whereIn('id', $productIds)->get();
+
+        if ($products->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'Не знайдено жодного товару.'], 404);
+        }
+
+        foreach ($products as $product) {
+            Cart::addItem($product);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Всі товари додані до кошику.']);
+    }
+
 }

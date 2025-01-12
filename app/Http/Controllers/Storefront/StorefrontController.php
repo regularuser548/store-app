@@ -15,8 +15,9 @@ use Inertia\Response;
 use Vanilo\Category\Models\Taxonomy;
 use Vanilo\Foundation\Models\Taxon;
 use Vanilo\Foundation\Search\ProductSearch;
+use Vanilo\Cart\Facades\Cart;
 
-class StorefrontController extends Controller
+    class StorefrontController extends Controller
 {
     protected ProductRepository $repository;
     protected MediaRepository $mediaRepository;
@@ -103,6 +104,8 @@ class StorefrontController extends Controller
             'currentCategory' => $slugs,
             'query' => $request->input('query')]);
     }
+
+
 
     public function PrivacyPolicy(): Response
     {
