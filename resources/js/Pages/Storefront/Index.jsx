@@ -82,7 +82,7 @@ console.log(products)
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
               {products.map((product) => (
-                <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>
+                <Product key={product.id} item={product} image={images[product.id]} isLiked={product.is_liked} isInCart={product.is_in_cart} isCrm={false}></Product>
               ))}
             </div>
           ) : (
@@ -112,7 +112,7 @@ console.log(products)
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
               {products.map((product) => (
-                <Product key={product.id} item={product} image={images[product.id]} isCrm={false}></Product>
+                <Product key={product.id} item={product} image={images[product.id]} isLiked={product.is_liked} isInCart={product.is_in_cart} isCrm={false}></Product>
               ))}
             </div>
           ) : (

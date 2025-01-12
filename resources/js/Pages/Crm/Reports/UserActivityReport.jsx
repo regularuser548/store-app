@@ -21,7 +21,7 @@ export default function UserActivityReport({ userActivityData }) {
   ];
 
   return (
-    <div className="p-4">
+    <div className="">
       <h1 className="text-2xl font-bold mb-4">Активність користувачів</h1>
       <Table
         columns={columns}

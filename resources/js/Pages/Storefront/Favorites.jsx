@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Head, usePage } from "@inertiajs/react";
-import {Button, List, Empty, Select, message, Flex} from "antd";
+import { Button, List, Empty, Select, message, Space } from "antd";
 import ProfileLayout from "@/Layouts/ProfileLayout.jsx";
 import Product from "../../Components/ShopHub/Product.jsx";
+import axios from "axios";
 
 const { Option } = Select;
 
@@ -11,26 +12,45 @@ export default function Favorites() {
   const favorites = props.favorites || [];
   const images = props.images || {};
   const [filter, setFilter] = useState("date_added");
+  const [filteredFavorites, setFilteredFavorites] = useState([...favorites]);
 
-  const removeFromFavorites = async (productId) => {
+  // Добавить все товары в корзину
+  const handleBuyAll = async () => {
     try {
-      const response = await axios.delete(`/favorites/${productId}`);
-      message.success(response.data.message);
-      location.reload();
+      const productIds = favorites.map((product) => product.id); // Получаем все id избранных товаров
+      const response = await axios.post("/cart/add-multiple", { productIds });
+      if (response.data.success) {
+        message.success(response.data.message || "Всі товари додані в корзину!");
+      } else {
+        message.error(response.data.message || "Не вдалося додати товари в корзину.");
+      }
     } catch (error) {
-      console.error("Failed to remove product from favorites:", error);
-      message.error("Failed to remove from favorites.");
+      console.error("Failed to add all products to cart:", error);
+      message.error("Не вдалося додати товари в корзину.");
     }
   };
 
-  const handleBuyAll = () => {
-    message.success("Всі товари додані в корзину!");
-    // Логика добавления всех товаров в корзину
-  };
 
+  // Сортировка товаров
   const handleFilterChange = (value) => {
     setFilter(value);
-    // Реализация фильтрации товаров (пока просто обновляем состояние)
+
+    let sortedFavorites = [...favorites];
+    switch (value) {
+      case "price_low_to_high":
+        sortedFavorites.sort((a, b) => a.price - b.price);
+        break;
+      case "price_high_to_low":
+        sortedFavorites.sort((a, b) => b.price - a.price);
+        break;
+      case "date_added":
+      default:
+        // Assuming `date_added` is a valid property
+        sortedFavorites.sort((a, b) => new Date(b.date_added) - new Date(a.date_added));
+        break;
+    }
+
+    setFilteredFavorites(sortedFavorites);
   };
 
   return (
@@ -44,7 +64,7 @@ export default function Favorites() {
             <span className="text-lg">
               Кількість товарів довподоби: {favorites.length || 0}
             </span>
-            <div className="flex items-center space-x-4">
+            <Space>
               <Button type="primary" onClick={handleBuyAll}>
                 Купити все
               </Button>
@@ -54,98 +74,39 @@ export default function Favorites() {
                 style={{ width: 200 }}
               >
                 <Option value="date_added">За датою додавання</Option>
-                <Option value="price_low_to_high">Ціна: від низької до високої</Option>
-                <Option value="price_high_to_low">Ціна: від високої до низької</Option>
+                <Option value="price_low_to_high">
+                  Ціна: від низької до високої
+                </Option>
+                <Option value="price_high_to_low">
+                  Ціна: від високої до низької
+                </Option>
               </Select>
-            </div>
+            </Space>
           </div>
         </div>
 
-        {/*{favorites.length > 0 ? (*/}
-        {/*  <div className="product-list grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-8 mt-6">*/}
-        {/*    {favorites.map((product) => (*/}
-        {/*      <Product*/}
-        {/*        key={product.id}*/}
-        {/*        item={product}*/}
-        {/*        image={images[product.id]}*/}
-        {/*        isCrm={false}*/}
-        {/*      />*/}
-        {/*    ))}*/}
-        {/*  </div>*/}
-        {/*) : (*/}
-        {/*  <div className="empty-state flex justify-center items-center mt-10">*/}
-        {/*    <Empty*/}
-        {/*      image={Empty.PRESENTED_IMAGE_SIMPLE}*/}
-        {/*      description="Немає товарів"*/}
-        {/*    />*/}
-        {/*  </div>*/}
-        {/*)}*/}
-        {favorites.length > 0 ? (
+        {filteredFavorites.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
-            {favorites.map((product) => (
-              <Product key={product.id} item={product}
-                       image={product?.media?.find((element) => element?.custom_properties?.isPrimary === true)?.original_url}>
-              </Product>
+            {filteredFavorites.map((product) => (
+              <Product
+                key={product.id}
+                item={product}
+                image={product?.media?.find((element) => element?.custom_properties?.isPrimary === true)?.original_url}
+                isLiked={product.is_liked}
+                isInCart={product.is_in_cart}
+                isCrm={false}
+              />
             ))}
           </div>
         ) : (
-          <Flex justify='center' align='center'>
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Немає товарів'}></Empty>
-          </Flex>
-
+          <div className="flex justify-center items-center mt-10">
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={"Немає товарів"}
+            />
+          </div>
         )}
       </div>
     </ProfileLayout>
   );
 }
-
-
-
-
-
-// import React from "react";
-// import { Head, usePage } from "@inertiajs/react";
-// import { Button, List, message } from "antd";
-// import ProfileLayout from "@/Layouts/ProfileLayout.jsx";
-//
-// export default function Favorites() {
-//   const { props } = usePage();
-//   const favorites = props.favorites;
-//
-//   const removeFromFavorites = async (productId) => {
-//     try {
-//       const response = await axios.delete(`/favorites/${productId}`);
-//       message.success(response.data.message);
-//       location.reload(); // Перезагружаем страницу для обновления данных
-//     } catch (error) {
-//       console.error("Failed to remove product from favorites:", error);
-//       message.error("Failed to remove from favorites.");
-//     }
-//   };
-//
-//   return (
-//     <ProfileLayout>
-//     <div>
-//       <Head title="Your Favorites" />
-//       <h1>Your Favorites</h1>
-//       <List
-//         dataSource={favorites}
-//         renderItem={(item) => (
-//           <List.Item
-//             actions={[
-//               <Button
-//                 type="danger"
-//                 onClick={() => removeFromFavorites(item.product_id)}
-//               >
-//                 Remove
-//               </Button>,
-//             ]}
-//           >
-//             {item.product.name} - ${item.product.price}
-//           </List.Item>
-//         )}
-//       />
-//     </div>
-//       </ProfileLayout>
-//   );
-// }
