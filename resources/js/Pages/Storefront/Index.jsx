@@ -51,9 +51,9 @@ export default function Index({products, images}) {
 
 
   const images2 = [
-    "http://localhost:8000/banners/1.jpg",
-    "http://localhost:8000/banners/2.jpg",
-    "http://localhost:8000/banners/3.jpg"
+    "banners/1.jpg",
+    "banners/2.jpg",
+    "banners/3.jpg"
   ];
 
 console.log(products)
