@@ -33,7 +33,7 @@ abstract class BaseProductRequest extends FormRequest
             'height' => 'nullable|numeric|min:0',
             'width' => 'nullable|numeric|min:0',
             'length' => 'nullable|numeric|min:0',
-            'description' => 'required|min:3|max:255',
+            'description' => 'required|min:3|max:500',
             'meta_keywords' => 'nullable|min:3|max:255',
             'state' => 'required|in:draft,inactive,active,unavailable,retired',
             'video_id' => 'nullable|max:255',
