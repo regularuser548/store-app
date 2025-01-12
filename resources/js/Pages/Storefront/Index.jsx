@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Product from '../../Components/ShopHub/Product.jsx';
-import {Link, router} from "@inertiajs/react";
+import {Head, Link, router} from "@inertiajs/react";
 import {Button, Card, Carousel, Col, DatePicker, Empty, Flex, Image, Row, Space, version} from "antd";
 import StoreFrontLayout from "../../Layouts/StoreFrontLayout.jsx"
 
@@ -50,18 +50,18 @@ export default function Index({products, images}) {
   );
 
 
-  const images2 = [
+  const banners = [
     "banners/1.jpg",
     "banners/2.jpg",
     "banners/3.jpg"
   ];
 
-console.log(products)
   return (
       <div className="bg-[#0f0f0f] min-h-screen">
         {/* Header */}
 
         <main className="p-4 md:px-[7%]">
+          <Head title="Головна" />
           <div className="relative overflow-hidden rounded-md">
             <Carousel arrows autoplay centerSlidePercentage={100}
                       className="carousel-container"
@@ -70,7 +70,7 @@ console.log(products)
                       dots={true}
             >
               {
-                images2.map((src, index) => (
+                banners.map((src, index) => (
                   <div key={index} style={containerStyle}>
                     <img src={src} alt={`Slide ${index + 1}`} style={contentStyle}/>
                   </div>
@@ -100,7 +100,7 @@ console.log(products)
                       dots={true}
             >
               {
-                images2.map((src, index) => (
+                banners.map((src, index) => (
                   <div key={index} style={containerStyle}>
                     <img src={src} alt={`Slide ${index + 1}`} style={contentStyle}/>
                   </div>
