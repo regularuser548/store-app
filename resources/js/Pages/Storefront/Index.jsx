@@ -51,9 +51,9 @@ export default function Index({products, images}) {
 
 
   const images2 = [
-    "https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/27/2782915/393720.jpg",
-    "https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/27/2782899/Glosnik-mobilny-JBL-Charge-5-Czerwony-skos1.jpg",
-    "https://prod-api.mediaexpert.pl/api/images/gallery_500_500/thumbnails/images/27/2782895/393722.jpg"
+    "banners/1.jpg",
+    "banners/2.jpg",
+    "banners/3.jpg"
   ];
 
 console.log(products)
