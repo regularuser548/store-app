@@ -1,29 +1,63 @@
-import {useForm} from "@inertiajs/react";
+import {router, useForm, usePage} from "@inertiajs/react";
 import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {Form} from "antd";
 
 export default function Create(props) {
 
-  const {data, setData, post, progress} = useForm({
+  const [form] = Form.useForm();
+
+  const initialValues = {
     name: "",
     slug: "",
     image: "",
-  });
+  };
+
+  const {errors} = usePage().props;
+  const [precognitiveErrors, setPrecognitiveErrors] = useState({});
+
+  useEffect(() => {
+    setPrecognitiveErrors((prevErrors) => ({...prevErrors, ...errors}));
+  }, [errors]);
+
+  const validateField = async (fieldName, fieldValue) => {
+    try {
+      // Make a Precognition validation request
+      await axios.post(
+        route('taxonomy.store'),
+        form.getFieldsValue(),
+        {headers: {Precognition: true}}
+      );
+      // Clear the error for the field if validation passes
+      setPrecognitiveErrors((prevErrors) => ({...prevErrors, [fieldName]: undefined}));
+    } catch (error) {
+      if (error.response && error.response.data.errors) {
+        // Set the validation error for the field
+        setPrecognitiveErrors((prevErrors) => ({
+          ...prevErrors,
+          [fieldName]: error.response.data.errors[fieldName]?.[0],
+        }));
+      }
+    }
+
+  };
 
   const [imageList, setImageList] = useState([]);
 
   function handleSubmit(e) {
-    e.preventDefault();
 
+    let data = form.getFieldsValue();
     data.image = imageList[0]?.originFileObj;
 
-    post(route('taxonomy.store'));
+    router.post(route('taxonomy.store'), data);
   }
 
   return (
     <>
-      <TaxonomyForm fields={data} imageList={imageList} setImageList={setImageList} changeHandler={setData} submit={handleSubmit}></TaxonomyForm>
+      <TaxonomyForm form={form} submitHandler={handleSubmit} initialValues={initialValues}
+                    errors={precognitiveErrors} validateFieldHandler={validateField}>
+      </TaxonomyForm>
     </>
   );
 

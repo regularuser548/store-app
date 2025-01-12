@@ -8,7 +8,7 @@ export default function Index({products, images}) {
   const contentStyle = {
     width: '100%',        // Ширина изображения занимает всю доступную ширину
     maxHeight: '70vh',   // Ограничение высоты (по желанию)
-    objectFit: 'cover ', // Сохраняем соотношение сторон
+    objectFit: 'contain', // Сохраняем соотношение сторон
   };
 
   const containerStyle = {
