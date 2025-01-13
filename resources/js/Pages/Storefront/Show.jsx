@@ -130,7 +130,7 @@ console.log(product)
             <h2 className="text-2xl font-bold ">{product.name}</h2>
             <div className="flex items-center space-x-2 ">
               <span className="text-yellow-500"> <Rate disabled defaultValue={averageRating}/></span>
-              <span className="text-sm text-gray-400">(Оцінка товару - {averageRating})</span>
+              <span className="text-sm text-gray-400">(Оцінка товару - {averageRating.toFixed(2)})</span>
             </div>
             <p className="text-3xl font-semibold ">Ціна: {product.price} ₴</p>
           </div>
@@ -209,7 +209,7 @@ console.log(product)
                     type="danger"
                     color="danger" variant="dashed"
                     onClick={() => handleDelete(comment.id)}
-                    className="mt-2"
+                    className="mt-2 ms-4"
                   >
                     Видалити
                   </Button>
