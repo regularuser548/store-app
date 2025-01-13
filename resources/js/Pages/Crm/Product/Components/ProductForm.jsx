@@ -211,7 +211,7 @@ export default function ProductForm({
             required
           >
             <MediaUploadForm fileList={uploadingImages} changeHandler={setUploadingImages} max={10} text='Додати Фото'
-                             accept='image/jpg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
+                             accept='image/jpg, image/jpeg, image/png, image/bmp, image/gif, image/svg, image/webp, image/avif'
                              listType='picture-card'>
 
             </MediaUploadForm>
