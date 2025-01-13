@@ -62,8 +62,8 @@ class CartController extends Controller
 
         Cart::addItem($product);
 
-//        return back()->with('success', "Product added to cart");
-        return response()->json(['success' => true, 'message' => "Товар доданий до кошику"]);
+        return back()->with('success', "Product added to cart");
+        //return response()->json(['success' => true, 'message' => "Товар доданий до кошику"]);
     }
 
     public function removeFromCart(Request $request,Product $product)
