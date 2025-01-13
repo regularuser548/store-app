@@ -25,13 +25,13 @@ export default function MyOrders({ orders }) {
             type="text"
             placeholder="Пошук за усіма замовленнями..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) =>  setSearchTerm(e.target.value)}
             className="border border-gray-600 bg-transparent text-white rounded px-4 py-2 w-full sm:w-1/2"
           />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border border-gray-600 bg-gray-800 text-white rounded px-4 py-2 ml-4"
+            className="border border-gray-600 bg-black text-white rounded px-4 py-2 ml-4"
           >
             {statuses.map((status, index) => (
               <option key={index} value={status}>
