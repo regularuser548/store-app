@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {router, useForm} from '@inertiajs/react';
 import {Breadcrumb, Button, Input, Rate, Tag} from "antd";
 import ImageGallery from "react-image-gallery";
@@ -19,9 +19,10 @@ export default function Show({product, images, comments = []}) {
     e.preventDefault();
 
     post(route('comments.store'));
+    data.comment = '';
   };
   const handleDelete = (id) => {
-    if (confirm('Вы уверены, что хотите удалить этот комментарий?')) {
+    if (confirm('Ви точно хочете видалити цей коментар?')) {
       router.delete(route('comments.destroy', id));
     }
   };
@@ -39,19 +40,16 @@ export default function Show({product, images, comments = []}) {
     : 0; // Если нет рейтингов, возвращаем 0
   // console.log("Середнє арифметичне:", averageRating);
 
-  const isAvailable = product.stock > 0 && product.state === 'active';
+  const [isAvailable, setIsAvailable] = useState(product.stock > 0 && product.state === 'active');
 
-  const ImageSlider = () => {
-    // Данные слайдов
-    const imageGalleryItems = product.media.map((item, index) => ({
+  function initializeGallery() {
+    let images = product.media.map((item, index) => ({
       original: item.original_url,
       thumbnail: item.original_url,
     }));
-    console.log(imageGalleryItems);
 
-    //Add video if it exists
     if (product.video_id) {
-      imageGalleryItems.unshift({
+      images.unshift({
         embedUrl: "https://www.youtube.com/embed/" + product.video_id,
         thumbnail: `https://img.youtube.com/vi/${product.video_id}/0.jpg`,
         renderItem:
@@ -67,38 +65,28 @@ export default function Show({product, images, comments = []}) {
           )
       })
     }
-
-    return (
-      <div className="w-full h-full">
-        <ImageGallery
-          items={imageGalleryItems}
-          showIndex={false}
-          infinite={true}
-          showFullscreenButton={false}
-          showThumbnails={true}
-          showPlayButton={false}
-          showNav={true}
-          slideVertically={false}
-          slideDuration={450}
-          slideInterval={2000}
-          slideOnThumbnailOver={false}
-          thumbnailPosition="bottom"
-          useWindowKeyDown={true}
-        />
-      </div>
-    );
-  };
-
-  const breadcrumbs = product?.category_path?.map((name, index) => ({
-    title: name
-  }));
-
-  if (breadcrumbs) {
-    breadcrumbs.unshift({
-      href: route('storefront.index'),
-      title: <HomeOutlined/>,
-    })
+    return images;
   }
+
+  const [imageGalleryItems, setImageGalleryItems] = useState(initializeGallery);
+
+  function initializeBreadcrumbs() {
+    const breadcrumbs = product?.category_path?.map((name, index) => ({
+      title: name
+    }));
+
+    if (breadcrumbs) {
+      breadcrumbs.unshift({
+        href: route('storefront.index'),
+        title: <HomeOutlined/>,
+      })
+    }
+
+    return breadcrumbs;
+  }
+
+  const [breadcrumbs, setBreadcrumbs] = useState(initializeBreadcrumbs);
+
 
   return (
     <div>
@@ -107,7 +95,23 @@ export default function Show({product, images, comments = []}) {
       />
       <div className="flex flex-col lg:flex-row bg-[#0F0F0F] text-white p-6 rounded-md">
         <div className="lg:w-2/3 flex justify-center items-center bg-[#0F0F0F] rounded-md">
-          <ImageSlider/>
+          <div className="w-full h-full">
+            <ImageGallery
+              items={imageGalleryItems}
+              showIndex={false}
+              infinite={true}
+              showFullscreenButton={false}
+              showThumbnails={true}
+              showPlayButton={false}
+              showNav={true}
+              slideVertically={false}
+              slideDuration={450}
+              slideInterval={2000}
+              slideOnThumbnailOver={false}
+              thumbnailPosition="bottom"
+              useWindowKeyDown={true}
+            />
+          </div>
         </div>
 
         {/* Details Section */}
