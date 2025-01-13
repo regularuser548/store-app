@@ -123,7 +123,7 @@ export default function Show({product, images, comments = []}) {
               <span className="text-yellow-500"> <Rate disabled defaultValue={averageRating}/></span>
               <span className="text-sm text-gray-400">(Оцінка товару - {averageRating})</span>
             </div>
-            <p className="text-3xl font-semibold ">Ціна: {product.price} грн.</p>
+            <p className="text-3xl font-semibold ">Ціна: {product.price} ₴</p>
           </div>
 
           {/* Product Details */}
