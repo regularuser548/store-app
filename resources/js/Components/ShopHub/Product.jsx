@@ -66,7 +66,7 @@ export default function Product({ item, image, isCrm = false,isLiked,isInCart}) 
         <div className="flex flex-row justify-between items-start w-full mt-4 space-x-4">
           <div className="w-1/3 grid grid-rows-2 text-left my-2 justify-start">
             <span className="text-lg font-bold text-[#FF6A00]">
-              {item.price + " грн" || "666 грн"}
+              {item.price + " ₴"}
             </span>
           </div>
 
