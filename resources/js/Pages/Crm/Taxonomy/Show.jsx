@@ -2,6 +2,7 @@ import {Link, router, useForm, usePage} from "@inertiajs/react";
 import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
 import {Button, Empty, Tree} from "antd";
+import React from "react";
 
 export default function Show({taxonomy, taxons, image = null, props}) {
   // const {data, setData, post, progress} = useForm({
@@ -43,6 +44,8 @@ export default function Show({taxonomy, taxons, image = null, props}) {
 
   return (
     <>
+      <h1 className="text-2xl font-bold mb-6">Дерево Підкатегорій</h1>
+
       {taxons && taxons.length > 0 ? (
           <Tree
             fieldNames={{title: 'name', key: 'id'}}
@@ -60,7 +63,8 @@ export default function Show({taxonomy, taxons, image = null, props}) {
       {/*        className='border bg-gray-200'>*/}
       {/*  Створити Підкатегорію*/}
       {/*</Button>*/}
-      <Button type="primary" onClick={() => router.visit(route('taxon.create', {taxonomy: taxonomy.id}))}>Додати</Button>
+      <Button className='mt-4' type="primary"
+              onClick={() => router.visit(route('taxon.create', {taxonomy: taxonomy.id}))}>Додати</Button>
     </>
   );
 

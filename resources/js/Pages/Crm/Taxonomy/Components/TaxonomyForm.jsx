@@ -67,7 +67,7 @@ export default function TaxonomyForm({form, submitHandler, initialValues, errors
       </Row>
 
       <Row>
-        <Col span={1}>
+        <Col span={12}>
           <Form.Item label={null}>
             <Button type="primary" htmlType="submit">
               Відправити

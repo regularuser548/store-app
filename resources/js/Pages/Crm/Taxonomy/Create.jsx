@@ -1,7 +1,7 @@
 import {router, useForm, usePage} from "@inertiajs/react";
 import CrmMenuLayout from "@/Layouts/CrmMenuLayout.jsx";
 import TaxonomyForm from "@/Pages/Crm/Taxonomy/Components/TaxonomyForm.jsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Form} from "antd";
 
 export default function Create(props) {
@@ -55,6 +55,7 @@ export default function Create(props) {
 
   return (
     <>
+      <h1 className="text-2xl font-bold mb-6">Додати Категорію</h1>
       <TaxonomyForm form={form} submitHandler={handleSubmit} initialValues={initialValues}
                     errors={precognitiveErrors} validateFieldHandler={validateField}>
       </TaxonomyForm>

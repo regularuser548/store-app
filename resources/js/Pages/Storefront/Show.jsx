@@ -47,6 +47,7 @@ export default function Show({product, images, comments = []}) {
       original: item.original_url,
       thumbnail: item.original_url,
     }));
+    console.log(imageGalleryItems);
 
     //Add video if it exists
     if (product.video_id) {
@@ -69,7 +70,6 @@ export default function Show({product, images, comments = []}) {
 
     return (
       <div className="w-full h-full">
-        {/* Контейнер для галереи */}
         <ImageGallery
           items={imageGalleryItems}
           showIndex={false}
@@ -89,18 +89,21 @@ export default function Show({product, images, comments = []}) {
     );
   };
 
+  const breadcrumbs = product?.category_path?.map((name, index) => ({
+    title: name
+  }));
+
+  if (breadcrumbs) {
+    breadcrumbs.unshift({
+      href: route('storefront.index'),
+      title: <HomeOutlined/>,
+    })
+  }
+
   return (
     <div>
       <Breadcrumb className='mt-2 ms-12'
-                  items={[
-                    {
-                      href: route('storefront.index'),
-                      title: <HomeOutlined/>,
-                    },
-                    ...product?.category_path?.map((name, index) => ({
-                      title: name
-                    }))
-                  ]}
+                  items={breadcrumbs}
       />
       <div className="flex flex-col lg:flex-row bg-[#0F0F0F] text-white p-6 rounded-md">
         <div className="lg:w-2/3 flex justify-center items-center bg-[#0F0F0F] rounded-md">
