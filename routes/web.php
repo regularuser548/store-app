@@ -25,7 +25,6 @@ Route::get('/categories', [StorefrontController::class, 'returnCategoryTree'])->
 //Route::get('/cart/exists/{productId}', [StorefrontController::class, 'isInCart']);
 
 
-
 //footer links
 Route::get('/privacyPolicy', [StorefrontController::class, 'PrivacyPolicy'])->name('storefront.PrivacyPolicy');
 Route::get('/MessageToSeller', [StorefrontController::class, 'MessageToSeller'])->name('storefront.MessageToSeller');
@@ -86,7 +85,7 @@ Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':
 });
 
 //CRM Categorization
-Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':admin'])->group(function () {
+Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':admin', HandlePrecognitiveRequests::class])->group(function () {
     Route::resource('taxonomy', TaxonomyController::class);
     //Route::post('syncTaxonomy/{taxonomy}', [TaxonomyController::class, 'sync'])->name('taxonomy.sync');
     //Route::resource('taxon', TaxonController::class)->except(['index', 'show']);
