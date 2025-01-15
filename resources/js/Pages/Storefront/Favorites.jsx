@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Head, usePage } from "@inertiajs/react";
-import { Button, List, Empty, Select, message, Space } from "antd";
+import {Button, List, Empty, Select, message, Space, Flex} from "antd";
 import ProfileLayout from "@/Layouts/ProfileLayout.jsx";
 import Product from "../../Components/ShopHub/Product.jsx";
 import axios from "axios";
@@ -64,14 +64,14 @@ export default function Favorites() {
             <span className="text-lg">
               Кількість товарів довподоби: {favorites.length || 0}
             </span>
-            <Space>
-              <Button type="primary" onClick={handleBuyAll}>
+            <div>
+              <Button className='m-2' type="primary" onClick={handleBuyAll}>
                 Купити все
               </Button>
               <Select
                 value={filter}
                 onChange={handleFilterChange}
-                style={{ width: 200 }}
+                //style={{ width: 200 }}
               >
                 <Option value="date_added">За датою додавання</Option>
                 <Option value="price_low_to_high">
@@ -81,12 +81,12 @@ export default function Favorites() {
                   Ціна: від високої до низької
                 </Option>
               </Select>
-            </Space>
+            </div>
           </div>
         </div>
 
         {filteredFavorites.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-10 mt-4">
             {filteredFavorites.map((product) => (
               <Product
                 key={product.id}
