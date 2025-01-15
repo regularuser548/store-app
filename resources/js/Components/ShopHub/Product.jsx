@@ -51,7 +51,7 @@ return (
     <div className="flex items-center justify-center h-80 bg-white">
       <img
         onClick={() => router.visit(route('storefront.show', {product: item.id}), {preserveState: false})}
-        src={image || "path-to-placeholder-image"}
+        src={image}
         alt=""
         className="h-full w-full object-contain"
       />
