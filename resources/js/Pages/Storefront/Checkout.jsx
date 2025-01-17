@@ -218,6 +218,9 @@ export default function Checkout({ cartItems, userData, total: initialTotal}) {
                           <div className="flex-shrink-0 mb-2 sm:mb-0">
                             <img className={"w-20 h-20 object-contain"} src={cartItems[index].image} alt=''/>
                           </div>
+                          {/*<p className="text-sm  text-gray-400 ">*/}
+                          {/*  Продавець: {item.s}*/}
+                          {/*</p>*/}
                           <div className="flex-grow text-center sm:text-left sm:ml-4">
                             <h3 className="text-lg font-medium">{item.name}</h3>
                           </div>
