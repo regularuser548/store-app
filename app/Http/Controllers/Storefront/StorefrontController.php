@@ -112,6 +112,11 @@ use Vanilo\Cart\Facades\Cart;
         return Inertia::render('Storefront/FooterLinks/PrivacyPolicy');
     }
 
+    public function AboutUs(): Response
+    {
+        return Inertia::render('Storefront/FooterLinks/AboutUs');
+    }
+
     public function MessageToSeller(): Response
     {
         return Inertia::render('Storefront/MessageToSeller');
