@@ -292,8 +292,8 @@ export default function StoreFrontLayout({ children }) {
             <div className="border-r pr-4">
               <h4 className="text-[#ff8000] text-lg font-semibold mb-3">Інформація про компанію</h4>
               <ul className="space-y-2">
-                <li><a href={route('storefront.AboutUs')} className="text-gray-300 hover:text-orange-500">Про нас</a></li>
-                <li><Link href={route('storefront.PrivacyPolicy')} className="text-gray-300 hover:text-orange-500">Умови
+                <li><a href={route('storefront.AboutUs')} className="text-[#ffffff] hover:text-orange-500">Про нас</a></li>
+                <li><Link href={route('storefront.PrivacyPolicy')} className="text-[#ffffff] hover:text-orange-500">Умови
                   використання сайту</Link></li>
                 <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Вакансії</a></li>
                 <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Контакти</a></li>
@@ -322,8 +322,10 @@ export default function StoreFrontLayout({ children }) {
 
                 </li>
                 <li>
-                  <a href="#" className="text-[#ffffff] hover:text-orange-500">ShopHub Обмін<br/>Корпоративним
-                    клієнтам</a>
+                  <a href="#" className="text-[#ffffff] hover:text-orange-500">ShopHub Обмін</a>
+                </li>
+                <li>
+                  <a href="#" className="text-[#ffffff] hover:text-orange-500">Корпоративним клієнтам</a>
                 </li>
               </ul>
             </div>

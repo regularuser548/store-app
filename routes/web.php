@@ -26,9 +26,9 @@ Route::get('/categories', [StorefrontController::class, 'returnCategoryTree'])->
 
 
 //footer links
-Route::get('/privacyPolicy', [StorefrontController::class, 'PrivacyPolicy'])->name('storefront.PrivacyPolicy');
-Route::get('/aboutUs', [StorefrontController::class, 'AboutUs'])->name('storefront.AboutUs');
-Route::get('/MessageToSeller', [StorefrontController::class, 'MessageToSeller'])->name('storefront.MessageToSeller');
+Route::get('/privacy-policy', [StorefrontController::class, 'PrivacyPolicy'])->name('storefront.PrivacyPolicy');
+Route::get('/about-us', [StorefrontController::class, 'AboutUs'])->name('storefront.AboutUs');
+Route::get('/message-to-seller', [StorefrontController::class, 'MessageToSeller'])->name('storefront.MessageToSeller');
 
 Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');

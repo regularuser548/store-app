@@ -141,7 +141,7 @@ console.log(product)
               <span className="font-bold">Код замовлення:</span> {product.id}
             </p>
             <p>
-              {/*<span className="font-bold">Виробник товару:</span> Samsung*/}
+              {/*<span className="font-bold">Виробник товару:</span> {product.id}*/}
             </p>
           </div>
 
