@@ -15,9 +15,8 @@ export default function UserOrders({ orders, orderItems }) {
 
   const handleSave = async () => {
     try {
-      console.log(editItem);
       const updatedData = form.getFieldsValue();
-      await axios.put('/crm/reports/orders/update', {
+      await axios.put("/crm/reports/orders/update", {
         ...editItem, // данные редактируемого элемента
         ...updatedData, // обновленные значения из формы
       });
@@ -33,7 +32,6 @@ export default function UserOrders({ orders, orderItems }) {
       }
     }
   };
-
 
   const columns = [
     { title: "№ Замовлення", dataIndex: "order_id", key: "order_id" },
@@ -81,31 +79,58 @@ export default function UserOrders({ orders, orderItems }) {
       />
 
       <Modal
-        title="Edit Order Item"
+        title="Редагувати Замовлення"
         open={!!editItem}
         onCancel={() => setEditItem(null)}
         footer={[
           <Button key="cancel" onClick={() => setEditItem(null)}>
-            Cancel
+            Відмінити
           </Button>,
           <Button key="save" type="primary" onClick={handleSave}>
-            Save
+            Зберегти
           </Button>,
         ]}
       >
         <Form form={form} layout="vertical">
-          <Form.Item label="Fulfillment Status" name="fulfillment_status">
-            <Select>
-              <Option value="pending">Pending</Option>
-              <Option value="processing">Processing</Option>
-              <Option value="completed">Completed</Option>
-              <Option value="canceled">Canceled</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="Електронна пошта" name="email" rules={[{ type: "email", message: "Введіть дійсну адресу електронної пошти" }]}>
+          <Form.Item
+            label="Город"
+            name="city"
+            rules={[{ required: true, message: "Будь ласка, введіть місто" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="Номер телефону" name="phone" rules={[{ pattern: /^[0-9+]*$/, message: "Введіть дійсний номер телефону" }]}>
+          <Form.Item
+            label="Адрес (вулиця, дім, квартира)"
+            name="address"
+            rules={[
+              { required: true, message: "Будь ласка, введіть адресу" },
+              {
+                pattern: /^[\w\s.,'-]+$/,
+                message: "Адреса має бути у форматі: вулиця, дім, квартира",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Електронна пошта"
+            name="email"
+            rules={[
+              { type: "email", message: "Введіть дійсну адресу електронної пошти" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Номер телефону"
+            name="phone"
+            rules={[
+              {
+                pattern: /^[0-9+]*$/,
+                message: "Введіть дійсний номер телефону",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
         </Form>
