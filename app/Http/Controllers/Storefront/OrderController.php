@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Storefront;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cities;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -29,21 +30,30 @@ class OrderController extends Controller
         $userData = auth()->check()
             ? [
                 'name' => auth()->user()->name,
-                'surname' => auth()->user()->surname ?? '', // Автозаполнение фамилии
+                'surname' => auth()->user()->surname ?? '',
                 'email' => auth()->user()->email,
-                'phone_number' => auth()->user()->phone_number ?? '', // Автозаполнение телефона
+                'phone_number' => auth()->user()->phone_number ?? '',
+                'street' => auth()->user()->street ?? '',
+                'house' => auth()->user()->house ?? '',
+                'apartment' => auth()->user()->apartment ?? '',
             ]
             : [
                 'name' => '',
                 'surname' => '',
                 'email' => '',
                 'phone_number' => '',
+                'street' => '',
+                'house' => '',
+                'apartment' => '',
             ];
+
+        $cities = Cities::select('id', 'name')->get();
 
         return Inertia::render('Storefront/Checkout', [
             'cartItems' => $cartItems,
             'total' => $total,
             'userData' => $userData,
+            'cities' => $cities,
         ]);
     }
 
@@ -113,7 +123,6 @@ class OrderController extends Controller
         // Очистка корзины
         Cart::clear();
 
-//        return redirect()->route('order.confirmation', ['orderId' => $order->id]);
         return Inertia::render('Storefront/OrderConfirmation', ['orderId' => $order->id]);
     }
 

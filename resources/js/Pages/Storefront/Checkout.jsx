@@ -1,23 +1,15 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useForm } from "@inertiajs/react";
 import { Form, Input, Button, Typography, List, message, Checkbox, Select } from "antd";
 
 const { Paragraph } = Typography;
+const { Option } = Select;
 
-export default function Checkout({ cartItems, userData, total: initialTotal }) {
+export default function Checkout({ cartItems, userData, total: initialTotal, cities }) {
   const [total, setTotal] = useState(initialTotal);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [formErrors, setFormErrors] = useState({});
-  // const { data, setData, post } = useForm({
-  //   name: userData.name || "", // Автозаполнение из профиля
-  //   surname: userData.surname || "", // Добавлено автозаполнение для фамилии
-  //   email: userData.email || "", // Автозаполнение из профиля
-  //   phone_number: userData.phone_number || "", // Добавлено автозаполнение для телефона
-  //   city: "",
-  //   address: "",
-  //   notes: "",
-  //   items: cartItems,
-  // });
+  const [cityList, setCityList] = useState(cities || []);
   const { data, setData, post } = useForm({
     name: userData.name || "",
     surname: userData.surname || "",
@@ -39,7 +31,10 @@ export default function Checkout({ cartItems, userData, total: initialTotal }) {
     setFormErrors({ ...formErrors, [e.target.name]: null });
   };
 
-
+  const handleCityChange = (value) => {
+    setData("city", value);
+    setFormErrors({ ...formErrors, city: null });
+  };
 
   const handleChangePhone = (e) => {
     const { name, value } = e.target;
@@ -70,10 +65,13 @@ export default function Checkout({ cartItems, userData, total: initialTotal }) {
       }
     }
     if (!data.city.trim()) errors.city = "Поле місто є обов'язковим";
-    if (!data.address.trim()) errors.address = "Поле адреса є обов'язковим";
+    if (!data.street.trim() || !data.house.trim() || !data.apartment.trim()) {
+      errors.address = "Адреса повинна бути заповнена (вулиця, будинок, квартира)";
+    }
     if (cartItems.length === 0) errors.items = "Ваш кошик порожній";
     return errors;
   };
+
 
 
   const handleSubmit = () => {
@@ -96,6 +94,48 @@ export default function Checkout({ cartItems, userData, total: initialTotal }) {
       },
     });
   };
+
+
+  const handleSaveAddress = () => {
+    const addressErrors = {};
+
+    if (!data.street.trim()) {
+      addressErrors.street = "Це поле обов'язкове";
+    }
+    if (!data.house.trim() || isNaN(Number(data.house))) {
+      addressErrors.house = "Будинок повинен бути числом і це поле обов'язкове";
+    }
+    if (!data.apartment.trim() || isNaN(Number(data.apartment))) {
+      addressErrors.apartment = "Квартира повинна бути числом і це поле обов'язкове";
+    }
+
+    if (Object.keys(addressErrors).length > 0) {
+      setFormErrors(addressErrors);
+      return;
+    }
+
+    setData((prevData) => ({
+      ...prevData,
+      address: `${data.street}, ${data.house}, ${data.apartment}`,
+    }));
+
+    message.success("Адреса успішно оновлена!");
+  };
+
+  const validateInitialAddress = () => {
+    if (!userData.street || !userData.house || !userData.apartment) {
+      return "Немає адреси";
+    }
+    return `${userData.street || ""}, ${userData.house || ""}, ${userData.apartment || ""}`;
+  };
+
+  useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      address: validateInitialAddress(),
+    }));
+  }, []);
+
 
 
   return (
@@ -241,7 +281,11 @@ export default function Checkout({ cartItems, userData, total: initialTotal }) {
                      <h2 className="text-lg font-bold mb-4">Доставка</h2>
                      <Form layout="vertical">
 
-                       <Form.Item label="Адреса">
+                       <Form.Item
+                         label="Адреса"
+                         validateStatus={formErrors.address && "error"}
+                         help={formErrors.address}
+                       >
                          <Input
                            type="text"
                            name="address"
@@ -250,19 +294,38 @@ export default function Checkout({ cartItems, userData, total: initialTotal }) {
                          />
                        </Form.Item>
 
+
+                       {/*<Form.Item*/}
+                       {/*  label="Місто"*/}
+                       {/*  validateStatus={formErrors.city && "error"}*/}
+                       {/*  help={formErrors.city}*/}
+                       {/*>*/}
+                       {/*  <Input*/}
+                       {/*    type="text"*/}
+                       {/*    name="city"*/}
+                       {/*    value={data.city || ""}*/}
+                       {/*    onChange={handleChange}*/}
+                       {/*    placeholder="Введіть місто"*/}
+                       {/*  />*/}
+                       {/*</Form.Item>*/}
                        <Form.Item
                          label="Місто"
                          validateStatus={formErrors.city && "error"}
                          help={formErrors.city}
                        >
-                         <Input
-                           type="text"
-                           name="city"
-                           value={data.city || ""}
-                           onChange={handleChange}
-                           placeholder="Введіть місто"
-                         />
+                         <Select
+                           value={data.city}
+                           onChange={handleCityChange}
+                           placeholder="Оберіть місто"
+                         >
+                           {cityList.map((city) => (
+                             <Option key={city.id} value={city.name}>
+                               {city.name}
+                             </Option>
+                           ))}
+                         </Select>
                        </Form.Item>
+
                        <Form.Item
                          label="Вулиця"
                          validateStatus={formErrors.street && "error"}
@@ -302,20 +365,14 @@ export default function Checkout({ cartItems, userData, total: initialTotal }) {
                            placeholder="Введіть номер квартири"
                          />
                        </Form.Item>
-
                        <Button
                          type="dashed"
-                         onClick={() => {
-                           setData((prevData) => ({
-                             ...prevData,
-                             address: `${data.street}, ${data.house}, ${data.apartment}`,
-                           }));
-                           message.success("Адреса успішно оновлена!");
-                         }}
+                         onClick={handleSaveAddress}
                          className="mt-4"
                        >
                          Зберегти адресу
                        </Button>
+
 
                      </Form>
                    </div>
