@@ -20,7 +20,8 @@ export default function ViewUserOrders({ user, orders }) {
       title: "Ціна за одиницю",
       dataIndex: "price_per_unit",
       key: "price_per_unit",
-      render: (price_per_unit) => price_per_unit?.toFixed(2)?.toString(),
+      // render: (price_per_unit) => price_per_unit?.toFixed(2)?.toString(),
+      render: (price_per_unit) => <span>{price_per_unit?.toFixed(2)} ₴</span>,
     },
     {
       title: "Загальна ціна",
