@@ -17,7 +17,7 @@ export default function Register() {
     };
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        role: '',
+        role: selectedRole,
         name: '',
         email: '',
         password: '',
