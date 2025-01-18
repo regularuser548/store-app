@@ -127,10 +127,10 @@ console.log(product)
         <div className="lg:w-1/3 flex flex-col justify-between lg:pl-6  lg:mt-0">
           {/* Product Info */}
           <div>
-            <h2 className="text-2xl font-bold ">{product.name}</h2>
+            <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
             <div className="flex items-center space-x-2 ">
-              <span className="text-yellow-500"> <Rate disabled defaultValue={averageRating}/></span>
-              <span className="text-sm text-gray-400">(Оцінка товару - {averageRating.toFixed(2)})</span>
+              <span className="text-yellow-500"> <Rate rootClassName="text-[#FF8000]" disabled defaultValue={averageRating}/></span>
+              <span className="text-sm text-gray-400 mb-2">(Оцінка товару - {averageRating.toFixed(1)})</span>
             </div>
             <p className="text-3xl font-semibold ">Ціна: {product.price} ₴</p>
           </div>
@@ -203,7 +203,7 @@ console.log(product)
                   {new Date(comment.created_at).toLocaleDateString()}
                 </p>
                 <p className="mt-1">{comment.comment}</p>
-                {comment.rating && <Rate disabled defaultValue={comment.rating}/>}
+                {comment.rating && <Rate rootClassName="text-[#FF8000]" disabled defaultValue={comment.rating}/>}
                 {comment.can_delete && ( // Проверка, можно ли удалять
                   <Button
                     type="danger"
@@ -235,10 +235,10 @@ console.log(product)
               <p className="text-red-500 text-sm">{errors.comment}</p>
             )}
 
-            <div className="mt-4 flex justify-around items-centerь">
+            <div className="mt-4 flex justify-around items-centerь ">
               <label className="text-2xl">
                 Оцінка:
-                <Rate rootClassName="ms-2" onChange={(e) => setData('rating', Number(e))} value={data.rating}/>
+                <Rate rootClassName="ms-2 text-[#FF8000]"  onChange={(e) => setData('rating', Number(e))} value={data.rating}/>
               </label>
               <Button
                 type="primary"

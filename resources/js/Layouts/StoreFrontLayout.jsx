@@ -96,7 +96,7 @@ export default function StoreFrontLayout({ children }) {
         ) : (
           <div className="flex flex-col items-center text-[#ffffff] hover:text-orange-500">
             <Avatar
-              style={{backgroundColor: "gray", marginBottom: "8px"}}
+              style={{backgroundColor: "gray", marginBottom: "7px"}}
               icon={<UserOutlined/>}
             />
             <span className="select-none">{user.name}</span>
@@ -137,7 +137,7 @@ export default function StoreFrontLayout({ children }) {
               />
               <button type="submit" className="bg-orange-500 p-2 rounded-r-md hover:bg-orange-600 transition-colors">
                 <svg
-                  className="w-5 h-5 text-[#ffffff]"
+                  className="w-5 h-5 text-[#0F0F0F]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -285,11 +285,10 @@ export default function StoreFrontLayout({ children }) {
           </div>
 
           <div className="text-center mb-6 md:mb-0">
-            <h2 className="text-[#ffffff] text-2xl font-semibold">ShopHub</h2>
+            <a href="#" className="text-[#ffffff] text-3xl font-semibold hover:text-orange-500">ShopHub</a>
           </div>
-
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 text-sm">
-            <div className="border-r pr-4">
+          <div className="border-r pr-4">
               <h4 className="text-[#ff8000] text-lg font-semibold mb-3">Інформація про компанію</h4>
               <ul className="space-y-2">
                 <li><a href={route('storefront.AboutUs')} className="text-[#ffffff] hover:text-orange-500">Про нас</a></li>
