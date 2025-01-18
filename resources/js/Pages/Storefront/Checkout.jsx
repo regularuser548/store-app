@@ -220,7 +220,7 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
               <hr className="border-gray-700"/>
               <div className="flex justify-between text-lg font-bold">
                 <span>До сплати:</span>
-                <span>${119 + parseFloat(total?.toFixed(2))} ₴</span>
+                <span>{119 + parseFloat(total?.toFixed(2))} ₴</span>
               </div>
             </div>
             {formErrors.items && (
