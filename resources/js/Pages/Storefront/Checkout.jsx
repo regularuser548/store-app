@@ -208,8 +208,10 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
             <h2 className="text-xl font-bold mb-4 text-center">Разом</h2>
             <div className="space-y-4">
               <div className="flex justify-between">
-                <span>1 товар на суму</span>
+
+                <span>{cartItems.reduce((total, item) => total + item.quantity, 0)} товара на суму</span>
                 <span className="font-bold">{total?.toFixed(2)} ₴</span>
+
               </div>
               <div className="flex justify-between">
                 <span>Вартість доставки</span>
