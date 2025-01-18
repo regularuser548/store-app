@@ -41,8 +41,6 @@ Route::prefix('/cart')->group(function () {
 Route::middleware(['web'])->group(function () {
     Route::get('/checkout', [OrderController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
-    Route::get('/order/confirmation/{orderId}', [OrderController::class, 'showConfirmation'])
-        ->name('order.confirmation');
 });
 
 Route::middleware(['auth'])->group(function () {

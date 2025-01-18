@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->unsignedBigInteger('product_id')->nullable()->after('id'); // или другое поле
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-        });
+//        Schema::table('comments', function (Blueprint $table) {
+//            $table->unsignedBigInteger('product_id')->nullable()->after('id'); // или другое поле
+//            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+//        });
     }
 
     /**
@@ -22,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->dropForeign(['product_id']);
-            $table->dropColumn('product_id');
-        });
+//        Schema::table('comments', function (Blueprint $table) {
+//            $table->dropForeign(['product_id']);
+//            $table->dropColumn('product_id');
+//        });
     }
 };

@@ -60,37 +60,6 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-//    public function update(ProfileUpdateRequest $request): RedirectResponse
-//    {
-//        $request->user()->fill($request->validated());
-//
-//        if ($request->user()->isDirty('email')) {
-//            $request->user()->email_verified_at = null;
-//        }
-//
-//        $request->user()->save();
-//
-//        return Redirect::route('profile.edit');
-//    }
-
-//    public function update(ProfileUpdateRequest $request)
-//    {
-////        \auth()->user()->update($request->all());
-//
-//        $validatedData = $request->validated();
-//
-//        $user = \auth()->user();
-//
-//        $user->update($validatedData);
-//
-//        if ($request->user()->isDirty('email')) {
-//            $request->user()->email_verified_at = null;
-//        }
-//
-//        $request->user()->save();
-//
-//        return response()->json(['success' => true, 'message' => 'Профиль обновлен']);
-//    }
 
     public function update(ProfileUpdateRequest $request)
     {
@@ -156,3 +125,35 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 }
+
+//    public function update(ProfileUpdateRequest $request): RedirectResponse
+//    {
+//        $request->user()->fill($request->validated());
+//
+//        if ($request->user()->isDirty('email')) {
+//            $request->user()->email_verified_at = null;
+//        }
+//
+//        $request->user()->save();
+//
+//        return Redirect::route('profile.edit');
+//    }
+
+//    public function update(ProfileUpdateRequest $request)
+//    {
+////        \auth()->user()->update($request->all());
+//
+//        $validatedData = $request->validated();
+//
+//        $user = \auth()->user();
+//
+//        $user->update($validatedData);
+//
+//        if ($request->user()->isDirty('email')) {
+//            $request->user()->email_verified_at = null;
+//        }
+//
+//        $request->user()->save();
+//
+//        return response()->json(['success' => true, 'message' => 'Профиль обновлен']);
+//    }
