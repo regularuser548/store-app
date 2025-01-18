@@ -51,9 +51,9 @@ export default function Index({products, images}) {
 
 
   const banners = [
-    "banners/1.jpg",
-    "banners/2.jpg",
-    "banners/3.jpg"
+    "banners/1.png",
+    "banners/2.png",
+    "banners/3.png"
   ];
 
   return (

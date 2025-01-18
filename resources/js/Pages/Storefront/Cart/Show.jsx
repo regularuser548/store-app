@@ -258,7 +258,7 @@ export default function Show({cart: initialCart, total: initialTotal}) {
 
                   <div className="flex flex-col md:flex-row items-center gap-4">
                     <h2 className="text-2xl font-bold text-center md:text-left">
-                      Всього: <span className="text-orange-400">{total.toFixed(2)} ₴</span>
+                      Всього: <span className="text-orange-400">{total?.toFixed(2)} ₴</span>
                     </h2>
                     <button
                       className="px-6 py-2 border border-[#FF8000] text-[#FF8000] font-bold rounded-lg hover:text-orange-600"

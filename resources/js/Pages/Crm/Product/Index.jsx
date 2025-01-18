@@ -37,7 +37,7 @@ export default function Index({paginator}) {
       title: 'Ціна',
       dataIndex: 'price',
       key: 'price',
-      render: (price) => <span>{price.toFixed(2)} ₴</span>,
+      render: (price) => <span>{price?.toFixed(2)} ₴</span>,
     },
     {
       title: 'Статус',

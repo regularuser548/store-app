@@ -62,19 +62,19 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                   {isEditing ? (
                     <>
                       <div>
-                        <p>Прізвище</p>
+                        <p>Ім’я</p>
                         <input
-                          name="surname"
-                          value={formData.surname}
+                          name="name"
+                          value={formData.name}
                           onChange={handleChange}
                           className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
                         />
                       </div>
                       <div>
-                        <p>Ім’я</p>
+                        <p>Прізвище</p>
                         <input
-                          name="name"
-                          value={formData.name}
+                          name="surname"
+                          value={formData.surname}
                           onChange={handleChange}
                           className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
                         />

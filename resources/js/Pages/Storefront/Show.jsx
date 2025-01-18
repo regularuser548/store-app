@@ -130,7 +130,7 @@ console.log(product)
             <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
             <div className="flex items-center space-x-2 ">
               <span className="text-yellow-500"> <Rate rootClassName="text-[#FF8000]" disabled defaultValue={averageRating}/></span>
-              <span className="text-sm text-gray-400 mb-2">(Оцінка товару - {averageRating.toFixed(1)})</span>
+              <span className="text-sm text-gray-400 mb-2">(Оцінка товару - {averageRating?.toFixed(1)})</span>
             </div>
             <p className="text-3xl font-semibold ">Ціна: {product.price} ₴</p>
           </div>
