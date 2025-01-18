@@ -17,6 +17,10 @@ function AntThemeCustomizationProvider({children}) {
           colorInfo: "#ff8000",
           colorBgBas: "#0f0f0f",
 
+          fontFamily: 'Montserrat, serif',
+          fontStyle: 'normal',
+          fontWeight: 400,
+
         },
       }}
     >

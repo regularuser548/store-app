@@ -11,7 +11,15 @@
     color-scheme: only dark;
     background-color: #0f0f0f;
     color: #ffffff;
+
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
+
 }
+
 
 .image-gallery img {
     height: 400px;
