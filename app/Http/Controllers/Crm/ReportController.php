@@ -18,13 +18,25 @@ class ReportController extends Controller
         $currentUser = Auth::user();
         $isSeller = $currentUser->hasRole('seller');
 
+//        $query = \DB::table('order_items as items')
+//            ->join('orders', 'items.order_id', '=', 'orders.id')
+//            ->join('products', 'items.product_id', '=', 'products.id')
+//            ->select(
+//                'items.product_id as id',
+//                'products.name as product_name',
+//                'items.price',
+//                \DB::raw('SUM(items.quantity) as total_quantity'),
+//                \DB::raw('COUNT(orders.id) as total_orders')
+//            )
+//            ->groupBy('items.product_id', 'products.name', 'items.price');
+
         $query = \DB::table('order_items as items')
             ->join('orders', 'items.order_id', '=', 'orders.id')
             ->join('products', 'items.product_id', '=', 'products.id')
             ->select(
                 'items.product_id as id',
                 'products.name as product_name',
-                'items.price',
+                \DB::raw('CAST(items.price AS DECIMAL(10, 2)) as price'),
                 \DB::raw('SUM(items.quantity) as total_quantity'),
                 \DB::raw('COUNT(orders.id) as total_orders')
             )
@@ -35,7 +47,11 @@ class ReportController extends Controller
         }
 
         $salesData = $query->orderBy('total_quantity', 'desc')->get();
-        dd($salesData);
+
+        $salesData->transform(function ($item) {
+            $item->price = is_numeric($item->price) ? number_format($item->price, 2, '.', '') : null;
+            return $item;
+        });
 
         return Inertia::render('Crm/Reports/SalesReport', ['salesData' => $salesData]);
     }
