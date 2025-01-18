@@ -114,7 +114,7 @@ class ReportController extends Controller
     {
         $orders = \DB::table('orders')
             ->where('user_id', $userId)
-            ->select('id', 'status', 'created_at', 'first_name', 'surname', 'email', 'phone')
+            ->select('id', 'status', 'created_at', 'name', 'surname', 'email', 'phone')
             ->get();
 
         $orderItems = \DB::table('order_items')
