@@ -3,6 +3,7 @@ import { Link, router, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import { Button, Cascader, Divider, Dropdown, Menu, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import AboutUs from "@/Pages/Storefront/FooterLinks/AboutUs.jsx";
 
 export default function StoreFrontLayout({ children }) {
   const { props } = usePage();
@@ -113,14 +114,14 @@ export default function StoreFrontLayout({ children }) {
             ShopHub
           </Link>
         </div>
-        <div className="flex flex-col md:flex-row items-center justify-between bg-[#272525] p-4 md:px-[7%]">
+        <div className="flex flex-col md:flex-row items-center justify-between  bg-[#272525] p-4 md:px-[7%]">
           <Cascader
             fieldNames={{label: "name", value: "slug"}}
             options={categoryData}
             value={currentCategory}
             onChange={handleCategorySelect}
           >
-            <button className="bg-[#ff8000] text-black px-4 py-2 rounded-md w-full md:w-auto mb-2 md:mb-0">
+            <button className="bg-[#ff8000] text-black px-4 py-2 rounded-md w-full md:w-auto max-w-md mx-auto md:mx-4 mb-2 md:mb-0">
               Категорії
             </button>
           </Cascader>
@@ -291,8 +292,8 @@ export default function StoreFrontLayout({ children }) {
             <div className="border-r pr-4">
               <h4 className="text-[#ff8000] text-lg font-semibold mb-3">Інформація про компанію</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-300 hover:text-orange-500">Про нас</a></li>
-                <li><Link href={route('storefront.PrivacyPolicy')} className="text-gray-300 hover:text-orange-500">Умови
+                <li><a href={route('storefront.AboutUs')} className="text-[#ffffff] hover:text-orange-500">Про нас</a></li>
+                <li><Link href={route('storefront.PrivacyPolicy')} className="text-[#ffffff] hover:text-orange-500">Умови
                   використання сайту</Link></li>
                 <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Вакансії</a></li>
                 <li><a href="#" className="text-[#ffffff] hover:text-orange-500">Контакти</a></li>
@@ -321,8 +322,10 @@ export default function StoreFrontLayout({ children }) {
 
                 </li>
                 <li>
-                  <a href="#" className="text-[#ffffff] hover:text-orange-500">ShopHub Обмін<br/>Корпоративним
-                    клієнтам</a>
+                  <a href="#" className="text-[#ffffff] hover:text-orange-500">ShopHub Обмін</a>
+                </li>
+                <li>
+                  <a href="#" className="text-[#ffffff] hover:text-orange-500">Корпоративним клієнтам</a>
                 </li>
               </ul>
             </div>
