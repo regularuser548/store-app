@@ -20,12 +20,12 @@ export default function ViewUserOrders({ user, orders }) {
       title: "Ціна за одиницю",
       dataIndex: "price_per_unit",
       key: "price_per_unit",
-      render: (price) => `$${price.toFixed(2)}`,
+      render: (price) => `$${price?.toFixed(2)}`,
     },
     {
       title: "Загальна ціна",
       key: "total_price",
-      render: (_, record) => `$${(record.ordered_quantity * record.price_per_unit).toFixed(2)}`,
+      render: (_, record) => `$${(record.ordered_quantity * record.price_per_unit)?.toFixed(2)}`,
     },
   ];
 

@@ -209,7 +209,7 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span>1 товар на суму</span>
-                <span className="font-bold">{total.toFixed(2)} ₴</span>
+                <span className="font-bold">{total?.toFixed(2)} ₴</span>
               </div>
               <div className="flex justify-between">
                 <span>Вартість доставки</span>
@@ -218,7 +218,7 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
               <hr className="border-gray-700"/>
               <div className="flex justify-between text-lg font-bold">
                 <span>До сплати:</span>
-                <span>${119 + parseFloat(total.toFixed(2))} ₴</span>
+                <span>${119 + parseFloat(total?.toFixed(2))} ₴</span>
               </div>
             </div>
             {formErrors.items && (
