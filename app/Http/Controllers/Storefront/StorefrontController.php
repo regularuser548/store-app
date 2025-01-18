@@ -17,11 +17,13 @@ use Vanilo\Foundation\Models\Taxon;
 use Vanilo\Foundation\Search\ProductSearch;
 use Vanilo\Cart\Facades\Cart;
 
-    class StorefrontController extends Controller
+class StorefrontController extends Controller
 {
     protected ProductRepository $repository;
     protected MediaRepository $mediaRepository;
     protected TaxonomyRepository $taxonomyRepository;
+
+    protected const numberOfProductsPerSection = 8;
 
     public function __construct(ProductRepository  $productRepository,
                                 MediaRepository    $mediaRepository,
@@ -35,7 +37,8 @@ use Vanilo\Cart\Facades\Cart;
     public function index(): Response
     {
         $products = Product::where('state', '=', 'active')
-            ->orWhere('state', '=', 'unavailable')->get();
+            ->orWhere('state', '=', 'unavailable')
+            ->take(self::numberOfProductsPerSection)->get();
 
         $images = $this->mediaRepository->primaryImageForEach($products);
 
@@ -104,7 +107,6 @@ use Vanilo\Cart\Facades\Cart;
             'currentCategory' => $slugs,
             'query' => $request->input('query')]);
     }
-
 
 
     public function PrivacyPolicy(): Response
