@@ -25,7 +25,7 @@ export default function ViewUserOrders({ user, orders }) {
     {
       title: "Загальна ціна",
       key: "total_price",
-      render: (_, record) => `$${(record.ordered_quantity * record.price_per_unit)?.toFixed(2)}`,
+      render: (_, record) => (record?.ordered_quantity * record?.price_per_unit)?.toFixed(2)?.toString(),
     },
   ];
 
