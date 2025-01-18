@@ -34,16 +34,16 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#000000]">
-      <div className="">
-        <h1 className="text-white text-5xl font-bold text-center mb-10">ShopHub</h1>
-        <div className="bg-[#0F0F0F]">
+      <div className="mr-1">
+        <h1 className="text-white text-5xl font-bold text-center mb-10 mt-10">ShopHub</h1>
+        <div className="bg-[#0F0F0F] ">
           <Head title="Реєстрація"/>
 
-          <form onSubmit={submit} className="bg-[#262626D1] text-white p-8 pr-14 pl-14 rounded-xl max-w-md mx-auto">
+          <form onSubmit={submit} className="bg-[#262626D1] text-white p-8 pr-14 pl-14 mb-10 rounded-xl max-w-md mx-auto">
 
             <h1 className="text-center text-orange-500 text-xl font-bold mb-6">Реєстрація</h1>
 
-            <div className="mb-4  mr-20">
+            <div className="mb-4 mr-0 lg:mr-20 ">
               <legend className="block mb-2">Тип аккаунта:</legend>
               <div className="flex items-center gap-5">
                 <label className="flex items-center">
