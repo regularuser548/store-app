@@ -53,6 +53,7 @@ class ReportController extends Controller
             return $item;
         });
 
+
         return Inertia::render('Crm/Reports/SalesReport', ['salesData' => $salesData]);
     }
 
