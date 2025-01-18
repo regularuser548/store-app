@@ -19,7 +19,11 @@ export default function SalesReport({ salesData }) {
       title: "Ціна",
       dataIndex: "price",
       key: "price",
-      render: (price) => `$${price?.toFixed(2)}`,
+      // render: (price) => `$${price?.toFixed(2)}`,
+      render: (price) => {
+        const numericPrice = parseFloat(price);
+        return isNaN(numericPrice) ? "N/A" : `$${numericPrice.toFixed(2)}`;
+      },
     },
     {
       title: "Всього продано",
