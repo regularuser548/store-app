@@ -206,6 +206,21 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
         <div className="w-full lg:w-1/3 space-y-6">
           <div className="bg-[#272525] p-6 rounded-lg">
             <h2 className="text-xl font-bold mb-4 text-center">Разом</h2>
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <span>1 товар на суму</span>
+                <span className="font-bold">{total.toFixed(2)} ₴</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Вартість доставки</span>
+                <span className="font-bold">119 ₴</span>
+              </div>
+              <hr className="border-gray-700"/>
+              <div className="flex justify-between text-lg font-bold">
+                <span>До сплати:</span>
+                <span>${119 + parseFloat(total.toFixed(2))} ₴</span>
+              </div>
+            </div>
             {formErrors.items && (
               <div className="text-red-500 text-center mb-4">
                 {formErrors.items}
@@ -235,19 +250,19 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
           </div>
         </div>
       </div>
-             <div className="container mx-auto space-y-8">
-               {/* H1 заголовок */}
-               <h1 className="text-2xl font-bold">Оплата під час отримання товару</h1>
+      <div className="container mx-auto space-y-8">
+        {/* H1 заголовок */}
+        <h1 className="text-2xl font-bold">Оплата під час отримання товару</h1>
 
-               <div className="flex flex-wrap lg:flex-nowrap gap-8">
-                 {/* Левая колонка */}
-                 <div className="w-full lg:w-2/3 space-y-6">
-                   {/* Замовлення */}
-                   <div className="bg-[#0F0F0F] p-6 rounded-lg">
-                    <h2 className="text-lg font-bold ">Замовлення</h2>
+        <div className="flex flex-wrap lg:flex-nowrap gap-8">
+          {/* Левая колонка */}
+          <div className="w-full lg:w-2/3 space-y-6">
+            {/* Замовлення */}
+            <div className="bg-[#0F0F0F] p-6 rounded-lg">
+              <h2 className="text-lg font-bold ">Замовлення</h2>
 
-                     <div className="flex items-center space-x-4">
-                       {cartItems.length > 0 ? (
+              <div className="flex items-center space-x-4">
+                {cartItems.length > 0 ? (
                   <List
                     className="w-full"
                     dataSource={cartItems}

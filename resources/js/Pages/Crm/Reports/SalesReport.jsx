@@ -18,7 +18,7 @@ export default function SalesReport({ salesData }) {
       title: "Ціна",
       dataIndex: "price",
       key: "price",
-      render: (price) => `$${price.toFixed(2)}`,
+      render: (price) => `$${price?.toFixed(2)}`,
     },
     {
       title: "Всього продано",
