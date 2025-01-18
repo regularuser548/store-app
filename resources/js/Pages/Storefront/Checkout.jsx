@@ -281,7 +281,7 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
                           </div>
                           <div className="text-right flex  sm:text-left w-full sm:w-auto">
                             <p className="text-lg pr-20 font-medium">{item.quantity}x</p>
-                            <p className="text-lg font-bold text-white">{item.price.toFixed(2)} ₴</p>
+                            <p className="text-lg font-bold text-white">{parseFloat(item.price)?.toFixed(2)} ₴</p>
                           </div>
                         </div>
                       </List.Item>

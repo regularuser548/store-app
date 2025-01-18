@@ -198,7 +198,7 @@ export default function Show({cart: initialCart, total: initialTotal}) {
                           </p>
                           <div className="mt-2 flex items-center justify-center md:justify-start gap-2">
                       <span className="text-orange-400 font-semibold ">
-                        {item.price.toFixed(2)} ₴
+                        {parseFloat(item.price)?.toFixed(2)} ₴
                       </span>
                           </div>
                         </div>
