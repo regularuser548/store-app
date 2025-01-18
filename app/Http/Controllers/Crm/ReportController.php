@@ -35,6 +35,7 @@ class ReportController extends Controller
         }
 
         $salesData = $query->orderBy('total_quantity', 'desc')->get();
+        dd($salesData);
 
         return Inertia::render('Crm/Reports/SalesReport', ['salesData' => $salesData]);
     }

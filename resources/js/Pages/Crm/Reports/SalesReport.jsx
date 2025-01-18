@@ -3,6 +3,7 @@ import { Table, Button } from "antd";
 import { Link } from "@inertiajs/react";
 
 export default function SalesReport({ salesData }) {
+  console.log(salesData);
   const columns = [
     {
       title: "ID",
