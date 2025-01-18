@@ -112,26 +112,28 @@ export default function Login({ status, canResetPassword }) {
                 {/*</div>*/}
 
 
-                <div className="grid grid-cols-2">
-                  {canResetPassword && (
-                    <Link
-                      href={route('password.request')}
-                      className="underline border border-white px-4 py-2 rounded-l-md text-white hover:bg-gray-700 focus:ring-2 focus:ring-orange-500"
-                    >
-                      Забув пароль
-                    </Link>
-                  )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-2 mr-10 ms-10 sm:mr-0 sm:ms-0 ">
+                {canResetPassword && (
                   <Link
-                    href={route('register')}
-                    className="underline border border-white px-4 py-2 rounded-r-md text-white hover:bg-gray-700 focus:ring-2 focus:ring-orange-500">
-                    Реєстрація аккаунту
+                    href={route('password.request')}
+                    className="underline border border-white px-2 py-5 rounded-md text-center text-white hover:bg-gray-700 focus:ring-2 focus:ring-orange-500 sm:w-auto w-full"
+                  >
+                    Забув пароль
                   </Link>
-                </div>
-
+                )}
+                <Link
+                  href={route('register')}
+                  className="underline border border-white px-4 py-5 rounded-md text-center text-white hover:bg-gray-700 focus:ring-2 focus:ring-orange-500 sm:w-auto w-full"
+                >
+                  Реєстрація аккаунту
+                </Link>
               </div>
+
+
+            </div>
           </form>
         </div>
       </div>
 
-);
+    );
 }
