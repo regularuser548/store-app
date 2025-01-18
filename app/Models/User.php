@@ -63,6 +63,10 @@ class User extends \Konekt\User\Models\User //implements MustVerifyEmail
     use HasRoles;
     use HasFactory;
 
+    protected $fillable = [
+        'name', 'email', 'password', 'type', 'is_active', 'phone_number', 'surname'
+    ];
+
     public function orders()
     {
         return $this->hasMany(Order::class, 'user_id');
