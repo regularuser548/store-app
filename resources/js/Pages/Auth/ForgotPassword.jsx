@@ -23,8 +23,8 @@ export default function ForgotPassword({ status }) {
              {status && <div className="mb-4 font-medium text-sm text-green-600 dark:text-green-400">{status}</div>}
 
              <div className="mb-4 w-full flex justify-center items-center">
-               <form onSubmit={submit} className="flex flex-col items-center w-full max-w-md bg-[#0F0F0F] text-white">
-                 <label htmlFor="password" className="block font-medium text-gray-200 text-xl">
+               <form onSubmit={submit} className="flex flex-col items-center w-full max-w-md m-10 bg-[#0F0F0F] text-white">
+                 <label htmlFor="password" className="block font-medium text-gray-200 text-lg text-center">
                    Введіть ваш емайл для відновлення пароля
                  </label>
                  <input
