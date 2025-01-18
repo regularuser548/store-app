@@ -128,8 +128,6 @@ export default function Login({ status, canResetPassword }) {
                   Реєстрація аккаунту
                 </Link>
               </div>
-
-
             </div>
           </form>
         </div>
