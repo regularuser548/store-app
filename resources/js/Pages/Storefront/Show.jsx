@@ -28,17 +28,17 @@ export default function Show({product, images, comments = []}) {
       router.delete(route('comments.destroy', id));
     }
   };
-  const handleAddToCart = () => {
-    if (checkIsInCart === true) {
-      router.visit(route("cart.show"), {preserveState: false});
-      return;
-    }
-
-    router.post(route('cart.add'), {product}, {preserveState: false});
-  };
 
   const [checkIsInCart, setCheckIsInCart] = useState(product.is_in_cart);
 
+  const handleAddToCart = () => {
+    if (checkIsInCart === true) {
+      router.visit(route("cart.show"));
+      return;
+    }
+
+    axios.post(route('cart.add'), {product}).then(r => setCheckIsInCart(true));
+  };
 
   const ratings = comments
     .filter(comment => comment.rating !== undefined) // Отбираем только те, у которых есть рейтинг
