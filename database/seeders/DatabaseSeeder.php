@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Konekt\Address\Seeds\Countries;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(Countries::class);
+
         $this->call(CitiesOfUkraineSeeder::class);
 
         $this->call([

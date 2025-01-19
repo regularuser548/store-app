@@ -15,34 +15,36 @@ export default function Search({paginator, images}) {
   };
 
   return (
-    <div className="bg-[#0f0f0f] min-h-screen">
-      {/* Header */}
+    <>
+      <div className="bg-[#0f0f0f] min-h-screen">
+        {/* Header */}
 
-      <main className="p-4 md:px-[7%]">
+        <main className="p-4 md:px-[7%]">
 
-        <div className="text-white text-4xl p-20 ps-5">Результати пошуку:</div>
+          <div className="text-white text-4xl p-20 ps-5 pt-4">Результати пошуку:</div>
 
-        {products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
-            {products.map((product) => (
-              <Product key={product.id} item={product} image={images[product.id]} isLiked={product.is_liked} isInCart={product.is_in_cart} isCrm={false}></Product>
-            ))}
-          </div>
-        ) : (
-          <Flex justify='center' align='center'>
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Нічого не знайшлось'}></Empty>
-          </Flex>
-        )}
-
-        <Flex justify='center'>
-          <Pagination current={paginator.current_page} onChange={onChange}
-                      total={paginator.total}
-                      defaultPageSize={paginator.per_page} />
-        </Flex>
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-20">
+              {products.map((product) => (
+                <Product key={product.id} item={product} image={images[product.id]} isLiked={product.is_liked}
+                         isInCart={product.is_in_cart} isCrm={false}></Product>
+              ))}
+            </div>
+          ) : (
+            <Flex justify='center' align='center'>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Нічого не знайшлось'}></Empty>
+            </Flex>
+          )}
 
 
-      </main>
+        </main>
 
-    </div>
+      </div>
+      <Flex justify='center' className='mb-4'>
+        <Pagination current={paginator.current_page} onChange={onChange}
+                    total={paginator.total}
+                    defaultPageSize={paginator.per_page}/>
+      </Flex>
+    </>
   );
 }

@@ -28,17 +28,17 @@ export default function Show({product, images, comments = []}) {
       router.delete(route('comments.destroy', id));
     }
   };
-  const handleAddToCart = () => {
-    if (checkIsInCart === true){
-      router.visit(route("cart.show"), {preserveState: false});
-      return;
-    }
-
-    router.post(route('cart.add'), {product}, {preserveState: false});
-  };
 
   const [checkIsInCart, setCheckIsInCart] = useState(product.is_in_cart);
 
+  const handleAddToCart = () => {
+    if (checkIsInCart === true) {
+      router.visit(route("cart.show"));
+      return;
+    }
+
+    axios.post(route('cart.add'), {product}).then(r => setCheckIsInCart(true));
+  };
 
   const ratings = comments
     .filter(comment => comment.rating !== undefined) // Отбираем только те, у которых есть рейтинг
@@ -96,7 +96,7 @@ export default function Show({product, images, comments = []}) {
 
   const [breadcrumbs, setBreadcrumbs] = useState(initializeBreadcrumbs);
 
-console.log(product)
+  console.log(product)
   return (
     <div>
       <Breadcrumb className='mt-2 ms-12'
@@ -129,7 +129,8 @@ console.log(product)
           <div>
             <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
             <div className="flex items-center space-x-2 ">
-              <span className="text-yellow-500"> <Rate rootClassName="text-[#FF8000]" disabled defaultValue={averageRating}/></span>
+              <span className="text-yellow-500"> <Rate rootClassName="text-[#FF8000]" disabled
+                                                       defaultValue={averageRating}/></span>
               <span className="text-sm text-gray-400 mb-2">(Оцінка товару - {averageRating?.toFixed(1)})</span>
             </div>
             <p className="text-3xl font-semibold ">Ціна: {product.price} ₴</p>
@@ -138,10 +139,10 @@ console.log(product)
           {/* Product Details */}
           <div className="">
             <p>
-              <span className="font-bold">Код замовлення:</span> {product.id}
+              <span className="font-bold">Код замовлення: </span>{product.id}
             </p>
             <p>
-              {/*<span className="font-bold">Виробник товару:</span> {product.id}*/}
+              <span className="font-bold">Продавець товару: </span>{product?.seller.name}
             </p>
           </div>
 
@@ -162,7 +163,7 @@ console.log(product)
 
               {checkIsInCart ? "В кошику" : "Придбати"}
               <span className="ml-1">
-                    {checkIsInCart  ? <FilledCart/> : <EmptyCart/>}
+                    {checkIsInCart ? <FilledCart/> : <EmptyCart/>}
                   </span>
             </button>
 
@@ -238,7 +239,8 @@ console.log(product)
             <div className="mt-4 flex justify-around items-centerь ">
               <label className="text-2xl">
                 Оцінка:
-                <Rate rootClassName="ms-2 text-[#FF8000]"  onChange={(e) => setData('rating', Number(e))} value={data.rating}/>
+                <Rate rootClassName="ms-2 text-[#FF8000]" onChange={(e) => setData('rating', Number(e))}
+                      value={data.rating}/>
               </label>
               <Button
                 type="primary"

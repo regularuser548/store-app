@@ -198,7 +198,7 @@ export default function StoreFrontLayout({ children }) {
       </header>
 
 
-      <div className=''>{children}</div>
+      <div className='min-h-screen'>{children}</div>
 
       {/*<div className="bg-[#272525] text-center py-4  ">*/}
       {/*  <p className="text-[#ff8000] text-4xl pb-5">Оформивши підписку отримуєш <span className="font-bold ">10% знижки</span> на замовлення*/}
