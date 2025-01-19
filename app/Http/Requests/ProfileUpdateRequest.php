@@ -24,6 +24,9 @@ class ProfileUpdateRequest extends FormRequest
             'surname' => ['nullable', 'string', 'max:255'],
             'phone_number' => ['nullable', 'string', 'max:15'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'street' => ['nullable', 'string', 'max:255'],
+            'house' => ['nullable', 'integer', 'max:255'],
+            'apartment' => ['nullable', 'integer', 'max:255'],
         ];
     }
 }
