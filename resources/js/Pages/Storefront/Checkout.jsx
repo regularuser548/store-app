@@ -10,6 +10,13 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [cityList, setCityList] = useState(cities || []);
+  const validateInitialAddress = () => {
+    if (!userData.street || !userData.house || !userData.apartment) {
+      return "Немає адреси";
+    }
+    return `${userData.street || ""}, ${userData.house || ""}, ${userData.apartment || ""}`;
+  };
+
   const { data, setData, post } = useForm({
     name: userData.name || "",
     surname: userData.surname || "",
@@ -19,7 +26,8 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
     street: userData.street || "",
     house: userData.house || "",
     apartment: userData.apartment || "",
-    address: `${userData.street || ""}, ${userData.house || ""}, ${userData.apartment || ""}`,
+    // address: `${userData.street || ""}, ${userData.house || ""}, ${userData.apartment || ""}`,
+    address: validateInitialAddress(),
     notes: "",
     items: cartItems,
   });
@@ -68,16 +76,48 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
     if (!data.street.trim() || !data.house.trim() || !data.apartment.trim()) {
       errors.address = "Адреса повинна бути заповнена (вулиця, будинок, квартира)";
     }
+    if(data.address.trim() === 'Немає адреси'){
+      errors.address = "Адреса повинна бути заповнена (вулиця, будинок, квартира)";
+    }
+    // if (!data.address.trim()) {
+    //   errors.address = "Адреса повинна бути заповнена (вулиця, будинок, квартира)";
+    // }
+    // if (!userData.street || !userData.house || !userData.apartment) {
+    //   errors.address = "Адреса повинна бути заповнена (вулиця, будинок, квартира)";
+    // }
     if (cartItems.length === 0) errors.items = "Ваш кошик порожній";
     return errors;
   };
 
 
 
+  // const handleSubmit = () => {
+  //   const errors = validateForm();
+  //   if (Object.keys(errors).length > 0) {
+  //     setFormErrors(errors);
+  //     return;
+  //   }
+  //   if (!isConfirmed) {
+  //     message.error("Підтвердіть умови перед оформленням замовлення!");
+  //     return;
+  //   }
+  //   post(route("checkout.store"), {
+  //     onError: (errors) => {
+  //       console.error("Ошибка отправки:", errors);
+  //       setFormErrors(errors);
+  //     },
+  //     onSuccess: () => {
+  //       message.success("Замовлення успішно оформлено!");
+  //     },
+  //   });
+  // };
+
   const handleSubmit = () => {
     const errors = validateForm();
+    console.log(data.address);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
+      message.error("Будь ласка, заповніть усі обов'язкові поля.");
       return;
     }
     if (!isConfirmed) {
@@ -94,6 +134,7 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
       },
     });
   };
+
 
 
   const handleSaveAddress = () => {
@@ -122,19 +163,15 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
     message.success("Адреса успішно оновлена!");
   };
 
-  const validateInitialAddress = () => {
-    if (!userData.street || !userData.house || !userData.apartment) {
-      return "Немає адреси";
-    }
-    return `${userData.street || ""}, ${userData.house || ""}, ${userData.apartment || ""}`;
-  };
+
 
   useEffect(() => {
-    setData((prevData) => ({
-      ...prevData,
-      address: validateInitialAddress(),
-    }));
-  }, []);
+    console.log('address');
+    // setData((prevData) => ({
+    //   ...prevData,
+    //   address: validateInitialAddress(),
+    // }));
+  }, [data.address]);
 
 
 
@@ -314,21 +351,6 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
                            readOnly
                          />
                        </Form.Item>
-
-
-                       {/*<Form.Item*/}
-                       {/*  label="Місто"*/}
-                       {/*  validateStatus={formErrors.city && "error"}*/}
-                       {/*  help={formErrors.city}*/}
-                       {/*>*/}
-                       {/*  <Input*/}
-                       {/*    type="text"*/}
-                       {/*    name="city"*/}
-                       {/*    value={data.city || ""}*/}
-                       {/*    onChange={handleChange}*/}
-                       {/*    placeholder="Введіть місто"*/}
-                       {/*  />*/}
-                       {/*</Form.Item>*/}
                        <Form.Item
                          label="Місто"
                          validateStatus={formErrors.city && "error"}

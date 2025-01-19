@@ -13,13 +13,27 @@ import {message} from "antd";
 export default function Edit({ auth, mustVerifyEmail, status, userData, orders }) {
   const [isPersonalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [isOrdersOpen, setOrdersOpen] = useState(false);
+  const [isAddressOpen, setAddressOpen] = useState(false);
+  const [isPasswordOpen, setPasswordOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingPersonalInfo, setIsEditingPersonalInfo] = useState(false);
+  const [isEditingContacts, setIsEditingContacts] = useState(false);
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [formData, setFormData] = useState({
     email: userData.email,
     phone_number: userData.phone_number,
     surname: userData.surname,
     name: userData.name,
+    street: userData.street,
+    house: userData.house,
+    apartment: userData.apartment,
   });
+  const [passwordData, setPasswordData] = useState({
+    current_password: '',
+    password: '',
+    password_confirmation: '',
+  });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +53,29 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
 
 
 
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handlePasswordSave = async () => {
+    console.log(passwordData);
+    axios.put(route("password.update"), passwordData)
+      .then(() => {
+        message.success('Пароль успешно обновлен');
+        setPasswordData({
+          current_password: '',
+          password: '',
+          password_confirmation: '',
+        });
+      })
+      .catch((error) => {
+        message.error('Ошибка обновления пароля. Проверьте данные и попробуйте снова.');
+        console.error(error.response.data.errors);
+      });
+  };
+
+
 
 
   return (
@@ -53,13 +90,13 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
               onClick={() => setPersonalInfoOpen((prev) => !prev)}
               className="w-full text-left py-4 flex justify-between items-center"
             >
-              <p>Ім’я <span className="text-gray-400">{userData.email}</span></p>
+              <p>Основні дані</p>
               <span className="text-gray-400">{isPersonalInfoOpen ? '\u25B2' : '\u25BC'}</span>
             </button>
             {isPersonalInfoOpen && (
               <div className="pl-4 py-4 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {isEditing ? (
+                  {isEditingPersonalInfo ? (
                     <>
                       <div>
                         <p>Ім’я</p>
@@ -67,6 +104,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
+                          placeholder="Немає"
                           className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
                         />
                       </div>
@@ -76,6 +114,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                           name="surname"
                           value={formData.surname}
                           onChange={handleChange}
+                          placeholder="Немає"
                           className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
                         />
                       </div>
@@ -84,20 +123,20 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                     <>
                       <div>
                         <p>Ім’я</p>
-                        <p className="text-gray-400">{formData.name}</p>
+                        <p className="text-gray-400">{formData.name || 'Немає'}</p>
                       </div>
                       <div>
                         <p>Прізвище</p>
-                        <p className="text-gray-400">{formData.surname}</p>
+                        <p className="text-gray-400">{formData.surname || 'Немає'}</p>
                       </div>
                     </>
                   )}
                 </div>
                 <button
-                  onClick={isEditing ? handleSave : () => setIsEditing(true)}
+                  onClick={isEditingPersonalInfo ?  () => {handleSave();setIsEditingPersonalInfo(false)} : () => setIsEditingPersonalInfo(true)}
                   className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition"
                 >
-                  {isEditing ? 'Зберегти' : 'Редагувати'}
+                  {isEditingPersonalInfo ? 'Зберегти' : 'Редагувати'}
                 </button>
               </div>
             )}
@@ -115,7 +154,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
             {isOrdersOpen && (
               <div className="pl-4 py-4 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {isEditing ? (
+                  {isEditingContacts ? (
                     <>
                       <div>
                         <p>Логін (телефон)</p>
@@ -123,6 +162,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                           name="phone_number"
                           value={formData.phone_number}
                           onChange={handleChange}
+                          placeholder="Немає"
                           className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
                         />
                       </div>
@@ -140,24 +180,154 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                     <>
                       <div>
                         <p>Логін (телефон)</p>
-                        <p className="text-gray-400">{formData.phone_number}</p>
+                        <p className="text-gray-400">{formData.phone_number || 'Немає'}</p>
                       </div>
                       <div>
                         <p>Email</p>
-                        <p className="text-gray-400">{formData.email}</p>
+                        <p className="text-gray-400">{formData.email || 'Немає'}</p>
                       </div>
                     </>
                   )}
                 </div>
                 <button
-                  onClick={isEditing ? handleSave : () => setIsEditing(true)}
+                  onClick={isEditingContacts ?  () => {handleSave();setIsEditingContacts(false)} : () => setIsEditingContacts(true)}
                   className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition"
                 >
-                  {isEditing ? 'Зберегти' : 'Редагувати'}
+                  {isEditingContacts ? 'Зберегти' : 'Редагувати'}
                 </button>
               </div>
             )}
           </div>
+
+
+          {/* Адрес */}
+          <div className="border-b-2 border-[#D9D9D9]">
+            <button
+              onClick={() => setAddressOpen((prev) => !prev)}
+              className="w-full text-left py-4 flex justify-between items-center"
+            >
+              <p>Адрес</p>
+              <span className="text-gray-400">{isAddressOpen ? '\u25B2' : '\u25BC'}</span>
+            </button>
+            {isAddressOpen && (
+              <div className="pl-4 py-4 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {isEditingAddress ? (
+                    <>
+                      <div>
+                        <p>Улица</p>
+                        <input
+                          name="street"
+                          value={formData.street}
+                          onChange={handleChange}
+                          placeholder="Немає"
+                          className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
+                        />
+                      </div>
+                      <div>
+                        <p>Дом</p>
+                        <input
+                          name="house"
+                          value={formData.house}
+                          onChange={handleChange}
+                          placeholder="Немає"
+                          className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
+                        />
+                      </div>
+                      <div>
+                        <p>Квартира</p>
+                        <input
+                          name="apartment"
+                          value={formData.apartment}
+                          onChange={handleChange}
+                          placeholder="Немає"
+                          className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <p>Улица</p>
+                        <p className="text-gray-400">{formData.street || 'Немає'}</p>
+                      </div>
+                      <div>
+                        <p>Дом</p>
+                        <p className="text-gray-400">{formData.house || 'Немає'}</p>
+                      </div>
+                      <div>
+                        <p>Квартира</p>
+                        <p className="text-gray-400">{formData.apartment || 'Немає'}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <button
+                  onClick={isEditingAddress ?  () => {handleSave();setIsEditingAddress(false)} : () => setIsEditingAddress(true)}
+                  className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition"
+                >
+                  {isEditingAddress ? 'Зберегти' : 'Редагувати'}
+                </button>
+              </div>
+            )}
+          </div>
+
+
+
+
+          {/* Смена пароля */}
+          <div className="border-b-2 border-[#D9D9D9]">
+            <button
+              onClick={() => setPasswordOpen((prev) => !prev)}
+              className="w-full text-left py-4 flex justify-between items-center"
+            >
+              <p>Смена пароля</p>
+              <span className="text-gray-400">{isPasswordOpen ? '\u25B2' : '\u25BC'}</span>
+            </button>
+            {isPasswordOpen && (
+              <div className="pl-4 py-4 space-y-4">
+                <div className="space-y-4">
+                  <div>
+                    <p>Текущий пароль</p>
+                    <input
+                      type="password"
+                      name="current_password"
+                      value={passwordData.current_password}
+                      onChange={handlePasswordChange}
+                      className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
+                    />
+                  </div>
+                  <div>
+                    <p>Новый пароль</p>
+                    <input
+                      type="password"
+                      name="password"
+                      value={passwordData.password}
+                      onChange={handlePasswordChange}
+                      className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
+                    />
+                  </div>
+                  <div>
+                    <p>Подтвердите новый пароль</p>
+                    <input
+                      type="password"
+                      name="password_confirmation"
+                      value={passwordData.password_confirmation}
+                      onChange={handlePasswordChange}
+                      className="w-full px-2 py-1 border rounded bg-gray-700 text-white"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={handlePasswordSave}
+                  className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition"
+                >
+                  Сохранить
+                </button>
+              </div>
+            )}
+          </div>
+
 
         </div>
       </div>

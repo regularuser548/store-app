@@ -25,6 +25,37 @@ class ProfileController extends Controller
 //        ]);
 //    }
 
+//    public function edit(Request $request): Response
+//    {
+//        $user = $request->user();
+//        $orders = $user->orders()->with('items')->get();
+//
+//        return Inertia::render('Profile/Edit', [
+//            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
+//            'status' => session('status'),
+//            'userData' => [
+//                'name' => $user->name,
+//                'surname' => $user->surname ?? 'Пусто',
+//                'phone_number' => $user->phone_number ?? 'Пусто',
+//                'email' => $user->email,
+//            ],
+//            'orders' => $orders->map(function ($order) {
+//                return [
+//                    'id' => $order->id,
+//                    'name' => $order->name,
+//                    'phone_number' => $order->phone_number,
+//                    'items' => $order->items->map(function ($item) {
+//                        return [
+//                            'name' => $item->name,
+//                            'quantity' => $item->quantity,
+//                            'price' => $item->price,
+//                        ];
+//                    }),
+//                ];
+//            }),
+//        ]);
+//    }
+
     public function edit(Request $request): Response
     {
         $user = $request->user();
@@ -35,9 +66,12 @@ class ProfileController extends Controller
             'status' => session('status'),
             'userData' => [
                 'name' => $user->name,
-                'surname' => $user->surname ?? 'Пусто',
-                'phone_number' => $user->phone_number ?? 'Пусто',
+                'surname' => $user->surname,
+                'phone_number' => $user->phone_number,
                 'email' => $user->email,
+                'street' => $user->street,
+                'house' => $user->house,
+                'apartment' => $user->apartment,
             ],
             'orders' => $orders->map(function ($order) {
                 return [
@@ -56,7 +90,6 @@ class ProfileController extends Controller
         ]);
     }
 
-
     /**
      * Update the user's profile information.
      */
@@ -67,12 +100,23 @@ class ProfileController extends Controller
 
         $user = \auth()->user();
 
+//        $user->fill([
+//            'email' => $validatedData['email'] ?? $user->email,
+//            'phone_number' => $validatedData['phone_number'] ?? $user->phone_number,
+//            'surname' => $validatedData['surname'] ?? $user->surname,
+//            'name' => $validatedData['name'] ?? $user->name,
+//        ]);
+
         $user->fill([
             'email' => $validatedData['email'] ?? $user->email,
             'phone_number' => $validatedData['phone_number'] ?? $user->phone_number,
             'surname' => $validatedData['surname'] ?? $user->surname,
             'name' => $validatedData['name'] ?? $user->name,
+            'street' => $validatedData['street'] ?? $user->street,
+            'house' => $validatedData['house'] ?? $user->house,
+            'apartment' => $validatedData['apartment'] ?? $user->apartment,
         ]);
+
 
         if ($user->isDirty('email')) {
             $user->forceFill(['email_verified_at' => null]);

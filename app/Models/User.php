@@ -64,7 +64,7 @@ class User extends \Konekt\User\Models\User //implements MustVerifyEmail
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'password', 'type', 'is_active', 'phone_number', 'surname'
+        'name', 'email', 'password', 'type', 'is_active', 'phone_number', 'surname', 'street', 'house', 'apartment'
     ];
 
     public function orders()
