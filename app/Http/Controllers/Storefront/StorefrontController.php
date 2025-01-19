@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Storefront;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Storefront\ProductSearchRequest;
 use App\Models\Comment;
+use App\Models\PgProductSearch;
 use App\Models\Product;
 use App\Repositories\MediaRepository;
 use App\Repositories\ProductRepository;
@@ -83,7 +84,7 @@ class StorefrontController extends Controller
 
     public function search(ProductSearchRequest $request, ?string $path = null): Response
     {
-        $productFinder = new ProductSearch();
+        $productFinder = new PgProductSearch();
 
         //$properties = [];
         $slugs = $path !== null ? explode('/', $path) : null;
