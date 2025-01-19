@@ -21,7 +21,8 @@ class OrderController extends Controller
                 'name' => $item->product->name,
                 'price' => $item->price,
                 'quantity' => $item->quantity,
-                'image' => Product::find($item->product->id)->getImageUrl(),
+                'seller' => $item->product->seller,
+                'image' => $item->product->getImageUrl(),
             ];
         });
 
@@ -112,7 +113,7 @@ class OrderController extends Controller
         // Добавляем товары в заказ
         foreach ($validated['items'] as $item) {
             $order->items()->create([
-                'product_type' => 'product',
+                'product_type' => 'App\Models\Product',
                 'product_id'   => $item['id'],
                 'name'         => $item['name'],
                 'quantity'     => $item['quantity'],

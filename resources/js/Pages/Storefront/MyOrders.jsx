@@ -61,7 +61,6 @@ export default function MyOrders({ orders }) {
                     key={index}
                     className="flex items-center p-3 border border-gray-700 rounded shadow-sm"
                   >
-                    {console.log(item)}
                     <img
                       src={item.image}
                       alt={item.name}
@@ -70,8 +69,9 @@ export default function MyOrders({ orders }) {
                     <div className="flex-grow">
                       <p className="text-gray-200 font-medium">{item.name}</p>
                       <p className="text-gray-400 text-sm">Кількість: {item.quantity}</p>
+                      <p className="text-gray-400 text-sm">Продавець: {item?.product?.seller?.name}</p>
                     </div>
-                    <p className="text-gray-100 font-bold">{item.price} грн</p>
+                    <p className="text-gray-100 font-bold">{item.price} ₴</p>
                   </div>
                 ))}
               </div>

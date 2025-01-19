@@ -194,7 +194,7 @@ export default function Show({cart: initialCart, total: initialTotal}) {
                             {item.name}
                           </h2>
                           <p className="text-sm  text-gray-400 ">
-                            Продавець: {item.seller}
+                            Продавець: {item?.seller}
                           </p>
                           <div className="mt-2 flex items-center justify-center md:justify-start gap-2">
                       <span className="text-orange-400 font-semibold ">
