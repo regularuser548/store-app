@@ -33,7 +33,7 @@ export default function Show({product, images, comments = []}) {
 
   const handleAddToCart = () => {
     if (checkIsInCart === true) {
-      router.visit(route("cart.show"));
+      router.visit(route("cart.show"), {preserveState: false});
       return;
     }
 
