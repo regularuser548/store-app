@@ -15,15 +15,18 @@ class Product extends \Vanilo\Foundation\Models\Product
 {
     use HasFactory;
 
+    protected $with = ['seller', 'media'];
+
+    public function morphTypeName(): string
+    {
+        return static::class;
+    }
+
     public function seller(): BelongsTo
     {
         return $this->belongsTo(User::class, 'seller_id');
     }
 
-    public function getThumbnailUrlAttribute(): ?string
-    {
-        return $this->getThumbnailUrl();
-    }
 
     public function getCategoryPathAttribute(): ?array
     {
@@ -74,5 +77,5 @@ class Product extends \Vanilo\Foundation\Models\Product
         return Cart::getItems()->contains('product_id', $this->id);
     }
 
-    protected $appends = ['thumbnail_url', 'category_path', 'category_slugs', 'is_liked', 'is_in_cart'];
+    protected $appends = ['category_path', 'category_slugs', 'is_liked', 'is_in_cart'];
 }

@@ -40,14 +40,14 @@ class CartController extends Controller
     public function showCart()
     {
         $cartItems = Cart::getItems()->map(function ($item) {
-            $product = Product::find($item->product->id);
+            //$product = Product::find($item->product->id);
             return [
                 'id' => $item->product->id,
                 'name' => $item->product->name,
                 //'image' => $item->product->getMedia()?->first()?->getUrl(),
-                'image' => $product->getMedia()?->first()?->getUrl(),
+                'image' => $item->product->getMedia()?->first()?->getUrl(),
                 'price' => $item->price,
-                'seller' => $product->seller->name,
+                'seller' => $item->product->seller->name,
                 'quantity' => $item->quantity,
             ];
         });

@@ -275,11 +275,12 @@ export default function Checkout({ cartItems, userData, total: initialTotal, cit
                           <div className="flex-shrink-0 mb-2 sm:mb-0">
                             <img className={"w-20 h-20 object-contain"} src={cartItems[index].image} alt=''/>
                           </div>
-                          {/*<p className="text-sm  text-gray-400 ">*/}
-                          {/*  Продавець: {item.s}*/}
-                          {/*</p>*/}
+
                           <div className="flex-grow text-center sm:text-left sm:ml-4">
                             <h3 className="text-lg font-medium">{item.name}</h3>
+                            <p className="text-sm text-gray-400 ">
+                              Продавець: {item?.seller?.name}
+                            </p>
                           </div>
                           <div className="text-right flex  sm:text-left w-full sm:w-auto">
                             <p className="text-lg pr-20 font-medium">{item.quantity}x</p>

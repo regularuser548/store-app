@@ -94,7 +94,7 @@ class ProfileController extends Controller
             $order->status = $order->status ?? 'Очікується';
             $order->items->each(function ($item) {
 //                dd($item->product);
-                  $item->image = Product::find($item->product?->id)?->getImageUrl();
+                  $item->image = $item->product?->getImageUrl();
 
             });
 //            dd($order);
