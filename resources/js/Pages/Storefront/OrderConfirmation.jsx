@@ -16,7 +16,7 @@ export default function OrderConfirmation({ orderId }) {
         <h1 className="text-2xl font-bold mb-4 text-green-600">
           Ваше замовлення успішно оформлено!
         </h1>
-        <p className="text-lg mb-6">ID замовлення: <strong>{orderId}</strong></p>
+        {/*<p className="text-lg mb-6">ID замовлення: <strong>{orderId}</strong></p>*/}
         <div className="flex flex-col gap-4">
           <Link href={route("storefront.index")}>
             <Button type="primary" block>
