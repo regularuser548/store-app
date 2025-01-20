@@ -56,12 +56,15 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Konekt\Acl\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Vanilo\Foundation\Models\Order;
 
-class User extends \Konekt\User\Models\User //implements MustVerifyEmail
+class User extends \Konekt\User\Models\User implements HasMedia
 {
     use HasRoles;
     use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'name', 'email', 'password', 'type', 'is_active', 'phone_number', 'surname', 'street', 'house', 'apartment'
@@ -70,5 +73,13 @@ class User extends \Konekt\User\Models\User //implements MustVerifyEmail
     public function orders()
     {
         return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('avatars')
+            ->useFallbackPath(public_path('/avatars/default.jpg'))
+            ->singleFile();
     }
 }

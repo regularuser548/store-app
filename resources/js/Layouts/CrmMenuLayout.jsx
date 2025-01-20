@@ -1,10 +1,12 @@
-import {Head, Link, router, useForm} from "@inertiajs/react";
+import {Head, Link, router, useForm, usePage} from "@inertiajs/react";
 import {Menu} from "antd";
 import {AppstoreOutlined, MailOutlined, SettingOutlined} from "@ant-design/icons";
+import {useState} from "react";
 
 export default function CrmMenuLayout({props, children}) {
+  const role = usePage().props?.auth?.user?.roles?.[0]?.name;
 
-  const items = [
+  const adminItems = [
     {
       key: route('storefront.index'),
       label: 'Головна',
@@ -51,6 +53,89 @@ export default function CrmMenuLayout({props, children}) {
     },
   ];
 
+  const sellerItems = [
+    {
+      key: route('storefront.index'),
+      label: 'Головна',
+    },
+    {
+      key: 'products',
+      label: 'Товари',
+      children: [
+        {
+          key: route('product.index'),
+          label: 'Список товарів',
+        },
+        {
+          key: route('product.create'),
+          label: 'Додати товар',
+        },
+      ]
+    },
+
+    {
+      key: route('reports.sales'),
+      label: 'Звіти про продаж',
+    },
+
+  ];
+
+  const managerItems = [
+    {
+      key: route('storefront.index'),
+      label: 'Головна',
+    },
+    {
+      key: route('user.index'),
+      label: 'Користувачі',
+    },
+    {
+      key: route('reports.activity'),
+      label: 'Активність користувачів',
+    },
+    {
+      key: route('reports.sales'),
+      label: 'Звіти про продаж',
+    },
+  ];
+
+  const moderatorItems = [
+    {
+      key: route('storefront.index'),
+      label: 'Головна',
+    },
+    {
+      key: route('user.index'),
+      label: 'Користувачі',
+    },
+    {
+      key: route('reports.activity'),
+      label: 'Активність користувачів',
+    }
+  ];
+
+
+  console.log(role);
+
+  function initializeMenuItems() {
+
+    if (role === 'admin')
+      return adminItems;
+
+    if (role === 'seller')
+      return sellerItems;
+
+    if (role === 'manager')
+      return managerItems;
+
+    if (role === 'moderator')
+      return moderatorItems;
+
+    return null;
+  }
+
+  const [menuItems, setMenuItems] = useState(initializeMenuItems);
+
   const onClick = (e) => {
     router.visit(e.key);
   };
@@ -79,7 +164,7 @@ export default function CrmMenuLayout({props, children}) {
           height: '100vh',
         }}
         mode="inline"
-        items={items}
+        items={menuItems}
         onClick={onClick}
       >
       </Menu>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\Crm\MediaController;
 use App\Http\Controllers\Crm\ProductController;
 use App\Http\Controllers\Crm\ReportController;
@@ -29,6 +30,9 @@ Route::get('/categories', [StorefrontController::class, 'returnCategoryTree'])->
 Route::get('/privacy-policy', [StorefrontController::class, 'PrivacyPolicy'])->name('storefront.PrivacyPolicy');
 Route::get('/about-us', [StorefrontController::class, 'AboutUs'])->name('storefront.AboutUs');
 Route::get('/message-to-seller', [StorefrontController::class, 'MessageToSeller'])->name('storefront.MessageToSeller');
+
+//Avatars
+Route::resource('avatar', AvatarController::class)->only(['show', 'store', 'update', 'destroy']);
 
 Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -97,7 +101,7 @@ Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':
     Route::put('/taxonomy/{taxonomy}/sync', [TaxonController::class, 'sync'])->name('taxonomy.sync');
 });
 
-//todo: turn to resource routes
+
 Route::prefix('crm/user')->middleware(['auth', 'verified', RoleMiddleware::class . ':admin'])->group(function () {
     Route::get('/', [UserRoleController::class, 'index'])->name('user.index');
     Route::get('/{user}/show', [UserRoleController::class, 'show'])->name('user.show');
