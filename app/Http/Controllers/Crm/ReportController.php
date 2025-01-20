@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Vanilo\Foundation\Models\Order;
+use Vanilo\Foundation\Models\Address;
 
 
 class ReportController extends Controller
@@ -17,18 +18,6 @@ class ReportController extends Controller
     {
         $currentUser = Auth::user();
         $isSeller = $currentUser->hasRole('seller');
-
-//        $query = \DB::table('order_items as items')
-//            ->join('orders', 'items.order_id', '=', 'orders.id')
-//            ->join('products', 'items.product_id', '=', 'products.id')
-//            ->select(
-//                'items.product_id as id',
-//                'products.name as product_name',
-//                'items.price',
-//                \DB::raw('SUM(items.quantity) as total_quantity'),
-//                \DB::raw('COUNT(orders.id) as total_orders')
-//            )
-//            ->groupBy('items.product_id', 'products.name', 'items.price');
 
         $query = \DB::table('order_items as items')
             ->join('orders', 'items.order_id', '=', 'orders.id')
@@ -114,7 +103,7 @@ class ReportController extends Controller
     {
         $orders = \DB::table('orders')
             ->where('user_id', $userId)
-            ->select('id', 'status', 'created_at', 'name', 'surname', 'email', 'phone_number')
+            ->select('id', 'user_id', 'status', 'created_at', 'name', 'surname', 'email', 'phone_number', 'status')
             ->get();
 
         $orderItems = \DB::table('order_items')
@@ -126,7 +115,6 @@ class ReportController extends Controller
                 'order_items.quantity',
                 'order_items.price',
                 'order_items.created_at',
-                'order_items.fulfillment_status'
             )
             ->get();
 
@@ -137,13 +125,18 @@ class ReportController extends Controller
     }
 
 
-    public function updateOrderItemAndStatistics(Request $request)
+
+
+
+
+
+// Добавление city и address в метод updateOrderStatistics
+    public function updateOrderStatistics(Request $request)
     {
+        \Log::info('Request data', $request->all());
+
         $validatedData = $request->validate([
-            'order_id' => 'required|exists:order_items,order_id',
-            'product_name' => 'required|string',
-            'fulfillment_status' => 'required|string|max:255',
-            'user_id' => 'required|exists:users,id',
+            'order_id' => 'required|exists:orders,id',
             'status' => 'required|string|max:255',
             'phone_number' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
@@ -151,81 +144,29 @@ class ReportController extends Controller
 
         $currentUser = Auth::user();
 
-        // Обновление fulfillment_status в order_items
-        \DB::table('order_items')
-            ->where('order_id', $validatedData['order_id'])
-            ->update(['fulfillment_status' => $validatedData['fulfillment_status']]);
-
         if ($currentUser->hasRole('seller')) {
+            // Обновление только статуса заказа
             \DB::table('orders')
-                ->where('user_id', $validatedData['user_id'])
+                ->where('id', $validatedData['order_id'])
                 ->update(['status' => $validatedData['status']]);
         } elseif ($currentUser->hasRole('moderator') || $currentUser->hasRole('admin')) {
-            \DB::table('users')
-                ->where('id', $validatedData['user_id'])
+            // Обновление статуса, почты и телефона для указанного заказа
+            \DB::table('orders')
+                ->where('id', $validatedData['order_id'])
                 ->update([
+                    'status' => $validatedData['status'],
                     'email' => $validatedData['email'],
                     'phone_number' => $validatedData['phone_number'],
                 ]);
-
-            \DB::table('orders')
-                ->where('user_id', $validatedData['user_id'])
-                ->update(['status' => $validatedData['status']]);
         } else {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        return response()->json(['message' => 'Data updated successfully']);
+        return response()->json(['message' => 'Order updated successfully']);
     }
 
 
-//    public function updateOrderItem(Request $request)
-//    {
-//        $validatedData = $request->validate([
-//            'order_id' => 'required|exists:order_items,order_id',
-//            'product_name' => 'required|string',
-//            'fulfillment_status' => 'required|string|max:255',
-//        ]);
-//
-//        \DB::table('order_items')
-//            ->where('order_id', $validatedData['order_id'])
-//            ->update(['fulfillment_status' => $validatedData['fulfillment_status']]);
-//
-//        return response()->json(['message' => 'Order item status updated successfully']);
-//    }
-//
-//
-//
-//    public function updateOrderStatistics(Request $request)
-//    {
-//        $validatedData = $request->validate([
-//            'user_id' => 'required|exists:users,id',
-//            'status' => 'required|string|max:255',
-//            'phone_number' => 'nullable|string|max:20',
-//            'email' => 'nullable|email|max:255',
-//        ]);
-//
-//        $currentUser = Auth::user();
-//
-//        if ($currentUser->hasRole('seller')) {
-//            \DB::table('orders')
-//                ->where('user_id', $validatedData['user_id'])
-//                ->update(['status' => $validatedData['status']]);
-//        } elseif ($currentUser->hasRole('moderator') || $currentUser->hasRole('admin')) {
-//            \DB::table('users')
-//                ->where('id', $validatedData['user_id'])
-//                ->update([
-//                    'email' => $validatedData['user_email'],
-//                    'phone_number' => $validatedData['phone_number'],
-//                ]);
-//
-//            \DB::table('orders')
-//                ->where('user_id', $validatedData['user_id'])
-//                ->update(['status' => $validatedData['status']]);
-//        } else {
-//            return response()->json(['message' => 'Unauthorized'], 403);
-//        }
-//
-//        return response()->json(['message' => 'Data updated successfully']);
-//    }
+
+
+
 }

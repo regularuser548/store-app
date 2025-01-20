@@ -117,7 +117,10 @@ Route::prefix('crm')->middleware(['auth', 'verified', RoleMiddleware::class . ':
     Route::get('reports/activity', [ReportController::class, 'userActivityReport'])->name('reports.activity');
     Route::get('reports/statistics/{id}', [ReportController::class, 'orderStatistics'])->name('reports.statistics');
 
-    Route::put('reports/orders/update', [ReportController::class, 'updateOrderItemAndStatistics'])->name('reports.orders.update');
+    Route::put('/reports/orders/update', [ReportController::class, 'updateOrderStatistics'])
+        ->name('crm.reports.updateOrderStatistics');
+
+
 
     Route::get('reports/orders/{userId}', [ReportController::class, 'userOrders'])->name('reports.orders');
 });

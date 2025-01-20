@@ -206,7 +206,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
               onClick={() => setAddressOpen((prev) => !prev)}
               className="w-full text-left py-4 flex justify-between items-center"
             >
-              <p>Адрес</p>
+              <p>Адреса</p>
               <span className="text-gray-400">{isAddressOpen ? '\u25B2' : '\u25BC'}</span>
             </button>
             {isAddressOpen && (
@@ -215,7 +215,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                   {isEditingAddress ? (
                     <>
                       <div>
-                        <p>Улица</p>
+                        <p>Вулиця</p>
                         <input
                           name="street"
                           value={formData.street}
@@ -225,7 +225,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                         />
                       </div>
                       <div>
-                        <p>Дом</p>
+                        <p>Будинок</p>
                         <input
                           name="house"
                           value={formData.house}
@@ -248,11 +248,11 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                   ) : (
                     <>
                       <div>
-                        <p>Улица</p>
+                        <p>Вулиця</p>
                         <p className="text-gray-400">{formData.street || 'Немає'}</p>
                       </div>
                       <div>
-                        <p>Дом</p>
+                        <p>Будинок</p>
                         <p className="text-gray-400">{formData.house || 'Немає'}</p>
                       </div>
                       <div>
@@ -275,20 +275,20 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
 
 
 
-          {/* Смена пароля */}
+          {/* Зміна пароля */}
           <div className="border-b-2 border-[#D9D9D9]">
             <button
               onClick={() => setPasswordOpen((prev) => !prev)}
               className="w-full text-left py-4 flex justify-between items-center"
             >
-              <p>Смена пароля</p>
+              <p>Зміна пароля</p>
               <span className="text-gray-400">{isPasswordOpen ? '\u25B2' : '\u25BC'}</span>
             </button>
             {isPasswordOpen && (
               <div className="pl-4 py-4 space-y-4">
                 <div className="space-y-4">
                   <div>
-                    <p>Текущий пароль</p>
+                    <p>Поточний пароль</p>
                     <input
                       type="password"
                       name="current_password"
@@ -298,7 +298,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                     />
                   </div>
                   <div>
-                    <p>Новый пароль</p>
+                    <p>Новий пароль</p>
                     <input
                       type="password"
                       name="password"
@@ -308,7 +308,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                     />
                   </div>
                   <div>
-                    <p>Подтвердите новый пароль</p>
+                    <p>Підтвердьте новий пароль</p>
                     <input
                       type="password"
                       name="password_confirmation"
@@ -322,7 +322,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
                   onClick={handlePasswordSave}
                   className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 transition"
                 >
-                  Сохранить
+                  Зберегти
                 </button>
               </div>
             )}

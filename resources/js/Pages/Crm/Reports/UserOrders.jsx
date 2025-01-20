@@ -16,10 +16,17 @@ export default function UserOrders({ orders, orderItems }) {
   const handleSave = async () => {
     try {
       const updatedData = form.getFieldsValue();
+
+      if (!editItem.user_id) {
+        message.error("Поле 'user_id' відсутнє. Неможливо оновити дані.");
+        return;
+      }
+
       await axios.put("/crm/reports/orders/update", {
-        ...editItem, // данные редактируемого элемента
-        ...updatedData, // обновленные значения из формы
+        ...editItem,
+        ...updatedData,
       });
+
       message.success("Дані оновлено успішно!");
       setEditItem(null);
     } catch (error) {
@@ -35,23 +42,17 @@ export default function UserOrders({ orders, orderItems }) {
 
   const columns = [
     { title: "№ Замовлення", dataIndex: "order_id", key: "order_id" },
-    { title: "Ім'я", dataIndex: "first_name", key: "first_name" },
+    { title: "Ім'я", dataIndex: "name", key: "name" },
     { title: "Прізвище", dataIndex: "surname", key: "surname" },
     { title: "Електронна пошта", dataIndex: "email", key: "email" },
-    { title: "Номер телефону", dataIndex: "phone", key: "phone" },
+    { title: "Номер телефону", dataIndex: "phone_number", key: "phone_number" },
     { title: "Назва товару", dataIndex: "product_name", key: "product_name" },
     { title: "Кількість", dataIndex: "quantity", key: "quantity" },
     { title: "Дата замовлення", dataIndex: "created_at", key: "created_at" },
     {
-      title: "Ціна",
-      dataIndex: "price",
-      key: "price",
-      render: (price) => `$${price}`,
-    },
-    {
       title: "Статус замовлення",
-      dataIndex: "fulfillment_status",
-      key: "fulfillment_status",
+      dataIndex: "status",
+      key: "status",
     },
     {
       title: "Дії",
@@ -93,24 +94,16 @@ export default function UserOrders({ orders, orderItems }) {
       >
         <Form form={form} layout="vertical">
           <Form.Item
-            label="Город"
-            name="city"
-            rules={[{ required: true, message: "Будь ласка, введіть місто" }]}
+            label="Статус замовлення"
+            name="status"
+            rules={[{ required: true, message: "Будь ласка, оберіть статус" }]}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Адрес (вулиця, дім, квартира)"
-            name="address"
-            rules={[
-              { required: true, message: "Будь ласка, введіть адресу" },
-              {
-                pattern: /^[\w\s.,'-]+$/,
-                message: "Адреса має бути у форматі: вулиця, дім, квартира",
-              },
-            ]}
-          >
-            <Input />
+            <Select>
+              <Option value="pending">Очікується</Option>
+              <Option value="processing">Обробляється</Option>
+              <Option value="completed">Завершено</Option>
+              <Option value="cancelled">Скасовано</Option>
+            </Select>
           </Form.Item>
           <Form.Item
             label="Електронна пошта"
@@ -123,7 +116,7 @@ export default function UserOrders({ orders, orderItems }) {
           </Form.Item>
           <Form.Item
             label="Номер телефону"
-            name="phone"
+            name="phone_number"
             rules={[
               {
                 pattern: /^[0-9+]*$/,
