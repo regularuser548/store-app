@@ -206,7 +206,7 @@ export default function Edit({ auth, mustVerifyEmail, status, userData, orders }
               onClick={() => setAddressOpen((prev) => !prev)}
               className="w-full text-left py-4 flex justify-between items-center"
             >
-              <p>Адрес</p>
+              <p>Адреса</p>
               <span className="text-gray-400">{isAddressOpen ? '\u25B2' : '\u25BC'}</span>
             </button>
             {isAddressOpen && (

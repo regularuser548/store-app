@@ -59,7 +59,6 @@ class OrderController extends Controller
     }
 
 
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -75,7 +74,6 @@ class OrderController extends Controller
             'apartment' => 'nullable|string|max:255',
         ]);
 
-
         // Обновляем данные пользователя
         $user = auth()->user();
         $user->update([
@@ -84,48 +82,81 @@ class OrderController extends Controller
             'apartment' => $validated['apartment'],
         ]);
 
-        // Формируем полный адрес
-        $fullAddress = "{$validated['street']}, {$validated['house']}, {$validated['apartment']}";
 
-        // Создаем запись в таблице addresses
-        $address = Address::create([
-            'city' => $validated['city'],
-            'address' => $fullAddress,
-            'name' => $validated['name'],
-            'country_id' => 'UA',
-        ]);
 
-        // Создаем заказ
-        $orderNumber = 'PO-' . str_pad(Order::max('id') + 1, 4, '0', STR_PAD_LEFT);
 
-        $order = Order::create([
-            'number' => $orderNumber,
-            'status' => 'pending',
-            'user_id' => $user->id,
-            'notes' => $validated['notes'] ?? '',
-            'name' => $validated['name'],
-            'surname' => $validated['surname'],
-            'email' => $validated['email'],
-            'phone_number' => $validated['phone_number'],
-            'shipping_address_id' => $address->id,
-        ]);
+        $validated['items'] = collect($validated['items'])->map(function ($item) {
+            // Добавляем seller_id в корневой уровень
+            $item['seller_id'] = $item['seller']['id'];
+            return $item;
+        })->toArray();
 
-        // Добавляем товары в заказ
-        foreach ($validated['items'] as $item) {
-            $order->items()->create([
-                'product_type' => 'App\Models\Product',
-                'product_id'   => $item['id'],
-                'name'         => $item['name'],
-                'quantity'     => $item['quantity'],
-                'price'        => $item['price'],
+
+        // Группируем товары по продавцам
+        $itemsGroupedBySeller = collect($validated['items'])->groupBy('seller_id');
+
+//        dump('Grouped items by seller_id:', $itemsGroupedBySeller->toArray());
+
+//        dump($validated['items']);
+
+//        dump($itemsGroupedBySeller);
+
+
+        $orders = [];
+
+        // Создаем заказы для каждого продавца
+        foreach ($itemsGroupedBySeller as $sellerId => $items) {
+
+            // Формируем полный адрес для каждого продавца
+            $fullAddress = "{$validated['street']}, {$validated['house']}, {$validated['apartment']}";
+
+            // Создаем запись в таблице addresses
+            $address = Address::create([
+                'city' => $validated['city'],
+                'address' => $fullAddress,
+                'name' => $validated['name'],
+                'country_id' => 'UA',
             ]);
+
+            $orderNumber = 'PO-' . str_pad(Order::max('id') + 1, 4, '0', STR_PAD_LEFT);
+
+            $order = Order::create([
+                'number' => $orderNumber,
+                'status' => 'pending',
+                'user_id' => $user->id,
+                'notes' => $validated['notes'] ?? '',
+                'name' => $validated['name'],
+                'surname' => $validated['surname'],
+                'email' => $validated['email'],
+                'phone_number' => $validated['phone_number'],
+                'shipping_address_id' => $address->id,
+                'seller_id' => $sellerId, // Добавляем ID продавца в заказ
+                'address_id' => $address->id,
+            ]);
+
+            // Добавляем товары в заказ
+            foreach ($items as $item) {
+                $order->items()->create([
+                    'product_type' => 'App\Models\Product',
+                    'product_id'   => $item['id'],
+                    'name'         => $item['name'],
+                    'quantity'     => $item['quantity'],
+                    'price'        => $item['price'],
+                ]);
+            }
+
+            $orders[] = $order;
         }
+
+        // Преобразуем массив заказов в коллекцию
+        $orderCollection = collect($orders);
 
         // Очистка корзины
         Cart::clear();
 
-        return Inertia::render('Storefront/OrderConfirmation', ['orderId' => $order->id]);
+        return Inertia::render('Storefront/OrderConfirmation', ['orderIds' => $orderCollection->pluck('id')]);
     }
+
 
 
 
@@ -133,13 +164,35 @@ class OrderController extends Controller
 //    {
 //        $validated = $request->validate([
 //            'name' => 'required|string|max:255',
-//            'surname' => 'required|string|max:255', // Валидация для фамилии
+//            'surname' => 'required|string|max:255',
 //            'email' => 'required|email',
-//            'phone_number' => 'required|string|regex:/^\+380\d{9}$/', // Валидация телефона
+//            'phone_number' => 'required|string|regex:/^\+380\d{9}$/',
 //            'notes' => 'nullable|string',
 //            'items' => 'required|array',
 //            'city' => 'required|string|max:255',
-//            'address' => 'required|string|max:500',
+//            'street' => 'nullable|string|max:255',
+//            'house' => 'nullable|string|max:255',
+//            'apartment' => 'nullable|string|max:255',
+//        ]);
+//
+//
+//        // Обновляем данные пользователя
+//        $user = auth()->user();
+//        $user->update([
+//            'street' => $validated['street'],
+//            'house' => $validated['house'],
+//            'apartment' => $validated['apartment'],
+//        ]);
+//
+//        // Формируем полный адрес
+//        $fullAddress = "{$validated['street']}, {$validated['house']}, {$validated['apartment']}";
+//
+//        // Создаем запись в таблице addresses
+//        $address = Address::create([
+//            'city' => $validated['city'],
+//            'address' => $fullAddress,
+//            'name' => $validated['name'],
+//            'country_id' => 'UA',
 //        ]);
 //
 //        // Создаем заказ
@@ -148,31 +201,19 @@ class OrderController extends Controller
 //        $order = Order::create([
 //            'number' => $orderNumber,
 //            'status' => 'pending',
-//            'user_id' => auth()->id(),
+//            'user_id' => $user->id,
 //            'notes' => $validated['notes'] ?? '',
 //            'name' => $validated['name'],
-//            'surname' => $validated['surname'], // Сохраняем фамилию
+//            'surname' => $validated['surname'],
 //            'email' => $validated['email'],
-//            'phone_number' => $validated['phone_number'], // Сохраняем номер телефона
+//            'phone_number' => $validated['phone_number'],
+//            'shipping_address_id' => $address->id,
 //        ]);
-//
-//        // Создаем адрес
-//
-//        $address = Address::create([
-//            'city' => $validated['city'],
-//            'address' => $validated['address'],
-//            'name' => '',
-//            'country_id' => 'UA'
-//        ]);
-//
-//        // Привязываем адрес к заказу (если есть связь, например order_id)
-//        $order->shipping_address_id = $address->id;
-//        $order->save();
 //
 //        // Добавляем товары в заказ
 //        foreach ($validated['items'] as $item) {
 //            $order->items()->create([
-//                'product_type' => 'product',
+//                'product_type' => 'App\Models\Product',
 //                'product_id'   => $item['id'],
 //                'name'         => $item['name'],
 //                'quantity'     => $item['quantity'],
@@ -180,9 +221,10 @@ class OrderController extends Controller
 //            ]);
 //        }
 //
-//        // Очищаем корзину
+//        // Очистка корзины
 //        Cart::clear();
 //
-//        return redirect()->route('order.confirmation', ['orderId' => $order->id]);
+//        return Inertia::render('Storefront/OrderConfirmation', ['orderId' => $order->id]);
 //    }
+
 }
