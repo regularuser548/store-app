@@ -38,7 +38,7 @@ class StorefrontController extends Controller
     public function index(): Response
     {
         $products = Product::where('state', '=', 'active')
-            ->orWhere('state', '=', 'unavailable')
+            ->orWhere('state', '=', 'unavailable')->latest()
             ->take(self::numberOfProductsPerSection)->get();
 
         $images = $this->mediaRepository->primaryImageForEach($products);

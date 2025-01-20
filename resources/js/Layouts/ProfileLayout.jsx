@@ -1,9 +1,30 @@
 import {Head, Link, router, useForm, usePage} from "@inertiajs/react";
 import StoreFrontLayout from "@/Layouts/StoreFrontLayout.jsx";
 import React from "react";
+import {EditFilled} from "@ant-design/icons";
 
 export default function ProfileLayout({props, children}) {
   const {auth} = usePage().props
+
+  const handleUploadAvatar = (e) => {
+    const file = e.target.files[0];
+
+    axios.post(route('avatar.store'), {
+      avatar: file
+    }, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+
   return (
 
     <div className="flex-auto bg-[#0f0f0f]">
@@ -12,16 +33,36 @@ export default function ProfileLayout({props, children}) {
         <div className="flex flex-col md:flex-row h-full p-3">
           {/* Левая панель */}
           <div className="w-full md:w-64 text-white p-7 flex flex-col">
-            {/* Профильное изображение */}
+
             <div className="flex flex-col items-center mb-10">
-              <img
-                src="/avatars/default.jpg"
-                alt="Profile Image"
-                className="rounded-full border-4 border-yellow-400 w-24 h-24 mb-4"
+              <input
+                id="fileInput"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleUploadAvatar}
               />
+              <div className='relative w-24 h-24'>
+                <img
+                  src="/avatars/default.jpg"
+                  alt="Profile Image"
+                  className="rounded-full w-24 h-24 mb-4"
+                />
+                {/*<button*/}
+                {/*  className="absolute bottom-0 right-0 bg-gray-400 text-white border-2 border-gray-200*/}
+                {/*  w-8 h-8 rounded-full flex items-center justify-center shadow-lg hover:bg-gray-500"*/}
+                {/*  aria-label="Edit Avatar"*/}
+                {/*  onClick={() => document.getElementById('fileInput').click()}*/}
+                {/*>*/}
+                {/*  <EditFilled/>*/}
+                {/*</button>*/}
+              </div>
+
               <h2 className="text-xl font-semibold">{auth.user.name}</h2>
               <p className="text-gray-400 text-sm text-center md:text-left">{auth.user.email}</p>
+
             </div>
+
 
             {/* Меню */}
             <nav className="space-y-4">
